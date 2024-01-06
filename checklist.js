@@ -8,9 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.innerHTML = '<p>This is in an iframe</p>';
 
         //Code Test
-        window.addEventListener('message', function(event) {
-            // Check for the specific message
-            if (event.data.message === 'Panel is active') {
                 // Create a new paragraph element
                 const newParagraph = document.createElement('p');
                 newParagraph.textContent = 'The panel is now inactive.';
@@ -18,10 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Append the new paragraph below the existing message
                 const iframeMessage = document.querySelector('p'); // Assuming the existing message is in a <p> tag
                 iframeMessage.insertAdjacentElement('afterend', newParagraph);
-
-                window.location.reload();
-            }
-        });
+                
     }else{
     
     const checkListName = 'PMDG 737 Checklist'; //Change Checklist Name
