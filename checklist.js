@@ -243,7 +243,7 @@ function sortChecklistSections(checklistItems) {
                 sectionNumber: details['section number']
             };
         }
-        sections[section].items.push({itemName, ...details});
+        sections[section].items.push(Object.assign({itemName: itemName}, details));
     }
 
     const sortedSections = Object.values(sections)
