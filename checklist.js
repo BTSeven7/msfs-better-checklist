@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //Code Test
         window.addEventListener('message', function(event) {
             // Check for the specific message
-            if (event.data.message === 'Panel is inactive') {
+            if (event.data.message === 'Panel is active') {
                 // Create a new paragraph element
                 const newParagraph = document.createElement('p');
                 newParagraph.textContent = 'The panel is now inactive.';
