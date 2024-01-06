@@ -1,0 +1,1 @@
+window.parent.postMessage({ message: 'Panel is active' },  '*');
