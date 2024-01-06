@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('message', function(event) {
    
     // Check for the specific message
-    if (event.data.message === 'Panel is inactive') {
+    if (event.data.message === 'Panel is active') {
         // Create a new paragraph element
-        var newParagraph = document.createElement('p');
-        newParagraph.textContent = 'The panel is now inactive.';
+        const newParagraph = document.createElement('p');
+        newParagraph.textContent = 'The panel is now Active.';
 
         // Append the new paragraph below the existing message
-        var iframeMessage = document.querySelector('p'); // Assuming the existing message is in a <p> tag
+        const iframeMessage = document.querySelector('p'); // Assuming the existing message is in a <p> tag
         iframeMessage.insertAdjacentElement('afterend', newParagraph);
     }
 });
