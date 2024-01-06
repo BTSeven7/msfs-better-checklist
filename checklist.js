@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Append the new paragraph below the existing message
                 const iframeMessage = document.querySelector('p'); // Assuming the existing message is in a <p> tag
                 iframeMessage.insertAdjacentElement('afterend', newParagraph);
+
+                window.location.reload();
             }
         });
     }else{
