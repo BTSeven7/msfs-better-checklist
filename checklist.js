@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    const Tester = 'Skip';
+
     ///Adding a an iFrame Check
-    if (window.location !== window.parent.location) {
+    if (Tester = 'Skip') {
         // The page is in an iframe
         document.body.innerHTML = '<p>This is in an iframe</p>';
 
