@@ -1,20 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    const Tester = 'Skip';
 
     ///Adding a an iFrame Check
-    if (Tester === 'Skip') {
+    if (window.location !== window.parent.location) {
         // The page is in an iframe
         document.body.innerHTML = '<p>This is in an iframe</p>';
-
-        //Code Test
-                // Create a new paragraph element
-                const newParagraph = document.createElement('p');
-                newParagraph.textContent = 'The panel is now inactive.';
-
-                // Append the new paragraph below the existing message
-                const iframeMessage = document.querySelector('p'); // Assuming the existing message is in a <p> tag
-                iframeMessage.insertAdjacentElement('afterend', newParagraph);
                 
     }else{
     
