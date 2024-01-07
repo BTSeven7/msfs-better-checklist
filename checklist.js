@@ -90,7 +90,7 @@ function createTopOfPageHeaderAndForm(checkListName) {
 }
 
 function setupFetchButtonEventListener(checkListJson){
-    const fetchButton = document.getElementById('fetchButton'); // Ensure this button exists in your HTML
+    const fetchButton = document.getElementById('fetchButton'); 
     fetchButton.addEventListener('click', async () => {
         const simBriefId = document.getElementById('simBriefIdLocal').value;
         const airprtDbApiKey = document.getElementById('airportIoApiLocal').value;
@@ -612,7 +612,7 @@ function setupIframeListner(){
                 console.log('Simulator SimBrief ID:', simulatorSimBriefId);
                 localStorage.setItem('simBriefIdLocal', simulatorSimBriefId);
                 const sbInput  = document.getElementById('simBriefIdLocal');
-                inputSavedIds(sbInput, simulatorSimBriefId);
+                inputSavedIds(sbInput, 'simBriefIdLocal');
             }
         }
         //Check for API Key
@@ -626,7 +626,7 @@ function setupIframeListner(){
                 console.log('Simulator API Key:', simulatorApiKey);
                 localStorage.setItem('airportIoApiLocal', simulatorApiKey)
                 const apiInput = document.getElementById('airportIoApiLocal');
-                inputSavedIds(simulatorApiKey, apiInput);
+                inputSavedIds(simulatorApiKey, 'airportIoApiLocal');
             }
         }
         });     
