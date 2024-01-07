@@ -626,7 +626,7 @@ function setupIframeListner(){
                 console.log('Simulator API Key:', simulatorApiKey);
                 localStorage.setItem('airportIoApiLocal', simulatorApiKey)
                 const apiInput = document.getElementById('airportIoApiLocal');
-                inputSavedIds(simulatorApiKey, 'airportIoApiLocal');
+                inputSavedIds(apiInput, 'airportIoApiLocal');
             }
         }
         });     
