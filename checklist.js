@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ///Adding a an iFrame Check
     if (window.location !== window.parent.location) {
         checkListName = 'iFrame Checklist!';
+
+    window.addEventListener('message', function(event) {
+        console.log('Message received from iframe:', event.data);
+        });
                 
     }else{
     
