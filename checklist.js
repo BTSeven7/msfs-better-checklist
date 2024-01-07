@@ -2,12 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ///Adding a an iFrame Check
     if (window.location !== window.parent.location) {
-        // The page is in an iframe
-        document.body.innerHTML = '<p>This is in an iframe</p>';
+        const checkListName = 'iFrame Checklist!';
                 
     }else{
     
     const checkListName = 'PMDG 737 Checklist'; //Change Checklist Name
+    }
+
     const checkListJson = './checklistitems.json'; //Change Checklist Json Name
     
     //Create the header for page load
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Load Saved Data
     loadPersistedData();
-    }
+    
 });
 
 function createTopOfPageHeaderAndForm(checkListName) {
