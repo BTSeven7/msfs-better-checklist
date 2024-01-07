@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    let checkListName;
+
     ///Adding a an iFrame Check
     if (window.location !== window.parent.location) {
-        const checkListName = 'iFrame Checklist!';
+        checkListName = 'iFrame Checklist!';
                 
     }else{
     
-    const checkListName = 'PMDG 737 Checklist'; //Change Checklist Name
+    checkListName = 'PMDG 737 Checklist'; //Change Checklist Name
     }
 
     const checkListJson = './checklistitems.json'; //Change Checklist Json Name
