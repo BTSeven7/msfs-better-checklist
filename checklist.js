@@ -1,20 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    let checkListName;
-
-    ///Adding a an iFrame Check
-    if (window.location !== window.parent.location) {
-        checkListName = 'iFrame Checklist!';
-
-    window.addEventListener('message', function(event) {
-        console.log('Message received from iframe:', event.data);
-        });
-                
-    }else{
+    setupIframeListner();
     
     checkListName = 'PMDG 737 Checklist'; //Change Checklist Name
-    }
-
     const checkListJson = './checklistitems.json'; //Change Checklist Json Name
     
     //Create the header for page load
@@ -111,6 +99,7 @@ function setupFetchButtonEventListener(checkListJson){
         console.log(`API: ${airprtDbApiKey}`);
         
         const fetchedAPIData = await fetchFlightPlan(simBriefId, airprtDbApiKey, checkListJson);
+        // Check For iFrame, if is iFrame, send SBID & APIKey
         if (fetchedAPIData){
             createFlightOverviewHeader(fetchedAPIData.sbData);
             buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData);
@@ -540,9 +529,7 @@ function createUserInputForm(secondTabContent, placeholder, localId) {
     inputField.classList.add('user-input');
     inputField.setAttribute('placeholder', `${placeholder}`);
 
-    if (localStorage.getItem(localId)) {
-        inputField.value = localStorage.getItem(localId);
-    }
+    inputSavedIds(inputField, localId);
 
     inputField.addEventListener('input', () => {
         localStorage.setItem(localId, inputField.value);
@@ -596,3 +583,51 @@ function updateSubtextForSection(simBrief) {
     subtextElement2.style.display = 'block';
     
 }
+
+function inputSavedIds(inputField, localId){
+    const storedValue = localStorage.getItem(localId);
+    if (storedValue) {
+        inputField.value = storedValue;
+    }
+}
+
+function setupIframeListner(){
+
+    ///Adding a an iFrame Check
+    if (window.location !== window.parent.location) {
+    //If message received "New User" do nothing.  If ID and API received.  Set local stoarge with variables.
+
+    //If a message with the SimbriefID and API Key are received they will be set to the local storage.
+    window.addEventListener('message', function(event) {
+        console.log('Message received from iframe:', event.data);
+
+        //Check for SimBriefID
+        if (event.data.startsWith('SBID:')) {
+            const dataAfterSBID = event.data.substring(5); // Extracts everything after 'SBID:'
+            if (dataAfterSBID.trim() === '') {
+                console.log('Simulator SimBrief ID is blank');
+                // Perform specific action for blank SimBrief ID
+            } else {
+                const simulatorSimBriefId = dataAfterSBID;
+                console.log('Simulator SimBrief ID:', simulatorSimBriefId);
+                localStorage.setItem('simBriefIdLocal', simulatorSimBriefId);
+                const sbInput  = document.getElementById('simBriefIdLocal');
+                inputSavedIds(sbInput, simulatorSimBriefId);
+            }
+        }
+        //Check for API Key
+        else if (event.data.startsWith('API:')) {
+            const dataAfterAPI = event.data.substring(4); // Extracts everything after 'API:'
+            if (dataAfterAPI.trim() === '') {
+                console.log('Simulator API Key is blank');
+                // Perform specific action for blank API Key
+            } else {
+                const simulatorApiKey = dataAfterAPI;
+                console.log('Simulator API Key:', simulatorApiKey);
+                localStorage.setItem('airportIoApiLocal', simulatorApiKey)
+                const apiInput = document.getElementById('airportIoApiLocal');
+                inputSavedIds(simulatorApiKey, apiInput);
+            }
+        }
+        });     
+    }};
