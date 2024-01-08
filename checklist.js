@@ -97,6 +97,10 @@ function setupFetchButtonEventListener(checkListJson){
         console.log('Fetch Flight Plan button clicked');
         console.log(`Simbrief ID: ${simBriefId}`);
         console.log(`API: ${airprtDbApiKey}`);
+
+        //Check if iFrame is open and send SimbriefID & API Key
+        sendVariableStorageToParent(simBriefId, airprtDbApiKey);
+        
         
         const fetchedAPIData = await fetchFlightPlan(simBriefId, airprtDbApiKey, checkListJson);
         // Check For iFrame, if is iFrame, send SBID & APIKey
@@ -631,3 +635,13 @@ function setupIframeListner(){
         }
         });     
     }};
+function sendVariableStorageToParent(simBriefId, airportDbApiKey) {
+    // Send simBriefID and API Key to Parent to store after fetch is pressed.
+    // Check if the current window is inside an iframe
+    if (window !== window.parent) {
+            // Format the message
+        const message = `${simBriefId},${airportDbApiKey}`;
+
+        window.parent.postMessage(message, '*');
+    }
+}
