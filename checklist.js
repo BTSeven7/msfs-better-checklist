@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    //Set up Listner's for iFrame
     setupIframeListner();
     
     checkListName = 'PMDG 737 Checklist'; //Change Checklist Name
@@ -100,7 +101,6 @@ function setupFetchButtonEventListener(checkListJson){
 
         //Check if iFrame is open and send SimbriefID & API Key
         sendVariableStorageToParent(simBriefId, airprtDbApiKey);
-        
         
         const fetchedAPIData = await fetchFlightPlan(simBriefId, airprtDbApiKey, checkListJson);
         // Check For iFrame, if is iFrame, send SBID & APIKey
@@ -589,9 +589,9 @@ function updateSubtextForSection(simBrief) {
 }
 
 function inputSavedIds(inputField, localId){
-    const storedValue = localStorage.getItem(localId);
+    const storedValue = localStorage.getItem(localId); //Pull localID reference
     if (storedValue) {
-        inputField.value = storedValue;
+        inputField.value = storedValue; //Enter pulled data into value field
     }
 }
 
@@ -599,9 +599,8 @@ function setupIframeListner(){
 
     ///Adding a an iFrame Check
     if (window.location !== window.parent.location) {
-    //If message received "New User" do nothing.  If ID and API received.  Set local stoarge with variables.
 
-    //If a message with the SimbriefID and API Key are received they will be set to the local storage.
+    //If message received parase it.
     window.addEventListener('message', function(event) {
         console.log('Message received from iframe:', event.data);
 
@@ -610,31 +609,30 @@ function setupIframeListner(){
             const dataAfterSBID = event.data.substring(5); // Extracts everything after 'SBID:'
             if (dataAfterSBID.trim() === '') {
                 console.log('Simulator SimBrief ID is blank');
-                // Perform specific action for blank SimBrief ID
             } else {
                 const simulatorSimBriefId = dataAfterSBID;
                 console.log('Simulator SimBrief ID:', simulatorSimBriefId);
-                localStorage.setItem('simBriefIdLocal', simulatorSimBriefId);
-                const sbInput  = document.getElementById('simBriefIdLocal');
-                inputSavedIds(sbInput, 'simBriefIdLocal');
+                addToLocalStorage('simBriefIdLocal', dataAfterSBID);
+                const sbInput  = document.getElementById('simBriefIdLocal');  //Get SimBrief ID input from document
+                inputSavedIds(sbInput, 'simBriefIdLocal'); //Input SimBrief ID into form
             }
         }
         //Check for API Key
         else if (event.data.startsWith('API:')) {
-            const dataAfterAPI = event.data.substring(4); // Extracts everything after 'API:'
+            const dataAfterAPI = event.data.substring(4);
             if (dataAfterAPI.trim() === '') {
                 console.log('Simulator API Key is blank');
-                // Perform specific action for blank API Key
             } else {
                 const simulatorApiKey = dataAfterAPI;
                 console.log('Simulator API Key:', simulatorApiKey);
-                localStorage.setItem('airportIoApiLocal', simulatorApiKey)
-                const apiInput = document.getElementById('airportIoApiLocal');
-                inputSavedIds(apiInput, 'airportIoApiLocal');
+                addToLocalStorage('airportIoApiLocal', simulatorApiKey);
+                const apiInput = document.getElementById('airportIoApiLocal'); //Get API Key input from document
+                inputSavedIds(apiInput, 'airportIoApiLocal'); //Input API Key into Form
             }
         }
         });     
     }};
+    
 function sendVariableStorageToParent(simBriefId, airportDbApiKey) {
     // Send simBriefID and API Key to Parent to store after fetch is pressed.
     // Check if the current window is inside an iframe
@@ -644,4 +642,8 @@ function sendVariableStorageToParent(simBriefId, airportDbApiKey) {
 
         window.parent.postMessage(message, '*');
     }
+}
+
+function addToLocalStorage(key, item){
+    localStorage.setItem(key, item);
 }
