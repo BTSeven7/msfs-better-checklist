@@ -638,7 +638,7 @@ function sendVariableStorageToParent(simBriefId, airportDbApiKey) {
     // Check if the current window is inside an iframe
     if (window !== window.parent) {
             // Format the message
-        const message = `${simBriefId},${airportDbApiKey}`;
+        const message = `Ids,${simBriefId},${airportDbApiKey}`;
 
         window.parent.postMessage(message, '*');
         console.log(`iFrame Sent: ${message}`);
