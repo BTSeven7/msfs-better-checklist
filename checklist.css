@@ -1,9 +1,16 @@
+@font-face {
+    font-family: "RobotoMono-Light";
+    src: url("/Fonts/RobotoMono-Light.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
 :root {
 	--page-height: 100vh;
 	--page-width: 100vw;
 	--page-margin: 0;
 	--page-padding: 0;
-	--page-font-family: 'Roboto', monospace;
+	--page-font-family: 'RobotoMono-Light', monospace;
 	--page-text-color: #8e9196;
 	--page-text-color-hover: rgba(255,255,255,1.0);
 	--page-background-color: #1a1e23;
@@ -13,13 +20,6 @@
 	--box-sizing: border-box;
     --width: 600px;
 }
-
-@font-face {
-    font-family: "RobotoMono-Light";
-    src: url("/Fonts/RobotoMono-Light.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-  }
 
 *:before,
 *:after,
