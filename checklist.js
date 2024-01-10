@@ -94,16 +94,17 @@ function setupFetchButtonEventListener(checkListJson){
     const fetchButton = document.getElementById('fetchButton'); 
     fetchButton.addEventListener('click', async () => {
         const simBriefId = document.getElementById('simBriefIdLocal').value;
-        const airprtDbApiKey = document.getElementById('airportIoApiLocal').value;
+        const airportDbApiKey = document.getElementById('airportIoApiLocal').value;
         console.log('Fetch Flight Plan button clicked');
         console.log(`Simbrief ID: ${simBriefId}`);
-        console.log(`API: ${airprtDbApiKey}`);
+        console.log(`API: ${airportDbApiKey}`);
 
         //Check if iFrame is open and send SimbriefID & API Key
         sendVariableStorageToParent(simBriefId, airprtDbApiKey);
+        sendParentMessage(`Ids,${simBriefId},${airportDbApiKey}`);
+
+        const fetchedAPIData = await fetchFlightPlan(simBriefId, airportDbApiKey, checkListJson);
         
-        const fetchedAPIData = await fetchFlightPlan(simBriefId, airprtDbApiKey, checkListJson);
-        // Check For iFrame, if is iFrame, send SBID & APIKey
         if (fetchedAPIData){
             createFlightOverviewHeader(fetchedAPIData.sbData);
             buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData);
@@ -596,54 +597,40 @@ function inputSavedIds(inputField, localId){
 }
 
 function setupIframeListner(){
-
-    ///Adding a an iFrame Check
+    ///Adding an iFrame Check
     if (window.location !== window.parent.location) {
 
     //If message received parase it.
     window.addEventListener('message', function(event) {
         console.log('Message received from Parent:', event.data);
-
-        //Check for SimBriefID
-        if (event.data.startsWith('SBID:')) {
-            const dataAfterSBID = event.data.substring(5); // Extracts everything after 'SBID:'
-            if (dataAfterSBID.trim() === '') {
-                console.log('Simulator SimBrief ID is blank');
-            } else {
-                const simulatorSimBriefId = dataAfterSBID;
-                console.log('Simulator SimBrief ID:', simulatorSimBriefId);
-                addToLocalStorage('simBriefIdLocal', dataAfterSBID);
-                const sbInput  = document.getElementById('simBriefIdLocal');  //Get SimBrief ID input from document
-                inputSavedIds(sbInput, 'simBriefIdLocal'); //Input SimBrief ID into form
-            }
-        }
-        //Check for API Key
-        else if (event.data.startsWith('API:')) {
-            const dataAfterAPI = event.data.substring(4);
-            if (dataAfterAPI.trim() === '') {
-                console.log('Simulator API Key is blank');
-            } else {
-                const simulatorApiKey = dataAfterAPI;
-                console.log('Simulator API Key:', simulatorApiKey);
-                addToLocalStorage('airportIoApiLocal', simulatorApiKey);
-                const apiInput = document.getElementById('airportIoApiLocal'); //Get API Key input from document
-                inputSavedIds(apiInput, 'airportIoApiLocal'); //Input API Key into Form
-            }
-        }
+        processParentMessage(message);
         });     
-    }};
-    
-function sendVariableStorageToParent(simBriefId, airportDbApiKey) {
-    // Send simBriefID and API Key to Parent to store after fetch is pressed.
-    // Check if the current window is inside an iframe
-    if (window !== window.parent) {
-            // Format the message
-        const message = `Ids,${simBriefId},${airportDbApiKey}`;
+    }
+};
 
+function processParentMessage(message){
+    const parts = message.split(',');
+
+    if (parts.length > 0) {
+        const command = parts[0];
+
+    switch(command) {
+        case 'Ids':
+            addToLocalStorage('simBriefIdLocal', parts[1]);
+            inputSavedIds(document.getElementById('simBriefIdLocal'), 'simBriefIdLocal');
+            addToLocalStorage('airportIoApiLocal', parts[2]);
+            inputSavedIds(document.getElementById('airportIoApiLocal'), 'airportIoApiLocal');
+        break;
+    }
+    };
+}
+
+function sendParentMessage(message){
+    if (window !== window.parent) {
         window.parent.postMessage(message, '*');
         console.log(`iFrame Sent: ${message}`);
     }
-}
+}    
 
 function addToLocalStorage(key, item){
     localStorage.setItem(key, item);
