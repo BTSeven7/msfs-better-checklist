@@ -3,7 +3,7 @@
 	--page-width: 100vw;
 	--page-margin: 0;
 	--page-padding: 0;
-	--page-font-family: 'Lucida Grande', monospace;
+	--page-font-family: 'Roboto', monospace;
 	--page-text-color: #8e9196;
 	--page-text-color-hover: rgba(255,255,255,1.0);
 	--page-background-color: #1a1e23;
@@ -13,6 +13,13 @@
 	--box-sizing: border-box;
     --width: 600px;
 }
+
+@font-face {
+    font-family: "RobotoMono-Light";
+    src: url("/Fonts/RobotoMono-Light.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
 
 *:before,
 *:after,
@@ -169,7 +176,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
 .checklist-item{
     background-color: rgba(255,255,255,0.03);
     color: white;
-    font-size: 1.25em;
+    font-size: 1.55em;
     width: 500px;
     margin: 10px auto;
     padding: 10px 20px;
