@@ -185,7 +185,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     text-transform: uppercase;
     cursor: pointer;
     user-select: none;
-    font-family: monospace;
+    font-family: 'RobotoMono-VariableFont_wght';
 }
 .checklist-item:hover {
     background-color: #555555;
