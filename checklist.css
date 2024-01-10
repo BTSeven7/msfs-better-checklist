@@ -180,12 +180,11 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     font-family: var(--page-font-family);
     background-color: rgba(255,255,255,0.03);
     color: white;
-    font-size: 1.55em;
+    font-size: 1.16em;
     width: 500px;
     margin: 10px auto;
     padding: 10px 20px;
     border-radius: 15px;
-    justify-content: space-around;
     text-transform: uppercase;
     cursor: pointer;
     user-select: none;
