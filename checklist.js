@@ -603,7 +603,7 @@ function setupIframeListner(){
     //If message received parase it.
     window.addEventListener('message', function(event) {
         console.log('Message received from Parent:', event.data);
-        processParentMessage(message);
+        processParentMessage(event.data);
         });     
     }
 };
