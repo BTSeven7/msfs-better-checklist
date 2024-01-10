@@ -142,12 +142,14 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     width: 600px;
     /* display: block; */
     text-align: center;
+    font-family: var(--page-font-family);
     margin-top: 5px;
     padding: 15px;
 }
 .section-header{
     color: #00b4ff;
     text-transform: uppercase;
+    font-family: var(--page-font-family);
     font-weight: bold;
     font-size: 30px;
     display: flex;
@@ -157,6 +159,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     user-select: none;
 }
 .section-reset-button{
+    font-family: var(--page-font-family);
     margin-left: 10px;
     cursor: pointer;
     text-transform: uppercase;
@@ -174,6 +177,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     border-color: #00b4ff;
 }
 .checklist-item{
+    font-family: var(--page-font-family);
     background-color: rgba(255,255,255,0.03);
     color: white;
     font-size: 1.55em;
@@ -185,7 +189,6 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     text-transform: uppercase;
     cursor: pointer;
     user-select: none;
-    font-family: 'RobotoMono-VariableFont_wght';
 }
 .checklist-item:hover {
     background-color: #555555;
