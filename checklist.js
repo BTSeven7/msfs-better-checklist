@@ -602,7 +602,7 @@ function setupIframeListner(){
 
     //If message received parase it.
     window.addEventListener('message', function(event) {
-        console.log('Message received from iframe:', event.data);
+        console.log('Message received from Parent:', event.data);
 
         //Check for SimBriefID
         if (event.data.startsWith('SBID:')) {
@@ -641,6 +641,7 @@ function sendVariableStorageToParent(simBriefId, airportDbApiKey) {
         const message = `${simBriefId},${airportDbApiKey}`;
 
         window.parent.postMessage(message, '*');
+        console.log(`iFrame Sent: ${message}`);
     }
 }
 
