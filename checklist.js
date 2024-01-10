@@ -100,7 +100,6 @@ function setupFetchButtonEventListener(checkListJson){
         console.log(`API: ${airportDbApiKey}`);
 
         //Check if iFrame is open and send SimbriefID & API Key
-        sendVariableStorageToParent(simBriefId, airprtDbApiKey);
         sendParentMessage(`Ids,${simBriefId},${airportDbApiKey}`);
 
         const fetchedAPIData = await fetchFlightPlan(simBriefId, airportDbApiKey, checkListJson);
