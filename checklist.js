@@ -675,10 +675,10 @@ function getWeatherFromSim(icao){
                 icao: weatherArray[0],
                 altimeterA: parseFloat(weatherArray[1]).toFixed(2),
                 altimeterQ: weatherArray[2],
-                temp: `weatherArray[3]°`,
-                windDir: `weatherArray[4]°`,
-                windSpeed: `weatherArray[5]kts`,
-                vis: `weatherArray[6] SM`,
+                temp: `${weatherArray[3]}°`,
+                windDir: `${weatherArray[4]}°`,
+                windSpeed: `${weatherArray[5]}kts`,
+                vis: `${weatherArray[6]} SM`,
                 metarString: weatherArray[7] 
             }
             resolve(weatherData);
