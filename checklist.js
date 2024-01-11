@@ -627,7 +627,7 @@ function processParentMessage(message){
 
         case 'weather':
             const weatherData = parts.slice(1);
-            const weatherEvent = CustomEvent('weatherDtaReceived', {detail: weatherData});
+            const weatherEvent = CustomEvent('weatherDataReceived', {detail: weatherData});
             document.dispatchEvent(weatherEvent);
         break;
     }
