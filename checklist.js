@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    //MetarParser Test
+    metarTest = metarParser('SBCT 112300Z 19013KT 8000 -TSRA SCT020 FEW025CB BKN080 21/19 Q1014');
+    console.log(metarTest);
+
+
     //Set up Listner's for iFrame should be in MSFS
     if (isInIframe()) {
         setupIframeListner();
@@ -289,7 +294,7 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simWeather
         sbPressAlt: `${simBrief.general.initial_altitude}/${Math.round(simBrief.destination.elevation / 50) * 50}`, // Pressure Altitude
         sbMcpAlt: `set cleared (${simBrief.general.initial_altitude})`, // MCP Altitude
         sbMcpHdg: convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg), // MCP Heading
-        sbLocalBaro: `${simWeather.altimeterA}`, // Placeholder for Altimeter Setting
+        sbLocalBaro: simWeather ? `${parseFloat(simWeather.barometer.hg).toFixed(2)}/${simWeather.barometer.mb}` : null, // Placeholder for Altimeter Setting
         sbOrigin10kAgl: Math.floor((Number(simBrief.origin.elevation) + 10000) / 1000) * 1000, // Origin 10K AGL
         sbTransAltFl: `FL${convertFlightLevel(simBrief.origin.trans_alt)}`, // Transition Altitude Flight Level
         sbDestTransLevel: `FL${convertFlightLevel(simBrief.destination.trans_level)}`, // Destination Transition Level
@@ -590,7 +595,7 @@ function updateSubtextForSection(simBrief, weather) {
     
     //For each specialized header sub text
     const subtextElement = document.querySelector('#preflight-header-subtext');
-    subtextElement.textContent = `At ${weather.icao}: Wind ${weather.windDir}/${weather.windSpeed} - Temp ${weather.temp} - Visibilty ${weather.vis} - Altimeter ${weather.altimeterA}`;
+    subtextElement.textContent = `At ${weather.icao}: Wind ${weather.degrees}°/${weather.speed_kts} - Temp ${weather.temperature} - Visibilty ${weather.miles}SM - Altimeter ${parseFloat(weather.barometer.hg).toFixed(2)}/${barometer.mb}`;
     subtextElement.style.display = 'block';
     
     const subtextElement2 = document.querySelector(`#fmc-set-up-header-subtext`);
@@ -671,16 +676,7 @@ function getWeatherFromSim(icao){
 
         document.addEventListener('weatherDataReceived', function(event) {
             const weatherArray = event.detail;
-            const weatherData = {
-                icao: weatherArray[0],
-                altimeterA: parseFloat(weatherArray[1]).toFixed(2),
-                altimeterQ: weatherArray[2],
-                temp: `${weatherArray[3]}°`,
-                windDir: `${weatherArray[4]}°`,
-                windSpeed: `${weatherArray[5]}kts`,
-                vis: `${weatherArray[6]} SM`,
-                metarString: weatherArray[7] 
-            }
+            const weatherData = metarParser(weatherArray[0]);
             resolve(weatherData);
         }, {once: true});
 
