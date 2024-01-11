@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    //Set up Listner's for iFrame
-    setupIframeListner();
+    //Set up Listner's for iFrame should be in MSFS
+    if (isInIframe()) {
+        setupIframeListner();
+        setupShiftZKeyListener();
+    }
     
     checkListName = 'PMDG 737 Checklist'; //Change Checklist Name
     const checkListJson = './checklistitems.json'; //Change Checklist Json Name
@@ -100,14 +103,18 @@ function setupFetchButtonEventListener(checkListJson){
         console.log(`API: ${airportDbApiKey}`);
 
         //Check if iFrame is open and send SimbriefID & API Key
-        sendParentMessage(`Ids,${simBriefId},${airportDbApiKey}`);
+        if (isInIframe()) {
+            sendParentMessage(`Ids,${simBriefId},${airportDbApiKey}`);
+        };
 
         const fetchedAPIData = await fetchFlightPlan(simBriefId, airportDbApiKey, checkListJson);
         
         if (fetchedAPIData){
-            getWeatherFromSim(fetchedAPIData.sbData.origin.icao_code);
+            if (isInIframe()) {
+                const simWeather = await getWeatherFromSim(fetchedAPIData.sbData.origin.icao_code);
+            }
             createFlightOverviewHeader(fetchedAPIData.sbData);
-            buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData);
+            buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData, simWeather);
         }
     });
     
@@ -211,7 +218,7 @@ function createFlightOverviewHeader(data) {
 
 }
 
-function buildCheckList(simBrief, originAirport, destAirport, checklistItems){
+function buildCheckList(simBrief, originAirport, destAirport, checklistItems, simWeather){
     //Clear Old Checklist Data First
     const checklistContainer = document.getElementById('checklist-sections-container');
     
@@ -223,7 +230,7 @@ function buildCheckList(simBrief, originAirport, destAirport, checklistItems){
     const sortedChecklist = sortChecklistSections(checklistItems); 
 
     //Create Variables from the API Data based on checklist needs
-    const apiVariables = createDynamicVariables(simBrief, originAirport, destAirport); 
+    const apiVariables = createDynamicVariables(simBrief, originAirport, destAirport, simWeather); 
 
     //Append the api variables to the  checklist items where needed
     const sortedSelectionWithAPI = appendApiDataToChecklistItems(sortedChecklist, apiVariables);
@@ -265,7 +272,7 @@ function sortChecklistSections(checklistItems) {
     return sortedSections;
 }
 
-function createDynamicVariables(simBrief, originAirport, destAirport){
+function createDynamicVariables(simBrief, originAirport, destAirport, simWeather){
     const dynamicVariables = {
         sbFuel: simBrief.fuel.plan_ramp, // Planned Fuel
         sbZfw: Math.round((simBrief.weights.est_zfw / 1000) * 10) / 10, // Rounded estZFW
@@ -279,7 +286,7 @@ function createDynamicVariables(simBrief, originAirport, destAirport){
         sbPressAlt: `${simBrief.general.initial_altitude}/${Math.round(simBrief.destination.elevation / 50) * 50}`, // Pressure Altitude
         sbMcpAlt: `set cleared (${simBrief.general.initial_altitude})`, // MCP Altitude
         sbMcpHdg: convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg), // MCP Heading
-        sbAlt: `Need to Replace`, // Placeholder for Altimeter Setting
+        sbLocalBaro: `${simWeather.altimeterA}`, // Placeholder for Altimeter Setting
         sbOrigin10kAgl: Math.floor((Number(simBrief.origin.elevation) + 10000) / 1000) * 1000, // Origin 10K AGL
         sbTransAltFl: `FL${convertFlightLevel(simBrief.origin.trans_alt)}`, // Transition Altitude Flight Level
         sbDestTransLevel: `FL${convertFlightLevel(simBrief.destination.trans_level)}`, // Destination Transition Level
@@ -597,18 +604,13 @@ function inputSavedIds(inputField, localId){
 }
 
 function setupIframeListner(){
-    ///Adding an iFrame Check
-    if (window.location !== window.parent.location) {
 
     //If message received parase it.
     window.addEventListener('message', function(event) {
         console.log('Message received from Parent:', event.data);
         processParentMessage(event.data);
         });
-    
-    //Since this is an iFrame set up hot key listener for Shift Z
-    setupShiftZKeyListener();    
-    }
+
 };
 
 function processParentMessage(message){
@@ -635,10 +637,10 @@ function processParentMessage(message){
 }
 
 function sendParentMessage(message){
-    if (window !== window.parent) {
+    
         window.parent.postMessage(message, '*');
         console.log(`iFrame Sent: ${message}`);
-    }
+    
 }    
 
 function addToLocalStorage(key, item){
@@ -656,9 +658,28 @@ function setupShiftZKeyListener() {
 }
 
 function getWeatherFromSim(icao){
-    sendParentMessage(`weather,${icao}`);
+    return new Promise((resolve, reject) => {
 
-    document.addEventListener('weatherDataReceived', function(event) {
-        console.log(`Weather Array Passed Back to GetWeatherFromSim: ${event.detail}`);
-    }, {once: true});
+        sendParentMessage(`weather,${icao}`);
+
+        document.addEventListener('weatherDataReceived', function(event) {
+            const weatherArray = event.detail;
+            const weatherData = {
+                icao: weatherArray[0],
+                altimeterA: parseFloat(weatherArray[1]).toFixed(2),
+                altimeterQ: weatherArray[2],
+                temp: `weatherArray[3]°`,
+                windDir: `weatherArray[4]°`,
+                windSpeed: `weatherArray[5]kts`,
+                vis: `weatherArray[6] SM`,
+                metarString: weatherArray[7] 
+            }
+            resolve(weatherData);
+        }, {once: true});
+
+    });
+}
+
+function isInIframe() {
+    return window !== window.parent;
 }
