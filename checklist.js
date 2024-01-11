@@ -245,7 +245,7 @@ function buildCheckList(simBrief, originAirport, destAirport, checklistItems, si
     addChecklistItemsToSections(sortedSelectionWithAPI);
 
     //Craete Section SubTexts
-    updateSubtextForSection(simBrief);
+    updateSubtextForSection(simBrief, simWeather);
 
     console.log("Sorted Sections:", sortedSelectionWithAPI);
 
@@ -586,16 +586,20 @@ function createDottedLine(item, itemExpect, totalLength = 40) {
     return `${itemText}${dots}${expectText}`;
 }
 
-function updateSubtextForSection(simBrief) {
+function updateSubtextForSection(simBrief, weather) {
     
     //For each specialized header sub text
-    const subtextElement = document.querySelector(`#fmc-set-up-header-subtext`);
-    subtextElement.textContent = `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy} ${simBrief.general.route} ${simBrief.destination.icao_code}/${simBrief.destination.plan_rwy}`;
-    subtextElement.style.display = 'block'; // Make the div visible
+    const subtextElement = document.querySelector('#preflight-header-subtext');
+    subtextElement.textContent = `At ${weather.icao}: Wind ${weather.windDir}/${weather.windSpeed} - Temp ${weather.temp} - Visibilty ${weather.vis} - Altimeter ${weather.altimeterA}`;
+    subtextElement.style.display = 'block';
+    
+    const subtextElement2 = document.querySelector(`#fmc-set-up-header-subtext`);
+    subtextElement2.textContent = `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy} ${simBrief.general.route} ${simBrief.destination.icao_code}/${simBrief.destination.plan_rwy}`;
+    subtextElement2.style.display = 'block'; // Make the div visible
 
-    const subtextElement2 = document.querySelector('#before-descent-header-subtext');
-    subtextElement2.textContent = `Expected Runway is ${simBrief.destination.plan_rwy}`;
-    subtextElement2.style.display = 'block';
+    const subtextElement3 = document.querySelector('#before-descent-header-subtext');
+    subtextElement3.textContent = `Expected Runway is ${simBrief.destination.plan_rwy}`;
+    subtextElement3.style.display = 'block'; //Make the div visible
     
 }
 
