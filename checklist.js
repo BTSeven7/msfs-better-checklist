@@ -605,9 +605,9 @@ function setupIframeListner(){
         console.log('Message received from Parent:', event.data);
         processParentMessage(event.data);
         });
-        
+    
+    //Since this is an iFrame set up hot key listener for Shift Z
     setupShiftZKeyListener();    
-
     }
 };
 
@@ -623,6 +623,12 @@ function processParentMessage(message){
             inputSavedIds(document.getElementById('simBriefIdLocal'), 'simBriefIdLocal');
             addToLocalStorage('airportIoApiLocal', parts[2]);
             inputSavedIds(document.getElementById('airportIoApiLocal'), 'airportIoApiLocal');
+        break;
+
+        case 'weather':
+            const weatherData = parts.slice(1);
+            const weatherEvent = CustomEvent('weatherDtaReceived', {detail: weatherData});
+            document.dispatchEvent(weatherEvent);
         break;
     }
     };
@@ -651,4 +657,8 @@ function setupShiftZKeyListener() {
 
 function getWeatherFromSim(icao){
     sendParentMessage(`weather,${icao}`);
+
+    document.addEventListener('weatherDataReceived', function(event) {
+        console.log(`Weather Array Passed Back to GetWeatherFromSim: ${event.detail}`);
+    }, {once: true});
 }
