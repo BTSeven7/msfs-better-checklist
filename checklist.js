@@ -595,7 +595,7 @@ function updateSubtextForSection(simBrief, weather) {
     
     //For each specialized header sub text
     const subtextElement = document.querySelector('#preflight-header-subtext');
-    subtextElement.textContent = `At ${weather.icao}: Wind ${weather.degrees}°/${weather.speed_kts} - Temp ${weather.temperature} - Visibilty ${weather.miles}SM - Altimeter ${parseFloat(weather.barometer.hg).toFixed(2)}/${weather.barometer.mb}`;
+    subtextElement.textContent = `At ${weather.icao}: Wind ${weather.wind.degrees}°/${weather.wind.speed_kts}kts - Temp ${weather.temperature.celsius} - Visibilty ${weather.visibility.miles}SM - Altimeter ${parseFloat(weather.barometer.hg).toFixed(2)}/${weather.barometer.mb}`;
     subtextElement.style.display = 'block';
     
     const subtextElement2 = document.querySelector(`#fmc-set-up-header-subtext`);
