@@ -8,7 +8,7 @@
 :root {
 	--page-height: 100vh;
 	--page-width: 100vw;
-	--page-margin: 0;
+	--page-margin: auto auto;
 	--page-padding: 0;
 	--page-font-family: 'RobotoMono-VariableFont_wght';
 	--page-text-color: #8e9196;
@@ -21,33 +21,34 @@
     --width: 600px;
 }
 
-*:before,
+/* *:before,
 *:after,
 *,
 ::after,
-::before {box-sizing: border-box;}
+::before {box-sizing: border-box;} */
 html,
 
 body {
-	display: var(--tab-display);
-	justify-content: center;
-	margin: var(--page-margin);
-	padding: var(--page-padding);
-	font-family: var(--page-font-family);
-	color: var(--page-text-color);
-	background-color: var(--page-background-color);
+	/* display: var(--tab-display); */
+	/* margin: var(--page-margin); */
+	font-family: 'RobotoMono-VariableFont_wght';
+	color: #8e9196;
+	background-color: #1a1e23;
 }
 p {padding: 0 1em;}
 p span {color: var(--page-text-color-hover);}
 
 .tab-container {
-	display: var(--tab-display);
-	margin-top: 25px;
-	grid-template-columns: 1fr 1fr;
+	display: grid;
+    grid-template-columns: 1fr 1fr;
 	grid-template-rows: auto 1fr;
+	margin-top: 25px;
+    margin: auto auto;
 	border: solid rgba(255,255,255,0.03);
 	border-radius: .5em;
-	width: var(--width);
+    padding: 0;
+    width: 100%;
+	max-width: 800px;
 }
 
 input[type="radio"] {display: none;}
@@ -66,7 +67,85 @@ label {
 	background-color: var(--tab-background-color);
 	text-align: center;
 	transition: all 250ms;
-    font-size: 20px;
+    font-size: 14px; 
+    border-radius: .1em;
+}
+
+.checklist-section{
+    margin: auto auto;
+    border: solid rgba(255,255,255,0.03);
+    border-radius: .5em;
+    width: 100%;
+    max-width: 800px;
+    /* display: block; */
+    text-align: center;
+    font-family: var(--page-font-family);
+    margin-top: 5px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.checklist-item{
+    font-family: var(--page-font-family);
+    /* background-color: rgba(255,255,255,0.03); */
+    color: white;
+    font-size: 13.25px;
+    max-width: 667px;
+    margin: 10px auto;
+    padding: 10px 20px;
+    border-radius: 15px;
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+    word-wrap: break-word;
+}
+.checklist-item:hover {
+    background-color: #555555;
+}
+
+@media screen and (min-width: 375px) {
+	label {
+		font-size: 20px; /* Increase font size */
+	}
+    .checklist-item {
+		font-size: 13.25px; /* Increase font size */
+	}
+}
+
+@media screen and (min-width: 480px) {
+	label {
+		font-size: 20px; /* Increase font size */
+	}
+    .checklist-item {
+		font-size: 17.5px; /* Increase font size */
+	}
+}
+
+@media screen and (min-width: 768px) {
+	label {
+		font-size: 22px; /* Further increase font size */
+	}
+    .checklist-item {
+		font-size: 27px; /* Increase font size */
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	label {
+		font-size: 24px; /* Larger font size */
+	}
+    .checklist-item {
+		font-size: 27px; /* Increase font size */
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	label {
+		font-size: 26px; /* Maximum font size */
+	}
+    .checklist-item {
+		font-size: 27.5px; /* Increase font size */
+	}
 }
 
 label:last-of-type {border: none; }
@@ -80,6 +159,7 @@ label:hover {
 	grid-column: 1 / -1;
     display: block;
     text-align: center;
+
 }
 
 input#firstTabToggle:checked ~ .tab-content:not(:nth-of-type(1)),
@@ -135,17 +215,6 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     color:#fcfcfc;
     margin-bottom:8px;
 }
-
-.checklist-section{
-    border: solid rgba(255,255,255,0.03);
-    border-radius: .5em;
-    width: 600px;
-    /* display: block; */
-    text-align: center;
-    font-family: var(--page-font-family);
-    margin-top: 5px;
-    padding: 15px;
-}
 .section-header{
     color: #00b4ff;
     text-transform: uppercase;
@@ -176,26 +245,13 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     background-color: #00b4ff;
     border-color: #00b4ff;
 }
-.checklist-item{
-    font-family: var(--page-font-family);
-    background-color: rgba(255,255,255,0.03);
-    color: white;
-    font-size: 1.16em;
-    width: 500px;
-    margin: 10px auto;
-    padding: 10px 20px;
-    border-radius: 15px;
-    text-transform: uppercase;
-    cursor: pointer;
-    user-select: none;
-}
-.checklist-item:hover {
-    background-color: #555555;
-}
 .section-header-subtext{
-    width: 500px;
+    max-width: 500px;
+    width: 100%;
     margin: 5px auto;
     font-size: 16px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 #reset-buttons-section{
     border: solid rgba(255,255,255,0.03);
@@ -212,6 +268,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     gap: 8px;
 }
 .section-master-reset-button{
+    font-family: var(--page-font-family);
     cursor: pointer;
     outline: 0;
     display: grid;
