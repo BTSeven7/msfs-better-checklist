@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function createTopOfPageHeaderAndForm(checkListName) {
     //Declare body of the document
-    const body = document.body;
+    const body = document.body; 
 
     // Create Tab Container
     const tabContainer = document.createElement('div');
@@ -105,6 +105,7 @@ function setupFetchButtonEventListener(checkListJson){
         const fetchedAPIData = await fetchFlightPlan(simBriefId, airportDbApiKey, checkListJson);
         
         if (fetchedAPIData){
+            getWeatherFromSim(fetchedAPIData.sbData.origin.icao_code);
             createFlightOverviewHeader(fetchedAPIData.sbData);
             buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData);
         }
@@ -646,4 +647,8 @@ function setupShiftZKeyListener() {
             event.preventDefault(); // Optional: Prevent the default action for this key
         }
     });
+}
+
+function getWeatherFromSim(icao){
+    sendParentMessage(`weather,${icao}`);
 }
