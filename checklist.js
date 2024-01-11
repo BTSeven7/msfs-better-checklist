@@ -603,7 +603,10 @@ function setupIframeListner(){
     window.addEventListener('message', function(event) {
         console.log('Message received from Parent:', event.data);
         processParentMessage(event.data);
-        });     
+        });
+        
+    setupShiftZKeyListener();    
+
     }
 };
 
@@ -633,4 +636,14 @@ function sendParentMessage(message){
 
 function addToLocalStorage(key, item){
     localStorage.setItem(key, item);
+}
+
+function setupShiftZKeyListener() {
+    window.addEventListener('keydown', (event) => {
+        if (event.shiftKey && event.keyCode === 90) { // 90 is the keyCode for 'Z'
+            console.log("Shift + Z was pressed");
+            // Your code to handle Shift + Z
+            event.preventDefault(); // Optional: Prevent the default action for this key
+        }
+    });
 }
