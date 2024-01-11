@@ -642,7 +642,7 @@ function setupShiftZKeyListener() {
     window.addEventListener('keydown', (event) => {
         if (event.shiftKey && event.keyCode === 90) { // 90 is the keyCode for 'Z'
             console.log("Shift + Z was pressed");
-            // Your code to handle Shift + Z
+            sendParentMessage('hotkey:shiftZ');
             event.preventDefault(); // Optional: Prevent the default action for this key
         }
     });
