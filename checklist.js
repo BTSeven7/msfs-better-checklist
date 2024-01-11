@@ -110,8 +110,11 @@ function setupFetchButtonEventListener(checkListJson){
         const fetchedAPIData = await fetchFlightPlan(simBriefId, airportDbApiKey, checkListJson);
         
         if (fetchedAPIData){
+            
+            let simWeather;
+            
             if (isInIframe()) {
-                const simWeather = await getWeatherFromSim(fetchedAPIData.sbData.origin.icao_code);
+                simWeather = await getWeatherFromSim(fetchedAPIData.sbData.origin.icao_code);
             }
             createFlightOverviewHeader(fetchedAPIData.sbData);
             buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData, simWeather);
