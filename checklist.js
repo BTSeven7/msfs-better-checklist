@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    //MetarParser Test
+    //MetarParser Tests
     metarTest = metarParser('SBCT 112300Z 19013KT 8000 -TSRA SCT020 FEW025CB BKN080 21/19 Q1014');
     console.log(metarTest);
 
