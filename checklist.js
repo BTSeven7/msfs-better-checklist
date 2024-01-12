@@ -588,7 +588,7 @@ function createDottedLine(item, itemExpect, totalLength = 40) {
     return `${itemText}${dots}${expectText}`;
 }
 
-function updateSubtextForSection(simBrief, simOriginWeather) {
+function updateSubtextForSection(simBrief, simOriginWeather, simDestWeather) {
     
     //For each specialized header sub text
     const subtextElement = document.querySelector('#preflight-header-subtext');
@@ -602,6 +602,10 @@ function updateSubtextForSection(simBrief, simOriginWeather) {
     const subtextElement3 = document.querySelector('#before-descent-header-subtext');
     subtextElement3.textContent = `Expected Runway is ${simBrief.destination.plan_rwy}`;
     subtextElement3.style.display = 'block'; //Make the div visible
+
+    const subtextElement4 = document.querySelector('#descent-header-subtext');
+    subtextElement4.textContent = `At ${simDestWeather.icao}: Wind ${simDestWeather.wind.degrees}°/${simDestWeather.wind.speed_kts}kts - Temp ${simDestWeather.temperature.celsius} - Visibilty ${simDestWeather.visibility.miles}SM - Altimeter ${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${simDestWeather.barometer.mb}`;
+    subtextElement4.style.display = 'block';
     
 }
 
