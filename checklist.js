@@ -246,7 +246,7 @@ function buildCheckList(simBrief, originAirport, destAirport, checklistItems, si
     addChecklistItemsToSections(sortedSelectionWithAPI);
 
     //Craete Section SubTexts
-    updateSubtextForSection(simBrief, simOriginWeather);
+    updateSubtextForSection(simBrief, simOriginWeather, simDestWeather);
 
     console.log("Sorted Sections:", sortedSelectionWithAPI);
 
