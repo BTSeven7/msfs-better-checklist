@@ -1,10 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    //MetarParser Tests
-    metarTest = metarParser('SBCT 112300Z 19013KT 8000 -TSRA SCT020 FEW025CB BKN080 21/19 Q1014');
-    console.log(metarTest);
-
-
     //Set up Listner's for iFrame should be in MSFS
     if (isInIframe()) {
         setupIframeListner();
@@ -116,13 +110,15 @@ function setupFetchButtonEventListener(checkListJson){
         
         if (fetchedAPIData){
             
-            let simWeather;
+            let simOriginWeather;
+            let simDestWeather;
             
             if (isInIframe()) {
-                simWeather = await getWeatherFromSim(fetchedAPIData.sbData.origin.icao_code);
+                simOriginWeather = await getWeatherFromSim(fetchedAPIData.sbData.origin.icao_code);
+                simDestWeather = await getWeatherFromSim(fetchedAPIData.sbData.destination.icao_code);
             }
             createFlightOverviewHeader(fetchedAPIData.sbData);
-            buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData, simWeather);
+            buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData, simOriginWeather, simDestWeather);
         }
     });
     
@@ -226,7 +222,7 @@ function createFlightOverviewHeader(data) {
 
 }
 
-function buildCheckList(simBrief, originAirport, destAirport, checklistItems, simWeather){
+function buildCheckList(simBrief, originAirport, destAirport, checklistItems, simOriginWeather, simDestWeather){
     //Clear Old Checklist Data First
     const checklistContainer = document.getElementById('checklist-sections-container');
     
@@ -238,7 +234,7 @@ function buildCheckList(simBrief, originAirport, destAirport, checklistItems, si
     const sortedChecklist = sortChecklistSections(checklistItems); 
 
     //Create Variables from the API Data based on checklist needs
-    const apiVariables = createDynamicVariables(simBrief, originAirport, destAirport, simWeather); 
+    const apiVariables = createDynamicVariables(simBrief, originAirport, destAirport, simOriginWeather, simDestWeather); 
 
     //Append the api variables to the  checklist items where needed
     const sortedSelectionWithAPI = appendApiDataToChecklistItems(sortedChecklist, apiVariables);
@@ -250,7 +246,7 @@ function buildCheckList(simBrief, originAirport, destAirport, checklistItems, si
     addChecklistItemsToSections(sortedSelectionWithAPI);
 
     //Craete Section SubTexts
-    updateSubtextForSection(simBrief, simWeather);
+    updateSubtextForSection(simBrief, simOriginWeather);
 
     console.log("Sorted Sections:", sortedSelectionWithAPI);
 
@@ -280,7 +276,7 @@ function sortChecklistSections(checklistItems) {
     return sortedSections;
 }
 
-function createDynamicVariables(simBrief, originAirport, destAirport, simWeather){
+function createDynamicVariables(simBrief, originAirport, destAirport, simOriginWeather, simDestWeather){
     const dynamicVariables = {
         sbFuel: simBrief.fuel.plan_ramp, // Planned Fuel
         sbZfw: Math.round((simBrief.weights.est_zfw / 1000) * 10) / 10, // Rounded estZFW
@@ -294,10 +290,11 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simWeather
         sbPressAlt: `${simBrief.general.initial_altitude}/${Math.round(simBrief.destination.elevation / 50) * 50}`, // Pressure Altitude
         sbMcpAlt: `set cleared (${simBrief.general.initial_altitude})`, // MCP Altitude
         sbMcpHdg: convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg), // MCP Heading
-        sbLocalBaro: simWeather ? `${parseFloat(simWeather.barometer.hg).toFixed(2)}/${simWeather.barometer.mb}` : null, // Placeholder for Altimeter Setting
+        sbLocalBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${simOriginWeather.barometer.mb}` : null, 
         sbOrigin10kAgl: Math.floor((Number(simBrief.origin.elevation) + 10000) / 1000) * 1000, // Origin 10K AGL
         sbTransAltFl: `FL${convertFlightLevel(simBrief.origin.trans_alt)}`, // Transition Altitude Flight Level
         sbDestTransLevel: `FL${convertFlightLevel(simBrief.destination.trans_level)}`, // Destination Transition Level
+        sbDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${simDestWeather.barometer.mb}` : null, 
         sbDest10kAgl: Math.floor((Number(simBrief.destination.elevation) + 10000) / 1000) * 1000 // Destination 10K AGL
     };
 
@@ -591,11 +588,11 @@ function createDottedLine(item, itemExpect, totalLength = 40) {
     return `${itemText}${dots}${expectText}`;
 }
 
-function updateSubtextForSection(simBrief, weather) {
+function updateSubtextForSection(simBrief, simOriginWeather) {
     
     //For each specialized header sub text
     const subtextElement = document.querySelector('#preflight-header-subtext');
-    subtextElement.textContent = `At ${weather.icao}: Wind ${weather.wind.degrees}°/${weather.wind.speed_kts}kts - Temp ${weather.temperature.celsius} - Visibilty ${weather.visibility.miles}SM - Altimeter ${parseFloat(weather.barometer.hg).toFixed(2)}/${weather.barometer.mb}`;
+    subtextElement.textContent = `At ${simOriginWeather.icao}: Wind ${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}kts - Temp ${simOriginWeather.temperature.celsius} - Visibilty ${simOriginWeather.visibility.miles}SM - Altimeter ${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${simOriginWeather.barometer.mb}`;
     subtextElement.style.display = 'block';
     
     const subtextElement2 = document.querySelector(`#fmc-set-up-header-subtext`);
