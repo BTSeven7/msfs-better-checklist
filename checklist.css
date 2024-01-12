@@ -70,37 +70,145 @@ label {
     font-size: 14px; 
     border-radius: .1em;
 }
+.section-header-subtext{
+    max-width: 85%;
+    margin: 5px auto;
+    text-align: center;
+    font-size: 20px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
 
-.checklist-section{
+.reset-buttons{
     margin: auto auto;
     border: solid rgba(255,255,255,0.03);
     border-radius: .5em;
+    box-sizing: border-box;
+    padding: 10px;
     width: 100%;
     max-width: 800px;
-    /* display: block; */
-    text-align: center;
-    font-family: var(--page-font-family);
     margin-top: 5px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 8px;
+    row-gap: 8px;
+}
+.section-master-reset-button{
+    font-family: var(--page-font-family);
+    cursor: pointer;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    font-weight: bold;
+    line-height: 1.5;
+    background-color: transparent;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    color: #00b4ff;
+    border-color: #00b4ff;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* margin-left:10px; */
+    user-select: none;
+}
+
+.checklist-section{
+    margin: 5px auto;
+    border: solid rgba(255, 255, 255, 0.05);
+    border-radius: .5em;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 800px;
 }
 
 .checklist-item{
     font-family: var(--page-font-family);
-    /* background-color: rgba(255,255,255,0.03); */
     color: white;
     font-size: 13.25px;
-    max-width: 667px;
-    margin: 10px auto;
-    padding: 10px 20px;
+    box-sizing: border-box;
+    max-width: 95%;
+    margin: 8px auto;
+    text-align: center;
     border-radius: 15px;
     text-transform: uppercase;
     cursor: pointer;
     user-select: none;
     word-wrap: break-word;
 }
+
 .checklist-item:hover {
     background-color: #555555;
+}
+
+.section-header{
+    display: flex;
+    margin: 8px auto 4px auto;
+    box-sizing: border-box;
+    color: #00b4ff;
+    justify-content: center;
+    text-transform: uppercase;
+    font-family: var(--page-font-family);
+    font-weight: bold;
+    font-size: 30px;
+}
+.section-header-reset-buttons{
+    display: flex;
+    justify-content: center;
+}
+.section-reset-button{
+    font-family: var(--page-font-family);
+    box-sizing: border-box;
+    cursor: pointer;
+    outline: 0;
+    font-weight: bold;
+    line-height: 1.5;
+    background-color: transparent;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    color: #00b4ff;
+    border-color: #00b4ff;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+    align-self: center;
+    width: 6em;
+    height: 1.85em;
+}
+.section-header-checkall-button{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+.section-checkall-button{
+    font-family: var(--page-font-family);
+    box-sizing: border-box;
+    cursor: pointer;
+    outline: 0;
+    font-weight: bold;
+    line-height: 1.5;
+    background-color: transparent;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    color: #00b4ff;
+    border-color: #00b3ff00;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+    align-self: center;
+    width: 8em;
+    height: 1.85em;
 }
 
 @media screen and (min-width: 375px) {
@@ -126,7 +234,7 @@ label {
 		font-size: 22px; /* Further increase font size */
 	}
     .checklist-item {
-		font-size: 27px; /* Increase font size */
+		font-size: 25px; /* Increase font size */
 	}
 }
 
@@ -215,81 +323,17 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     color:#fcfcfc;
     margin-bottom:8px;
 }
-.section-header{
-    color: #00b4ff;
-    text-transform: uppercase;
-    font-family: var(--page-font-family);
-    font-weight: bold;
-    font-size: 30px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    user-select: none;
-}
-.section-reset-button{
-    font-family: var(--page-font-family);
-    margin-left: 10px;
-    cursor: pointer;
-    text-transform: uppercase;
-    color: #00b4ff;
-    border-color: #00b4ff;
-    background-color: transparent;
-    border-radius: 6px;
-    border: 1px solid;
-    font-size: 1rem;
-    padding: 3px 6px;
-}
 .section-reset-button:hover {
     color: #fff;
     background-color: #00b4ff;
     border-color: #00b4ff;
 }
-.section-header-subtext{
-    max-width: 500px;
-    width: 100%;
-    margin: 5px auto;
-    font-size: 16px;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-}
-#reset-buttons-section{
-    border: solid rgba(255,255,255,0.03);
-    border-radius: .5em;
-    width: 600px;
-    margin-top: 5px;
-    padding: 15px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(auto-fill, 30px);
-    gap: 8px;
-}
-.section-master-reset-button{
-    font-family: var(--page-font-family);
-    cursor: pointer;
-    outline: 0;
-    display: grid;
-    font-weight: bold;
-    line-height: 1.5;
-    text-align: center;
-    background-color: transparent;
-    border: 1px solid transparent;
-    padding: 3px 6px;
-    font-size: 1rem;
-    border-radius: .25rem;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    color: #00b4ff;
+.section-checkall-button:hover {
+    color: #fff;
+    background-color: #00b4ff;
     border-color: #00b4ff;
-    text-transform: uppercase;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-left:10px;
-    user-select: none;
 }
+
 .section-master-reset-button:hover{
     color: #fff;
     background-color: #00b4ff;

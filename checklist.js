@@ -13,10 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Set up Fetch Flight Plan Button
     setupFetchButtonEventListener(checkListJson);
+    createChecklistContainer();
 
     //Load Saved Data
     loadPersistedData();
-    
+    restoreChecklistContainer();
+
+    setupTabViewToggle();
+
 });
 
 function createTopOfPageHeaderAndForm(checkListName) {
@@ -50,7 +54,6 @@ function createTopOfPageHeaderAndForm(checkListName) {
     secondTab.setAttribute('id', 'secondTabToggle');
     secondTab.setAttribute('name', 'tabs');
     secondTab.setAttribute('value', '2');
-    // secondTab.setAttribute('checked', '');
     tabContainer.appendChild(secondTab);
 
     //Create Label for Tab 2
@@ -76,6 +79,15 @@ function createTopOfPageHeaderAndForm(checkListName) {
     fetchButton.classList.add('fetch-button'); // Add a class for styling
     fetchButton.id = 'fetchButton';
     firstTabContent.appendChild(fetchButton);
+
+    //Create a Master Reset Button
+    const resetALL = document.createElement('button');
+    resetALL.textContent = 'Reset All';
+    resetALL.classList.add('fetch-button');
+    resetALL.id = 'resetAll';
+    firstTabContent.appendChild(resetALL);
+
+    attachEventListenerToResetAllButton();
 
     //Create 2nd Tab Conent
     const secondTabContent = document.createElement('div');
@@ -116,10 +128,21 @@ function setupFetchButtonEventListener(checkListJson){
             if (isInIframe()) {
                 simOriginWeather = await getWeatherFromSim(fetchedAPIData.sbData.origin.icao_code);
                 simDestWeather = await getWeatherFromSim(fetchedAPIData.sbData.destination.icao_code);
+            }else{
+                simOriginWeather = await fetchWeatherData(fetchedAPIData.sbData.origin.icao_code);
+                simDestWeather = await fetchWeatherData(fetchedAPIData.sbData.destination.icao_code);
             }
             createFlightOverviewHeader(fetchedAPIData.sbData);
             buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData, simOriginWeather, simDestWeather);
         }
+
+    attachEventListenersToChecklistItems();
+    attachEventListenersToMasterResetButtons();
+    attachEventListenersToSectionResetButtons();
+    attachCheckAllEventListeners();
+
+    saveChecklistContainer();
+
     });
     
 }
@@ -178,17 +201,10 @@ async function fetchFlightPlan(simBriefId, airportDBkey, checkListJson) {
 }
 
 function createFlightOverviewHeader(data) {
-    const firstTabContent = document.querySelector('.tab-content');
     
-    // Remove existing elements if they exist
-    const existingHeader1 = document.getElementById('flight-overview-header1');
-    const existingHeader2 = document.getElementById('flight-overview-header2');
-    if (existingHeader1) {
-        firstTabContent.removeChild(existingHeader1);
-    }
-    if (existingHeader2) {
-        firstTabContent.removeChild(existingHeader2);
-    }
+    const firstTabContent = document.querySelector('.tab-content');
+
+    removeExistingOverviewHeader();
     
     //Create Variables from Simbrief Data
     const flightOverviewDiv = document.createElement('div');
@@ -289,8 +305,10 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         sbTransAlt: simBrief.origin.trans_alt, // Transition Altitude
         sbPressAlt: `${simBrief.general.initial_altitude}/${Math.round(simBrief.destination.elevation / 50) * 50}`, // Pressure Altitude
         sbMcpAlt: `set cleared (${simBrief.general.initial_altitude})`, // MCP Altitude
-        sbMcpHdg: convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg), // MCP Heading
-        sbLocalBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${simOriginWeather.barometer.mb}` : null, 
+        sbMcpHdg: originAirport.navaids && originAirport.navaids[0] ? 
+        convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg) : 
+        null, // MCP Heading
+        sbLocalBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}` : null, 
         sbOrigin10kAgl: Math.floor((Number(simBrief.origin.elevation) + 10000) / 1000) * 1000, // Origin 10K AGL
         sbTransAltFl: `FL${convertFlightLevel(simBrief.origin.trans_alt)}`, // Transition Altitude Flight Level
         sbDestTransLevel: `FL${convertFlightLevel(simBrief.destination.trans_level)}`, // Destination Transition Level
@@ -318,18 +336,15 @@ function appendApiDataToChecklistItems(sortedSections, apiVariables) {
 }
 
 function createChecklistSections(sortedSections) {
-    // Identify the element after which the checklist sections will be appended
-    const referenceElement = document.getElementById('top-of-page-tab'); // Ensure this exists in your HTML
 
-    // Create a container for all sections
-    const sectionsContainer = document.createElement('div');
-    sectionsContainer.id = 'checklist-sections-container';
+    const sectionsContainer = document.getElementById('checklist-sections-container');
 
     // Create the hidden div for reset buttons
     const resetButtonsDiv = document.createElement('div');
     resetButtonsDiv.className = 'reset-buttons';
     resetButtonsDiv.id = 'reset-buttons-section';
     resetButtonsDiv.style.display = 'none'; // Initially hidden
+    sectionsContainer.appendChild(resetButtonsDiv);
 
     // Create a reset button for each section
     sortedSections.forEach(section => {
@@ -338,24 +353,6 @@ function createChecklistSections(sortedSections) {
         resetButton.id = `${section.name.replace(/\s+/g, '-')}-master-reset-button`; // Dynamic ID based on section name
         resetButton.textContent = `${section.name}`; // Text can be adjusted as needed
         resetButton.style.display = 'none'; // Initially invisible
-
-    // Add event listener for master reset button
-    resetButton.addEventListener('click', function() {
-        const sectionDivId = `${section.name.replace(/\s+/g, '-')}-section`;
-        const sectionDiv = document.getElementById(sectionDivId);
-        const items = sectionDiv.querySelectorAll('.checklist-item');
-        items.forEach(item => item.style.display = ''); // Show all items in the section
-
-        sectionDiv.style.display = ''; // Unhide the section div
-        resetButton.style.display = 'none'; // Hide the master reset button itself
-
-        if (!document.querySelector('.section-master-reset-button:not([style*="display: none"])')) {
-            // If no other master reset buttons are visible, hide the container
-            resetButtonsDiv.style.display = 'none';
-        }
-
-        sectionDiv.setAttribute('data-checked-count', '0');
-    });
 
         resetButtonsDiv.appendChild(resetButton);
     });
@@ -379,20 +376,27 @@ function createChecklistSections(sortedSections) {
         titleSpan.textContent = section.name;
         sectionHeaderDiv.appendChild(titleSpan);
 
+        //Creat a reset button div
+        const sectionDivResetButton = document.createElement('div');
+        sectionDivResetButton.classList.add('section-header-reset-buttons');
+
         // Create a reset button
         const resetButton = document.createElement('button');
         resetButton.classList.add('section-reset-button');
         resetButton.id = `${section.name.replace(/\s+/g, '-')}-reset-button`;
         resetButton.textContent = 'Reset';
-        sectionHeaderDiv.appendChild(resetButton);
+        sectionDivResetButton.appendChild(resetButton);
 
-        // Add event listener to the reset button
-        resetButton.addEventListener('click', function() {
-            const items = sectionDiv.querySelectorAll('.checklist-item');
-            items.forEach(item => {
-                item.style.display = ''; // Resets the display style, making items visible
-            });
-        });
+        //Creat a reset button div
+        const sectionDivCheckAllButton = document.createElement('div');
+        sectionDivCheckAllButton.classList.add('section-header-checkall-button');
+
+        // Create a check all button
+        const checkAllButton = document.createElement('button');
+        checkAllButton.classList.add('section-checkall-button');
+        checkAllButton.id = `${section.name.replace(/\s+/g, '-')}-checkall-button`;
+        checkAllButton.textContent = `✔  ✔  ✔`;
+        sectionDivCheckAllButton.appendChild(checkAllButton);
 
         // Create an initially invisible div for subtext
         const subtextDiv = document.createElement('div');
@@ -402,14 +406,13 @@ function createChecklistSections(sortedSections) {
 
         // Append the header and subtext div to the section div
         sectionDiv.appendChild(sectionHeaderDiv);
+        sectionDiv.appendChild(sectionDivResetButton);
+        sectionDiv.appendChild(sectionDivCheckAllButton);
         sectionDiv.appendChild(subtextDiv);
 
         // Append the section div to the sections container
         sectionsContainer.appendChild(sectionDiv);
     });
-
-    // Append the sections container after the reference element
-    referenceElement.parentNode.insertBefore(sectionsContainer, referenceElement.nextSibling);
 }
 
 function addChecklistItemsToSections(sortedSelectionWithAPI) {
@@ -433,52 +436,20 @@ function addChecklistItemsToSections(sortedSelectionWithAPI) {
                 // Set the content of the item
                 itemDiv.textContent = createDottedLine(item.item, expectText);
 
-                //Event Listener for when items are checked off
-                itemDiv.addEventListener('click', function() {
-                    this.style.display = 'none'; // Hides the clicked item
-                    
-                    let checkedItemCount = parseInt(sectionDiv.getAttribute('data-checked-count')) || 0;
-                    checkedItemCount++;
-                    sectionDiv.setAttribute('data-checked-count', checkedItemCount.toString());
-
-                    if (checkedItemCount === section.items.length) {
-                        // All items in the section are checked off
-                        sectionDiv.style.display = 'none'; // Hide the section div
-    
-                        // Make the reset-buttons-section and corresponding reset button visible
-                        const resetButtonsSection = document.getElementById('reset-buttons-section');
-                        resetButtonsSection.style.display = 'grid'; // Show reset-buttons-section
-    
-                        const resetButton = document.getElementById(`${section.name.replace(/\s+/g, '-')}-master-reset-button`);
-                        resetButton.style.display = 'block'; // Show the corresponding reset button
-                    }
-
-                });
-
                 // Append the item to the section container
                 sectionDiv.appendChild(itemDiv);
             });
 
-             // Find and set up the section-specific reset button
-            const resetButton = sectionDiv.querySelector('.section-reset-button');
-            if (resetButton) {
-                resetButton.addEventListener('click', function() {
-                    // Reset each checklist item in the section
-                    const items = sectionDiv.querySelectorAll('.checklist-item');
-                    items.forEach(item => {
-                        item.style.display = ''; // Resets the display style, making items visible
-                    });
-
-                    // Reset the checked item count attribute
-                    sectionDiv.setAttribute('data-checked-count', '0');
-                });
-            }   
-
+            const sectionDivCheckAllButton = sectionDiv.querySelector('.section-header-checkall-button');
+            
+            if (sectionDivCheckAllButton) {
+                sectionDiv.appendChild(sectionDivCheckAllButton);
+            }
         } else {
             console.error(`Section container not found for ${section.name}`);
         }
-    });
-}
+    }) 
+};
 
 function loadPersistedData() {
     const firstTabContent = document.querySelector('.tab-content');
@@ -592,7 +563,7 @@ function updateSubtextForSection(simBrief, simOriginWeather, simDestWeather) {
     
     //For each specialized header sub text
     const subtextElement = document.querySelector('#preflight-header-subtext');
-    subtextElement.textContent = `At ${simOriginWeather.icao}: Wind ${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}kts - Temp ${simOriginWeather.temperature.celsius} - Visibilty ${simOriginWeather.visibility.miles}SM - Altimeter ${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${simOriginWeather.barometer.mb}`;
+    subtextElement.textContent = `At ${simOriginWeather.icao}: Wind ${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}kts - Temp ${simOriginWeather.temperature.celsius} - Visibilty ${simOriginWeather.visibility.miles}SM - Altimeter ${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`;
     subtextElement.style.display = 'block';
     
     const subtextElement2 = document.querySelector(`#fmc-set-up-header-subtext`);
@@ -604,7 +575,7 @@ function updateSubtextForSection(simBrief, simOriginWeather, simDestWeather) {
     subtextElement3.style.display = 'block'; //Make the div visible
 
     const subtextElement4 = document.querySelector('#descent-header-subtext');
-    subtextElement4.textContent = `At ${simDestWeather.icao}: Wind ${simDestWeather.wind.degrees}°/${simDestWeather.wind.speed_kts}kts - Temp ${simDestWeather.temperature.celsius} - Visibilty ${simDestWeather.visibility.miles}SM - Altimeter ${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${simDestWeather.barometer.mb}`;
+    subtextElement4.textContent = `At ${simDestWeather.icao}: Wind ${simDestWeather.wind.degrees}°/${simDestWeather.wind.speed_kts}kts - Temp ${simDestWeather.temperature.celsius} - Visibilty ${simDestWeather.visibility.miles}SM - Altimeter ${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`;
     subtextElement4.style.display = 'block';
     
 }
@@ -684,6 +655,245 @@ function getWeatherFromSim(icao){
     });
 }
 
+async function fetchWeatherData(icao) {
+    const url = `https://aviationweather.gov/api/data/metar?ids=${icao}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const metarString = await response.text(); // Get the response body as text
+        const metar = metarParser(metarString);
+        return metar;
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
+}
+
 function isInIframe() {
     return window !== window.parent;
+}
+
+function saveChecklistContainer() {
+    const checklistContainer = document.getElementById('checklist-sections-container');
+    if (checklistContainer) {
+        const checklistContent = checklistContainer.innerHTML;
+        localStorage.setItem('savedChecklistContent', checklistContent);
+    }
+}
+
+function restoreChecklistContainer() {
+    const checklistContainer = document.getElementById('checklist-sections-container');
+    if (!checklistContainer) {
+        console.error('checklist-sections-container not found');
+        return;
+    }
+
+    const savedChecklistContent = localStorage.getItem('savedChecklistContent');
+    if (savedChecklistContent) {
+        checklistContainer.innerHTML = savedChecklistContent;
+    attachEventListenersToChecklistItems();
+    attachEventListenersToMasterResetButtons();
+    attachEventListenersToSectionResetButtons();
+    attachCheckAllEventListeners();
+    }
+}
+
+function createChecklistContainer(){
+    // Identify the element after which the checklist sections will be appended
+    const referenceElement = document.getElementById('top-of-page-tab'); // Ensure this exists in your HTML
+
+    // Create a container for all sections
+    const sectionsContainer = document.createElement('div');
+    sectionsContainer.id = 'checklist-sections-container';
+
+    referenceElement.parentNode.insertBefore(sectionsContainer, referenceElement.nextSibling);
+}
+
+function attachEventListenersToChecklistItems() {
+    const checklistItems = document.querySelectorAll('.checklist-item');
+    checklistItems.forEach(item => {
+        item.addEventListener('click', function() {
+            this.style.display = 'none'; // Hides the clicked item
+
+            // Get the parent section of the clicked item
+            const sectionDiv = this.closest('.checklist-section');
+
+            let checkedItemCount = parseInt(sectionDiv.getAttribute('data-checked-count')) || 0;
+            checkedItemCount++;
+            sectionDiv.setAttribute('data-checked-count', checkedItemCount.toString());
+
+            if (checkedItemCount === sectionDiv.querySelectorAll('.checklist-item').length) {
+                // All items in the section are checked off
+                sectionDiv.style.display = 'none'; // Hide the section div
+
+                // Make the reset-buttons-section and corresponding reset button visible
+                const resetButtonsSection = document.getElementById('reset-buttons-section');
+                resetButtonsSection.style.display = 'grid'; // Show reset-buttons-section
+
+                const baseId = sectionDiv.id.replace('-section', '');
+                const resetButtonId = `${baseId}-master-reset-button`;
+                const resetButton = document.getElementById(resetButtonId);
+                if (resetButton) {
+                    resetButton.style.display = 'block'; // Show the corresponding reset button
+                }
+            }
+
+saveChecklistContainer();
+
+        });
+    });
+}
+
+function attachEventListenersToSectionResetButtons() {
+    const resetButtons = document.querySelectorAll('.section-reset-button');
+    resetButtons.forEach(resetButton => {
+        resetButton.addEventListener('click', function() {
+            // Get the parent section of the reset button
+            const sectionDiv = this.closest('.checklist-section');
+
+            // Reset the display style of all checklist items in the section
+            const items = sectionDiv.querySelectorAll('.checklist-item');
+            items.forEach(item => {
+                item.style.display = ''; // Resets the display style, making items visible
+            });
+
+// Reset the checked item count attribute
+sectionDiv.setAttribute('data-checked-count', '0');
+
+saveChecklistContainer();
+
+        });
+    });
+}
+
+function attachEventListenersToMasterResetButtons() {
+    const masterResetButtons = document.querySelectorAll('.section-master-reset-button');
+    masterResetButtons.forEach(resetButton => {
+        resetButton.addEventListener('click', function() {
+            // Derive sectionDivId from the reset button's ID
+            const sectionDivId = this.id.replace('-master-reset-button', '-section');
+            const sectionDiv = document.getElementById(sectionDivId);
+            
+            if (!sectionDiv) {
+                console.error('Section div not found for:', sectionDivId);
+                return;
+            }
+
+            // Show all items in the section
+            const items = sectionDiv.querySelectorAll('.checklist-item');
+            items.forEach(item => item.style.display = '');
+
+            // Unhide the section div and hide the reset button itself
+            sectionDiv.style.display = '';
+            this.style.display = 'none';
+
+            // Hide the reset buttons container if no other master reset buttons are visible
+            const resetButtonsDiv = document.querySelector('.reset-buttons');
+            if (resetButtonsDiv && !document.querySelector('.section-master-reset-button:not([style*="display: none"])')) {
+                resetButtonsDiv.style.display = 'none';
+            }
+
+            sectionDiv.setAttribute('data-checked-count', '0');
+
+            saveChecklistContainer();
+        });
+    });
+}
+
+function attachEventListenerToResetAllButton(){
+    const resetAllButton = document.getElementById('resetAll');
+    resetAllButton.addEventListener('click', function() {
+        // Clear specific items from local storage
+        localStorage.removeItem('flightOverviewHeader1');
+        localStorage.removeItem('flightOverviewHeader2');
+        localStorage.removeItem('savedChecklistContent');
+        
+    removeExistingOverviewHeader();
+
+    const checklistContainer = document.getElementById('checklist-sections-container');
+    
+    if (checklistContainer){
+        clearContainer(checklistContainer);
+    }
+
+        
+    });
+}
+
+function removeExistingOverviewHeader(){
+    // Assuming 'firstTabContent' is already defined in your scope. If not, you need to define it.
+    const firstTabContent = document.querySelector('.tab-content'); // Adjust the selector as necessary
+
+    // Remove existing elements if they exist
+    const existingHeader1 = document.getElementById('flight-overview-header1');
+    const existingHeader2 = document.getElementById('flight-overview-header2');
+    
+    if (existingHeader1) {
+        firstTabContent.removeChild(existingHeader1);
+    }
+    if (existingHeader2) {
+        firstTabContent.removeChild(existingHeader2);
+    }
+}
+
+function setupTabViewToggle(){
+    const firstTabToggle = document.getElementById('firstTabToggle');
+    const secondTabToggle = document.getElementById('secondTabToggle');
+    const checklistContainer = document.getElementById('checklist-sections-container'); // Adjust the ID to match your checklist container
+
+    firstTabToggle.addEventListener('change', function() {
+        if (this.checked) {
+            checklistContainer.style.display = ''; // Show the checklist container
+        }
+    });
+
+    secondTabToggle.addEventListener('change', function() {
+        if (this.checked) {
+            checklistContainer.style.display = 'none'; // Hide the checklist container
+        }
+    });
+}
+
+function attachCheckAllEventListeners() {
+    const checkAllButtons = document.querySelectorAll('.section-checkall-button');
+
+    checkAllButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the parent section of the button
+            const sectionDiv = this.closest('.checklist-section');
+
+            if (sectionDiv) {
+                // Get all checklist items in the section
+                const items = sectionDiv.querySelectorAll('.checklist-item');
+                
+                // Hide each item
+                items.forEach(item => {
+                    item.style.display = 'none';
+                });
+
+                // Set the data-checked-count attribute to the number of items
+                sectionDiv.setAttribute('data-checked-count', items.length.toString());
+
+                // Hide the section div
+                sectionDiv.style.display = 'none'; 
+
+                // Make the reset-buttons-section and corresponding reset button visible
+                const resetButtonsSection = document.getElementById('reset-buttons-section');
+                resetButtonsSection.style.display = 'grid'; // Show reset-buttons-section
+
+                const baseId = sectionDiv.id.replace('-section', '');
+                const resetButtonId = `${baseId}-master-reset-button`;
+                const resetButton = document.getElementById(resetButtonId);
+                if (resetButton) {
+                    resetButton.style.display = 'block'; // Show the corresponding reset button
+                }
+
+                saveChecklistContainer();
+            } else {
+                console.error('Checklist section not found for button:', this.id);
+            }
+        });
+    });
 }
