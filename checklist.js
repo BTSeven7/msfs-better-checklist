@@ -134,6 +134,7 @@ function setupFetchButtonEventListener(checkListJson){
             }
             createFlightOverviewHeader(fetchedAPIData.sbData);
             buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData, simOriginWeather, simDestWeather);
+            updateWeatherContainers(simOriginWeather, simDestWeather);
         }
 
     attachEventListenersToChecklistItems();
@@ -305,14 +306,13 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         sbTransAlt: simBrief.origin.trans_alt, // Transition Altitude
         sbPressAlt: `${simBrief.general.initial_altitude}/${Math.round(simBrief.destination.elevation / 50) * 50}`, // Pressure Altitude
         sbMcpAlt: `set cleared (${simBrief.general.initial_altitude})`, // MCP Altitude
-        sbMcpHdg: originAirport.navaids && originAirport.navaids[0] ? 
-        convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg) : 
+        sbMcpHdg: originAirport.navaids && originAirport.navaids[0] ? convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg) : 
         null, // MCP Heading
         sbLocalBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}` : null, 
         sbOrigin10kAgl: Math.floor((Number(simBrief.origin.elevation) + 10000) / 1000) * 1000, // Origin 10K AGL
         sbTransAltFl: `FL${convertFlightLevel(simBrief.origin.trans_alt)}`, // Transition Altitude Flight Level
         sbDestTransLevel: `FL${convertFlightLevel(simBrief.destination.trans_level)}`, // Destination Transition Level
-        sbDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${simDestWeather.barometer.mb}` : null, 
+        sbDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null, 
         sbDest10kAgl: Math.floor((Number(simBrief.destination.elevation) + 10000) / 1000) * 1000 // Destination 10K AGL
     };
 
@@ -359,6 +359,26 @@ function createChecklistSections(sortedSections) {
 
     // Append the hidden div to the checklist container
     sectionsContainer.appendChild(resetButtonsDiv);
+
+     // Create the weather container
+     const weatherContainer = document.createElement('div');
+     weatherContainer.id = 'weather-container';
+     weatherContainer.className = 'weather-container';
+ 
+     // Create origin weather section
+     const originWeatherSection = document.createElement('div');
+     originWeatherSection.id = 'origin-weather-section';
+     originWeatherSection.className = 'weather-section';
+     weatherContainer.appendChild(originWeatherSection);
+ 
+     // Create destination weather section
+     const destinationWeatherSection = document.createElement('div');
+     destinationWeatherSection.id = 'destination-weather-section';
+     destinationWeatherSection.className = 'weather-section';
+     weatherContainer.appendChild(destinationWeatherSection);
+ 
+     // Append the weather container to the sections container
+     sectionsContainer.appendChild(weatherContainer);
 
     // Iterate over each section and create its corresponding DOM elements
     sortedSections.forEach(section => {
@@ -562,9 +582,9 @@ function createDottedLine(item, itemExpect, totalLength = 40) {
 function updateSubtextForSection(simBrief, simOriginWeather, simDestWeather) {
     
     //For each specialized header sub text
-    const subtextElement = document.querySelector('#preflight-header-subtext');
-    subtextElement.textContent = `At ${simOriginWeather.icao}: Wind ${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}kts - Temp ${simOriginWeather.temperature.celsius} - Visibilty ${simOriginWeather.visibility.miles}SM - Altimeter ${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`;
-    subtextElement.style.display = 'block';
+    //const subtextElement = document.querySelector('#preflight-header-subtext');
+    //subtextElement.textContent = `At ${simOriginWeather.icao}: Wind ${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}kts - Temp ${simOriginWeather.temperature.celsius} - Visibilty ${simOriginWeather.visibility.miles}SM - Altimeter ${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`;
+    //subtextElement.style.display = 'block';
     
     const subtextElement2 = document.querySelector(`#fmc-set-up-header-subtext`);
     subtextElement2.textContent = `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy} ${simBrief.general.route} ${simBrief.destination.icao_code}/${simBrief.destination.plan_rwy}`;
@@ -574,9 +594,9 @@ function updateSubtextForSection(simBrief, simOriginWeather, simDestWeather) {
     subtextElement3.textContent = `Expected Runway is ${simBrief.destination.plan_rwy}`;
     subtextElement3.style.display = 'block'; //Make the div visible
 
-    const subtextElement4 = document.querySelector('#descent-header-subtext');
-    subtextElement4.textContent = `At ${simDestWeather.icao}: Wind ${simDestWeather.wind.degrees}°/${simDestWeather.wind.speed_kts}kts - Temp ${simDestWeather.temperature.celsius} - Visibilty ${simDestWeather.visibility.miles}SM - Altimeter ${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`;
-    subtextElement4.style.display = 'block';
+    //const subtextElement4 = document.querySelector('#descent-header-subtext');
+    //subtextElement4.textContent = `At ${safeText(simDestWeather.icao)}: Wind ${safeText(simDestWeather.wind.degrees, '°')}/${safeText(simDestWeather.wind.speed_kts, 'kts')} - Temp ${safeText(simDestWeather.temperature.celsius)} - Visibility ${safeText(simDestWeather.visibility.miles, 'SM')} - Altimeter ${safeText(parseFloat(simDestWeather.barometer.hg).toFixed(2))}/${safeText(parseFloat(simOriginWeather.barometer.mb).toFixed(0))}`;
+    //subtextElement4.style.display = 'block';
     
 }
 
@@ -656,16 +676,27 @@ function getWeatherFromSim(icao){
 }
 
 async function fetchWeatherData(icao) {
-    const url = `https://aviationweather.gov/api/data/metar?ids=${icao}`;
+    const token = 'tNdLMdEjODhzLl6IubYnF5ekdPtFV_QwhFtBaXEn-vE';
+    const url = `https://avwx.rest/api/metar/${icao}?token=${token}`;
 
     try {
-        const response = await fetch(url);
-        if (!response.ok) {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 
+                Authorization: `BEARER ${token}` }
+        });
+
+        if (response.status !== 200) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const metarString = await response.text(); // Get the response body as text
-        const metar = metarParser(metarString);
+
+        const metarData = await response.json();
+        console.log(metarData.raw);
+        
+        const metar = metarParser(metarData.raw);
+        console.log(metar);
         return metar;
+
     } catch (error) {
         console.error('Fetch error:', error);
     }
@@ -896,4 +927,40 @@ function attachCheckAllEventListeners() {
             }
         });
     });
+}
+
+function safeText(value, suffix = '') {
+    return value != null ? value + suffix : '-';
+}
+
+function updateWeatherContainers(originWeather, destWeather){
+    const originWeatherSection = document.getElementById('origin-weather-section');
+    const destinationWeatherSection = document.getElementById('destination-weather-section');
+
+    function createWeatherSpan(text, className) {
+        const span = document.createElement('span');
+        span.className = className;
+        span.textContent = text;
+        return span;
+    }
+
+    originWeatherSection.innerHTML = '';
+    destinationWeatherSection.innerHTML = '';
+
+    function appendWeatherData(section, weatherData) {
+        if (!weatherData) {
+            section.appendChild(createWeatherSpan('Weather data not available', 'weather-data'));
+            return;
+        }
+
+        // Append each piece of weather data as a span
+        section.appendChild(createWeatherSpan(`At ${safeText(weatherData.icao)}`, 'icao'));
+        section.appendChild(createWeatherSpan(`Wind: ${safeText(weatherData.wind.degrees, '°')}/${safeText(weatherData.wind.speed_kts, 'kts')}`, 'wind-data'));
+        section.appendChild(createWeatherSpan(`Temp: ${safeText(weatherData.temperature.celsius)}°C`, 'temp-data'));
+        section.appendChild(createWeatherSpan(`Vis: ${safeText(weatherData.visibility.miles, ' miles')}`, 'visibility-data'));
+        section.appendChild(createWeatherSpan(`Baro: ${safeText(parseFloat(weatherData.barometer.hg).toFixed(2))}`, 'altimeter-data'));
+    }
+
+    appendWeatherData(originWeatherSection, originWeather);
+    appendWeatherData(destinationWeatherSection, destWeather);
 }
