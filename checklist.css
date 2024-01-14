@@ -34,6 +34,7 @@ p span {color: var(--page-text-color-hover);}
 
 .tab-container {
 	display: grid;
+    box-sizing: border-box;
     grid-template-columns: 1fr 1fr;
 	grid-template-rows: auto 1fr;
 	margin-top: 25px;
@@ -44,6 +45,8 @@ p span {color: var(--page-text-color-hover);}
     width: 100%;
 	max-width: 800px;
 }
+
+
 
 input[type="radio"] {display: none;}
 
@@ -138,54 +141,73 @@ label {
     background-color: #555555;
 }
 
+.weather-container, .weather-container * {
+    box-sizing: border-box;
+}
+
 .weather-container {
     display: grid; 
+    box-sizing: border-box;
+    border: solid rgba(255, 255, 255, 0.05);
+    margin: 5px auto;
+    border-radius: .5em;
+    width: 100%;
+    max-width: 800px;
     grid-template-columns: 1fr 1fr; 
-    grid-template-rows: 1fr; 
     gap: 0px 10px; 
-    grid-template-areas: 
-      "origin-weather-section destination-weather-section"; 
-  }
+    grid-template-areas: "origin-weather-section destination-weather-section"; 
+}
 
-#origin-weather-section {
+#origin-weather-section, #destination-weather-section {
     display: grid; 
     grid-template-columns: repeat(2, 1fr); 
-    grid-template-rows: repeat(4, 1fr); 
+    grid-template-rows: 1.25em 1.25em 1.25em 1.25em min-content; 
     gap: 0px 0px; 
+    grid-area: auto;
+}
+
+.weather-section [class*="data"], .weather-section [class*="icao"] {
+    justify-self: center; 
+    align-self: center;
+    grid-area: var(--unique-grid-area); 
+}
+
+.conditions1, .conditions0, .clouds0, .clouds1{
+    text-align: center;
+}
+
+.icao0{ --unique-grid-area: icao0;}
+.wind-data0{--unique-grid-area: wind-data0;}
+.temp-data0{ --unique-grid-area: temp-data0;}
+.altimeter-data0{--unique-grid-area: altimeter-data0;}
+.conditions0{--unique-grid-area: conditions0;}
+.clouds0{ --unique-grid-area: clouds0;}
+
+.icao1{ --unique-grid-area: icao1;}
+.wind-data1{--unique-grid-area: wind-data1;}
+.temp-data1{ --unique-grid-area: temp-data1;}
+.altimeter-data1{--unique-grid-area: altimeter-data1;}
+.conditions1-1{--unique-grid-area: conditions1-1;}
+.clouds1{ --unique-grid-area: clouds1;}
+
+/* Create Grid Areas */
+#origin-weather-section {
     grid-template-areas: 
-      "icao icao"
-      "wind-data wind-data"
-      "temp-data visibility-data"
-      "altimeter-data altimeter-data"; 
-    grid-area: origin-weather-section; 
-  }
+        "icao0 icao0"
+        "wind-data0 wind-data0"
+        "temp-data0 temp-data0"
+        "altimeter-data0 altimeter-data0"
+        "conditions0 clouds0";
+}
 
-  .icao {
-    justify-self: center; 
-    align-self: center; 
-    grid-area: icao; 
-  }
-  .wind-data {
-    justify-self: center; 
-    align-self: center; 
-    grid-area: wind-data; 
-  }
-  .temp-data {
-    justify-self: center; 
-    align-self: center; 
-    grid-area: temp-data; 
-  }
-  .visibility-data {
-    justify-self: center; 
-    align-self: center; 
-    grid-area: visibility-data; 
-  }
-  .altimeter-data {
-    justify-self: center; 
-    align-self: center; 
-    grid-area: altimeter-data; 
-  }
-
+#destination-weather-section {
+    grid-template-areas: 
+        "icao1 icao1"
+        "wind-data1 wind-data1"
+        "temp-data1 temp-data1"
+        "altimeter-data1 altimeter-data1"
+        "conditions1 clouds1";
+}
 
 .section-header{
     display: flex;
@@ -308,9 +330,14 @@ label:hover {
 .tab-content {
 	/* display: var(--tab-display); */
 	grid-column: 1 / -1;
+    align-items: center;
     display: block;
     text-align: center;
+    margin: auto auto;
+}
 
+#fetchButton{
+    margin-right: 20px;
 }
 
 input#firstTabToggle:checked ~ .tab-content:not(:nth-of-type(1)),
@@ -363,6 +390,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
 }
 .overview-header-simbrief{
     font-size:20px;
+    max-width: 650px;
     color:#fcfcfc;
     margin-bottom:8px;
 }

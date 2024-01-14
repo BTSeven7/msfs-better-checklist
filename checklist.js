@@ -933,34 +933,213 @@ function safeText(value, suffix = '') {
     return value != null ? value + suffix : '-';
 }
 
-function updateWeatherContainers(originWeather, destWeather){
+function updateWeatherContainers(originWeather, destWeather) {
     const originWeatherSection = document.getElementById('origin-weather-section');
     const destinationWeatherSection = document.getElementById('destination-weather-section');
 
-    function createWeatherSpan(text, className) {
-        const span = document.createElement('span');
-        span.className = className;
-        span.textContent = text;
-        return span;
+    function createWeatherDiv(text, className) {
+        const div = document.createElement('div');
+        div.className = className;
+        div.textContent = text;
+        return div;
     }
 
     originWeatherSection.innerHTML = '';
     destinationWeatherSection.innerHTML = '';
 
-    function appendWeatherData(section, weatherData) {
+    function appendWeatherData(section, weatherData, index) {
         if (!weatherData) {
-            section.appendChild(createWeatherSpan('Weather data not available', 'weather-data'));
+            section.appendChild(createWeatherDiv('Weather data not available', `weather-data${index}`));
             return;
         }
+    
+        // Append each piece of weather data as a div
+        section.appendChild(createWeatherDiv(`At ${safeText(weatherData.icao)}`, `icao${index}`));
+        
+        // Weather Check for  Gusts
+        let windDataText = `Wind ${safeText(weatherData.wind.degrees, '°')}/${safeText(weatherData.wind.speed_kts, 'kts')}`;
+        if (weatherData.wind.gust_kts && weatherData.wind.gust_kts > weatherData.wind.speed_kts) {
+        windDataText += ` (GST ${safeText(weatherData.wind.gust_kts)}kts)`;
+        }
+        section.appendChild(createWeatherDiv(windDataText, `wind-data${index}`));
 
-        // Append each piece of weather data as a span
-        section.appendChild(createWeatherSpan(`At ${safeText(weatherData.icao)}`, 'icao'));
-        section.appendChild(createWeatherSpan(`Wind: ${safeText(weatherData.wind.degrees, '°')}/${safeText(weatherData.wind.speed_kts, 'kts')}`, 'wind-data'));
-        section.appendChild(createWeatherSpan(`Temp: ${safeText(weatherData.temperature.celsius)}°C`, 'temp-data'));
-        section.appendChild(createWeatherSpan(`Vis: ${safeText(weatherData.visibility.miles, ' miles')}`, 'visibility-data'));
-        section.appendChild(createWeatherSpan(`Baro: ${safeText(parseFloat(weatherData.barometer.hg).toFixed(2))}`, 'altimeter-data'));
+        //Append Remaining Weather Data
+        let visibilityText;
+        if (parseInt(weatherData.visibility.miles, 10) === 0) {
+            visibilityText = `${safeText(parseFloat(weatherData.visibility.meters_float).toFixed(0))}m`;
+        } else {
+            visibilityText = `${safeText(weatherData.visibility.miles, 'SM')}`;
+        }
+        section.appendChild(createWeatherDiv(`Temp ${safeText(weatherData.temperature.celsius)}°C Vis ${visibilityText}`, `temp-data${index}`));
+        
+        //Append Altimeter Data
+        section.appendChild(createWeatherDiv(`Baro ${safeText(parseFloat(weatherData.barometer.hg).toFixed(2))} / 
+                                                        ${Math.round(safeText(parseFloat(weatherData.barometer.mb)))}`, `altimeter-data${index}`));
+        
+        //Append Clouds Data
+        const conditionsDiv = document.createElement('div');
+        conditionsDiv.className = `conditions${index}`;
+        conditionsDiv.appendChild(createWeatherDiv('Conditions', `titleconditions${index}`));
+        conditionsDiv.appendChild(createWeatherDiv(processConditionsData(weatherData), `conditions${index}-1`));
+        section.appendChild(conditionsDiv);
+    
+        const cloudsDiv = document.createElement('div');
+        cloudsDiv.className = `clouds${index}`;
+        cloudsDiv.appendChild(createWeatherDiv('Clouds', `titleclouds${index}`));
+
+        const cloudsDataDivs = processCloudsData(weatherData.clouds, index);
+        cloudsDataDivs.forEach(cloudDiv => {
+            cloudsDiv.appendChild(cloudDiv);
+    });
+
+        section.appendChild(cloudsDiv);
+        
+        
     }
 
-    appendWeatherData(originWeatherSection, originWeather);
-    appendWeatherData(destinationWeatherSection, destWeather);
+    function processCloudsData(cloudsArray, sectionIndex) {
+        if (!Array.isArray(cloudsArray) || cloudsArray.length === 0) {
+            return [createWeatherDiv('Unreported', `cloud-data-${sectionIndex}-0`)];
+        }
+    
+        return cloudsArray.map((cloud, cloudIndex) => {
+            const code = cloud.code || '-';
+            const baseFeetAgl = cloud.base_feet_agl ? `${cloud.base_feet_agl}ft` : '-';
+            return createWeatherDiv(`${code} at ${baseFeetAgl}`, `cloud-data-${sectionIndex}-${cloudIndex}`);
+        });
+    }
+
+    function processConditionsData(weatherData) {
+        if (!weatherData || !Array.isArray(weatherData.conditions) || weatherData.conditions.length === 0) {
+            return 'None';
+        }
+    
+        const conditionCodes = weatherData.conditions.map(conditionObj => {
+            if (conditionObj.code === '-') {
+                return 'LT';
+            } else if (conditionObj.code === '+') {
+                return 'HVY';
+            } else {
+                return conditionObj.code;
+            }
+        });
+    
+        return conditionCodes.join(' ');
+    }
+
+    appendWeatherData(originWeatherSection, originWeather, 0);
+    appendWeatherData(destinationWeatherSection, destWeather, 1);
 }
+
+//Unused Metar Parsing
+/* function advancedProcessConditionsData(weatherData) {
+    const lookupValues = {
+        intensity: {
+            '+': 'Heavy',
+            '-': 'Light',
+            'VC': 'In Vicinity',
+        },
+        descriptor: {
+            'MI': 'Shallow',
+            'PR': 'Partial',
+            'BC': 'Patches',
+            'DR': 'Low Drifting',
+            'BL': 'Blowing',
+            'SH': 'Showers',
+            'TS': 'Thunderstorm',
+            'FZ': 'Freezing',
+        },
+        precipitation: {
+            'DZ': 'Drizzle',
+            'RA': 'Rain',
+            'SN': 'Snow',
+            'SG': 'Snow Grains',
+            'IC': 'Ice Crystals',
+            'PE': 'Ice Pellets',
+            'GR': 'Hail',
+            'GS': 'Small Pellets',
+            'UP': 'Unknown Precip',
+        },
+        obscuration: {
+            'BR': 'Mist',
+            'FG': 'Fog',
+            'FU': 'Smoke',
+            'VA': 'Volcanic Ash',
+            'DU': 'Widespread Dust',
+            'SA': 'Sand',
+            'HZ': 'Haze',
+            'PY': 'Spray',
+        },
+        other: {
+            'PO': 'Well Developed',
+            'SQ': 'Squalls',
+            'FC': 'Funnel Cloud',
+            'SS': 'Sand/Dust Storm',
+        }
+    };
+
+    if (!weatherData || !Array.isArray(weatherData.conditions) || weatherData.conditions.length === 0) {
+        return 'No condition data available';
+    }
+
+    let conditionDescriptions = [];
+
+    // Check and process the first condition
+    let firstConditionCode = weatherData.conditions[0].code;
+    let firstCondition = findDescription(firstConditionCode, lookupValues);
+
+    if (isInSection(firstConditionCode, 'intensity', lookupValues)) {
+        let nextConditionCode = weatherData.conditions.length > 1 ? weatherData.conditions[1].code : null;
+        let nextCondition = nextConditionCode ? findDescription(nextConditionCode, lookupValues) : null;
+
+        // Combine intensity with the next condition if it's precipitation
+        if (nextConditionCode && isInSection(nextConditionCode, 'precipitation', lookupValues)) {
+            conditionDescriptions.push(`${firstCondition} ${nextCondition}`);
+        } else {
+            conditionDescriptions.push(firstCondition);
+        }
+    } else if (isInSection(firstConditionCode, 'descriptor', lookupValues)) {
+        // If the first condition is a descriptor, check the next for precipitation
+        let secondConditionCode = weatherData.conditions.length > 1 ? weatherData.conditions[1].code : null;
+        if (secondConditionCode && isInSection(secondConditionCode, 'precipitation', lookupValues)) {
+            // If the second condition is precipitation, default to Moderate
+            conditionDescriptions.push(`Moderate ${firstCondition} ${findDescription(secondConditionCode, lookupValues)}`);
+        } else {
+            // If the second condition is not precipitation, just add the first condition
+            conditionDescriptions.push(firstCondition);
+        }
+    } else {
+        // If the first condition is neither intensity nor descriptor
+        conditionDescriptions.push(firstCondition);
+    }
+
+    // Process the rest of the conditions normally starting from the third condition
+    let startIndex = isInSection(firstConditionCode, 'intensity', lookupValues) && weatherData.conditions.length > 1 ? 2 : 1;
+    for (let i = startIndex; i < weatherData.conditions.length; i++) {
+        let conditionCode = weatherData.conditions[i].code;
+        let condition = findDescription(conditionCode, lookupValues);
+        if (condition) {
+            conditionDescriptions.push(condition);
+        }
+    }
+
+    function findDescription(code, lookup) {
+        for (const section in lookup) {
+            if (lookup[section].hasOwnProperty(code)) {
+                return lookup[section][code];
+            }
+        }
+        return null;
+    }
+
+    function isInSection(code, section, lookup) {
+        return lookup.hasOwnProperty(section) && lookup[section].hasOwnProperty(code);
+    }
+
+    return `Conditions: ${conditionDescriptions.join(', ')}`;
+} */
+
+
+
+
+
