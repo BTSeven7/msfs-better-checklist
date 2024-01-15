@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupShiftZKeyListener();
     }
     
+    //Base Variables for checklist and checklist name
     checkListName = 'PMDG 737 Checklist'; //Change Checklist Name
     const checkListJson = './checklistitems.json'; //Change Checklist Json Name
     
@@ -19,10 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPersistedData();
     restoreChecklistContainer();
 
+    //Toggle for views from Checklist/Settings
     setupTabViewToggle();
 
 });
 
+//Page Buildling Functions
 function createTopOfPageHeaderAndForm(checkListName) {
     //Declare body of the document
     const body = document.body; 
@@ -73,6 +76,13 @@ function createTopOfPageHeaderAndForm(checkListName) {
     firstTabHeader.classList.add('firstTabHeader');
     firstTabContent.appendChild(firstTabHeader);
 
+    //Create a weather update button
+    const weatherUpdate = document.createElement('button');
+    weatherUpdate.textContent = 'Update WX';
+    weatherUpdate.classList.add('fetch-button');
+    weatherUpdate.id = 'weatherUpdate';
+    firstTabContent.appendChild(weatherUpdate);
+
     // Create and Add Fetch Button below the firstTabHeader
     const fetchButton = document.createElement('button');
     fetchButton.textContent = 'Fetch Flight Plan'; // Replace with your button text
@@ -87,6 +97,7 @@ function createTopOfPageHeaderAndForm(checkListName) {
     resetALL.id = 'resetAll';
     firstTabContent.appendChild(resetALL);
 
+    attachEventListenterToWxButton();
     attachEventListenerToResetAllButton();
 
     //Create 2nd Tab Conent
@@ -104,6 +115,18 @@ function createTopOfPageHeaderAndForm(checkListName) {
     createUserInputForm(secondTabContent, airportIoApiKeyHolder, airportIoApiID);
 }
 
+function createChecklistContainer(){
+    // Identify the element after which the checklist sections will be appended
+    const referenceElement = document.getElementById('top-of-page-tab'); // Ensure this exists in your HTML
+
+    // Create a container for all sections
+    const sectionsContainer = document.createElement('div');
+    sectionsContainer.id = 'checklist-sections-container';
+
+    referenceElement.parentNode.insertBefore(sectionsContainer, referenceElement.nextSibling);
+}
+
+//Fetch Flight Plan Functions
 function setupFetchButtonEventListener(checkListJson){
     const fetchButton = document.getElementById('fetchButton'); 
     fetchButton.addEventListener('click', async () => {
@@ -132,16 +155,18 @@ function setupFetchButtonEventListener(checkListJson){
                 simOriginWeather = await fetchWeatherData(fetchedAPIData.sbData.origin.icao_code);
                 simDestWeather = await fetchWeatherData(fetchedAPIData.sbData.destination.icao_code);
             }
+            
+            addToLocalStorage('originIcaoCode', fetchedAPIData.sbData.origin.icao_code);
+            addToLocalStorage('destIcaoCode', fetchedAPIData.sbData.destination.icao_code)
             createFlightOverviewHeader(fetchedAPIData.sbData);
             buildCheckList(fetchedAPIData.sbData, fetchedAPIData.airportDbOriginData, fetchedAPIData.airportDbDestData, fetchedAPIData.checklistData, simOriginWeather, simDestWeather);
             updateWeatherContainers(simOriginWeather, simDestWeather);
         }
-
+    
     attachEventListenersToChecklistItems();
     attachEventListenersToMasterResetButtons();
     attachEventListenersToSectionResetButtons();
     attachCheckAllEventListeners();
-
     saveChecklistContainer();
 
     });
@@ -269,6 +294,7 @@ function buildCheckList(simBrief, originAirport, destAirport, checklistItems, si
 
 }
 
+//Build Checklist Functions
 function sortChecklistSections(checklistItems) {
     const sections = {};
     for (const [itemName, details] of Object.entries(checklistItems)) {
@@ -415,7 +441,7 @@ function createChecklistSections(sortedSections) {
         const checkAllButton = document.createElement('button');
         checkAllButton.classList.add('section-checkall-button');
         checkAllButton.id = `${section.name.replace(/\s+/g, '-')}-checkall-button`;
-        checkAllButton.textContent = `✔  ✔  ✔`;
+        checkAllButton.textContent = `Check All`;
         sectionDivCheckAllButton.appendChild(checkAllButton);
 
         // Create an initially invisible div for subtext
@@ -450,11 +476,15 @@ function addChecklistItemsToSections(sortedSelectionWithAPI) {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('checklist-item');
 
+                // Generate a unique ID using the item name
+                const itemId = 'checklist-item-' + item.itemName.replace(/\s+/g, '-').toLowerCase();
+                itemDiv.id = itemId;
+
                 // Determine the text to use for 'expect' based on whether apiData is available
                 const expectText = item.apiData != null ? item.apiData : item.expect;
 
                 // Set the content of the item
-                itemDiv.textContent = createDottedLine(item.item, expectText);
+                itemDiv.innerHTML = createDottedLine(item.item, expectText);
 
                 // Append the item to the section container
                 sectionDiv.appendChild(itemDiv);
@@ -471,6 +501,72 @@ function addChecklistItemsToSections(sortedSelectionWithAPI) {
     }) 
 };
 
+function updateSubtextForSection(simBrief) {
+    
+    const subtextElement2 = document.querySelector(`#fmc-set-up-header-subtext`);
+    subtextElement2.textContent = `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy} ${simBrief.general.route} ${simBrief.destination.icao_code}/${simBrief.destination.plan_rwy}`;
+    subtextElement2.style.display = 'block'; // Make the div visible
+
+    const subtextElement3 = document.querySelector('#before-descent-header-subtext');
+    subtextElement3.textContent = `Expected Runway is ${simBrief.destination.plan_rwy}`;
+    subtextElement3.style.display = 'block'; //Make the div visible
+    
+}
+
+//Top of Page Editing Functions
+function createUserInputForm(secondTabContent, placeholder, localId) {
+
+    const inputField = document.createElement('input');
+    inputField.setAttribute('type', 'text');
+    inputField.setAttribute('name', 'userInput');
+    inputField.id = localId;
+    inputField.classList.add('user-input');
+    inputField.setAttribute('placeholder', `${placeholder}`);
+
+    inputSavedIds(inputField, localId);
+
+    inputField.addEventListener('input', () => {
+        localStorage.setItem(localId, inputField.value);
+    });
+
+    secondTabContent.appendChild(inputField);
+}
+
+function removeExistingOverviewHeader(){
+    // Assuming 'firstTabContent' is already defined in your scope. If not, you need to define it.
+    const firstTabContent = document.querySelector('.tab-content'); // Adjust the selector as necessary
+
+    // Remove existing elements if they exist
+    const existingHeader1 = document.getElementById('flight-overview-header1');
+    const existingHeader2 = document.getElementById('flight-overview-header2');
+    
+    if (existingHeader1) {
+        firstTabContent.removeChild(existingHeader1);
+    }
+    if (existingHeader2) {
+        firstTabContent.removeChild(existingHeader2);
+    }
+}
+
+function setupTabViewToggle(){
+    const firstTabToggle = document.getElementById('firstTabToggle');
+    const secondTabToggle = document.getElementById('secondTabToggle');
+    const checklistContainer = document.getElementById('checklist-sections-container'); // Adjust the ID to match your checklist container
+
+    firstTabToggle.addEventListener('change', function() {
+        if (this.checked) {
+            checklistContainer.style.display = ''; // Show the checklist container
+        }
+    });
+
+    secondTabToggle.addEventListener('change', function() {
+        if (this.checked) {
+            checklistContainer.style.display = 'none'; // Hide the checklist container
+        }
+    });
+}
+
+//Rebuild Functions for page reload
 function loadPersistedData() {
     const firstTabContent = document.querySelector('.tab-content');
     const originDestOverview = localStorage.getItem('flightOverviewHeader1');
@@ -491,113 +587,29 @@ function loadPersistedData() {
     }
 }
 
-function findRunwayHeading(data, originRwy) {
-    const runway = data.runways.find(r => r.le_ident === originRwy || r.he_ident === originRwy);
-
-    if (runway) {
-        let heading;
-        if (runway.le_ident === originRwy) {
-            heading = parseFloat(runway.le_heading_degT); // Convert to a number in case it's a string
-        } else if (runway.he_ident === originRwy) {
-            heading = parseFloat(runway.he_heading_degT); // Convert to a number in case it's a string
-        }
-
-        if (heading !== undefined) {
-            return Math.round(heading); // Round to nearest whole number
-        }
+function restoreChecklistContainer() {
+    const checklistContainer = document.getElementById('checklist-sections-container');
+    if (!checklistContainer) {
+        console.error('checklist-sections-container not found');
+        return;
     }
 
-    console.log('Runway not found');
-    return null; // or handle this case as you see fit
-}
-
-function convertTrueHeadingToMagnetic(TH, magneticDeclination) {
-    let MH = TH - magneticDeclination;
-    MH = (MH + 360) % 360; // Normalize the heading to be within 0-360 degrees
-
-    return Math.round(MH); // Round to nearest whole number
-}
-
-function convertFlightLevel(number) {
-    // Convert the number to a string
-    const numberString = number.toString();
-
-    // Extract the first three digits
-    let formattedNumber = numberString.length > 3 ? numberString.substring(0, 3) : numberString.padStart(3, '0');
-
-    return formattedNumber;
-}
-
-function createUserInputForm(secondTabContent, placeholder, localId) {
-
-    const inputField = document.createElement('input');
-    inputField.setAttribute('type', 'text');
-    inputField.setAttribute('name', 'userInput');
-    inputField.id = localId;
-    inputField.classList.add('user-input');
-    inputField.setAttribute('placeholder', `${placeholder}`);
-
-    inputSavedIds(inputField, localId);
-
-    inputField.addEventListener('input', () => {
-        localStorage.setItem(localId, inputField.value);
-    });
-
-    secondTabContent.appendChild(inputField);
-}
-
-function formatFlightTime(flightTime) {
-    let hours = Math.floor(flightTime / 3600);
-    let minutes = Math.floor((flightTime % 3600) / 60);
-
-    // Format the hours and minutes with leading zeros if needed
-    hours = hours.toString().padStart(2, '0');
-    minutes = minutes.toString().padStart(2, '0');
-
-    return `${hours}:${minutes}`;
-}
-
-function capitalizeWords(str) {
-    return str.toLowerCase().split(' ').map(word => {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-    }).join(' ');
-}
-
-function clearContainer(container) {
-    while (container.firstChild) {
-        container.removeChild(container.firstChild);
+    const savedChecklistContent = localStorage.getItem('savedChecklistContent');
+    if (savedChecklistContent) {
+        checklistContainer.innerHTML = savedChecklistContent;
+    attachEventListenersToChecklistItems();
+    attachEventListenersToMasterResetButtons();
+    attachEventListenersToSectionResetButtons();
+    attachCheckAllEventListeners();
     }
 }
 
-function createDottedLine(item, itemExpect, totalLength = 40) {
-    const itemText = item.toString();
-    const expectText = itemExpect.toString();
-
-    const numDots = totalLength - itemText.length - expectText.length;
-    const dots = '.'.repeat(Math.max(numDots, 0)); // Ensure numDots is not negative
-
-    return `${itemText}${dots}${expectText}`;
-}
-
-function updateSubtextForSection(simBrief, simOriginWeather, simDestWeather) {
-    
-    //For each specialized header sub text
-    //const subtextElement = document.querySelector('#preflight-header-subtext');
-    //subtextElement.textContent = `At ${simOriginWeather.icao}: Wind ${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}kts - Temp ${simOriginWeather.temperature.celsius} - Visibilty ${simOriginWeather.visibility.miles}SM - Altimeter ${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`;
-    //subtextElement.style.display = 'block';
-    
-    const subtextElement2 = document.querySelector(`#fmc-set-up-header-subtext`);
-    subtextElement2.textContent = `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy} ${simBrief.general.route} ${simBrief.destination.icao_code}/${simBrief.destination.plan_rwy}`;
-    subtextElement2.style.display = 'block'; // Make the div visible
-
-    const subtextElement3 = document.querySelector('#before-descent-header-subtext');
-    subtextElement3.textContent = `Expected Runway is ${simBrief.destination.plan_rwy}`;
-    subtextElement3.style.display = 'block'; //Make the div visible
-
-    //const subtextElement4 = document.querySelector('#descent-header-subtext');
-    //subtextElement4.textContent = `At ${safeText(simDestWeather.icao)}: Wind ${safeText(simDestWeather.wind.degrees, '°')}/${safeText(simDestWeather.wind.speed_kts, 'kts')} - Temp ${safeText(simDestWeather.temperature.celsius)} - Visibility ${safeText(simDestWeather.visibility.miles, 'SM')} - Altimeter ${safeText(parseFloat(simDestWeather.barometer.hg).toFixed(2))}/${safeText(parseFloat(simOriginWeather.barometer.mb).toFixed(0))}`;
-    //subtextElement4.style.display = 'block';
-    
+function saveChecklistContainer() {
+    const checklistContainer = document.getElementById('checklist-sections-container');
+    if (checklistContainer) {
+        const checklistContent = checklistContainer.innerHTML;
+        localStorage.setItem('savedChecklistContent', checklistContent);
+    }
 }
 
 function inputSavedIds(inputField, localId){
@@ -607,6 +619,7 @@ function inputSavedIds(inputField, localId){
     }
 }
 
+//Communication with Sim IFrame
 function setupIframeListner(){
 
     //If message received parase it.
@@ -647,10 +660,6 @@ function sendParentMessage(message){
     
 }    
 
-function addToLocalStorage(key, item){
-    localStorage.setItem(key, item);
-}
-
 function setupShiftZKeyListener() {
     window.addEventListener('keydown', (event) => {
         if (event.shiftKey && event.keyCode === 90) { // 90 is the keyCode for 'Z'
@@ -661,6 +670,7 @@ function setupShiftZKeyListener() {
     });
 }
 
+//Functions for Weather
 function getWeatherFromSim(icao){
     return new Promise((resolve, reject) => {
 
@@ -702,46 +712,127 @@ async function fetchWeatherData(icao) {
     }
 }
 
-function isInIframe() {
-    return window !== window.parent;
-}
+function updateWeatherContainers(originWeather, destWeather) {
+    const originWeatherSection = document.getElementById('origin-weather-section');
+    const destinationWeatherSection = document.getElementById('destination-weather-section');
 
-function saveChecklistContainer() {
-    const checklistContainer = document.getElementById('checklist-sections-container');
-    if (checklistContainer) {
-        const checklistContent = checklistContainer.innerHTML;
-        localStorage.setItem('savedChecklistContent', checklistContent);
-    }
-}
-
-function restoreChecklistContainer() {
-    const checklistContainer = document.getElementById('checklist-sections-container');
-    if (!checklistContainer) {
-        console.error('checklist-sections-container not found');
-        return;
+    function createWeatherDiv(text, className) {
+        const div = document.createElement('div');
+        div.className = className;
+        div.textContent = text;
+        return div;
     }
 
-    const savedChecklistContent = localStorage.getItem('savedChecklistContent');
-    if (savedChecklistContent) {
-        checklistContainer.innerHTML = savedChecklistContent;
-    attachEventListenersToChecklistItems();
-    attachEventListenersToMasterResetButtons();
-    attachEventListenersToSectionResetButtons();
-    attachCheckAllEventListeners();
+    originWeatherSection.innerHTML = '';
+    destinationWeatherSection.innerHTML = '';
+
+    function appendWeatherData(section, weatherData, index) {
+        if (!weatherData) {
+            section.appendChild(createWeatherDiv('Weather data not available', `weather-data${index}`));
+            return;
+        }
+    
+        // Append each piece of weather data as a div
+        section.appendChild(createWeatherDiv(`At ${safeText(weatherData.icao)}`, `icao${index}`));
+        
+        // Weather Check for  Gusts
+        let windDataText = `Wind: ${safeText(weatherData.wind.degrees, '°')}/${safeText(weatherData.wind.speed_kts, 'kts')}`;
+        if (weatherData.wind.gust_kts && weatherData.wind.gust_kts > weatherData.wind.speed_kts) {
+        windDataText += ` (GST ${safeText(weatherData.wind.gust_kts)}kts)`;
+        }
+        section.appendChild(createWeatherDiv(windDataText, `wind-data${index}`));
+
+        //Append Remaining Weather Data
+        let visibilityText;
+        if (parseInt(weatherData.visibility.miles, 10) === 0) {
+            visibilityText = `${safeText(parseFloat(weatherData.visibility.meters_float).toFixed(0))}m`;
+        } else {
+            visibilityText = `${safeText(weatherData.visibility.miles, 'SM')}`;
+        }
+        section.appendChild(createWeatherDiv(`Temp: ${safeText(weatherData.temperature.celsius)}°C Vis: ${visibilityText}`, `temp-data${index}`));
+        
+        //Append Altimeter Data
+        section.appendChild(createWeatherDiv(`Baro: ${safeText(parseFloat(weatherData.barometer.hg).toFixed(2))} / 
+                                                        ${Math.round(safeText(parseFloat(weatherData.barometer.mb)))}`, `altimeter-data${index}`));
+        
+        //Append Clouds Data
+        const conditionsDiv = document.createElement('div');
+        conditionsDiv.className = `conditions${index}`;
+        conditionsDiv.appendChild(createWeatherDiv('Conditions', `titleconditions${index}`));
+        conditionsDiv.appendChild(createWeatherDiv(processConditionsData(weatherData), `conditions${index}-1`));
+        section.appendChild(conditionsDiv);
+    
+        const cloudsDiv = document.createElement('div');
+        cloudsDiv.className = `clouds${index}`;
+        cloudsDiv.appendChild(createWeatherDiv('Clouds', `titleclouds${index}`));
+
+        const cloudsDataDivs = processCloudsData(weatherData.clouds, index);
+        cloudsDataDivs.forEach(cloudDiv => {
+            cloudsDiv.appendChild(cloudDiv);
+    });
+
+        section.appendChild(cloudsDiv);
+        
+    
     }
+
+    function processCloudsData(cloudsArray, sectionIndex) {
+        if (!Array.isArray(cloudsArray) || cloudsArray.length === 0) {
+            return [createWeatherDiv('Unreported', `cloud-data-${sectionIndex}-0`)];
+        }
+    
+        return cloudsArray.map((cloud, cloudIndex) => {
+            const code = cloud.code || '-';
+            const baseFeetAgl = cloud.base_feet_agl ? `${cloud.base_feet_agl}ft` : '-';
+            return createWeatherDiv(`${code} at ${baseFeetAgl}`, `cloud-data-${sectionIndex}-${cloudIndex}`);
+        });
+    }
+
+    function processConditionsData(weatherData) {
+        if (!weatherData || !Array.isArray(weatherData.conditions) || weatherData.conditions.length === 0) {
+            return 'None';
+        }
+    
+        const conditionCodes = weatherData.conditions.map(conditionObj => {
+            if (conditionObj.code === '-') {
+                return 'LT';
+            } else if (conditionObj.code === '+') {
+                return 'HVY';
+            } else {
+                return conditionObj.code;
+            }
+        });
+    
+        return conditionCodes.join(' ');
+    }
+
+    appendWeatherData(originWeatherSection, originWeather, 0);
+    appendWeatherData(destinationWeatherSection, destWeather, 1);
 }
 
-function createChecklistContainer(){
-    // Identify the element after which the checklist sections will be appended
-    const referenceElement = document.getElementById('top-of-page-tab'); // Ensure this exists in your HTML
+function updateWeatherChecklistItems(simOriginWeather, simDestWeather){
+    
+    let element = document.getElementById('checklist-item-36');
+    if (Element) {
+        const textBeforeDot = element.textContent.split('.')[0];
+        const newWeatherVar = simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}` : null;
+        const newContent = createDottedLine(textBeforeDot, newWeatherVar);
+        element.innerHTML = newContent;
+        console.log(newContent);
+    }
 
-    // Create a container for all sections
-    const sectionsContainer = document.createElement('div');
-    sectionsContainer.id = 'checklist-sections-container';
+    element = document.getElementById('checklist-item-88');
+    if (Element) {
+        const textBeforeDot = element.textContent.split('.')[0];
+        const newWeatherVar = simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null;
+        const newContent = createDottedLine(textBeforeDot, newWeatherVar);
+        element.innerHTML = newContent;
+        console.log(newContent);
+    }
 
-    referenceElement.parentNode.insertBefore(sectionsContainer, referenceElement.nextSibling);
 }
 
+//Functions for Event Listenters
 function attachEventListenersToChecklistItems() {
     const checklistItems = document.querySelectorAll('.checklist-item');
     checklistItems.forEach(item => {
@@ -840,6 +931,8 @@ function attachEventListenerToResetAllButton(){
         localStorage.removeItem('flightOverviewHeader1');
         localStorage.removeItem('flightOverviewHeader2');
         localStorage.removeItem('savedChecklistContent');
+        localStorage.removeItem('originIcaoCode');
+        localStorage.removeItem('destIcaoCode');
         
     removeExistingOverviewHeader();
 
@@ -853,39 +946,35 @@ function attachEventListenerToResetAllButton(){
     });
 }
 
-function removeExistingOverviewHeader(){
-    // Assuming 'firstTabContent' is already defined in your scope. If not, you need to define it.
-    const firstTabContent = document.querySelector('.tab-content'); // Adjust the selector as necessary
-
-    // Remove existing elements if they exist
-    const existingHeader1 = document.getElementById('flight-overview-header1');
-    const existingHeader2 = document.getElementById('flight-overview-header2');
-    
-    if (existingHeader1) {
-        firstTabContent.removeChild(existingHeader1);
-    }
-    if (existingHeader2) {
-        firstTabContent.removeChild(existingHeader2);
-    }
-}
-
-function setupTabViewToggle(){
-    const firstTabToggle = document.getElementById('firstTabToggle');
-    const secondTabToggle = document.getElementById('secondTabToggle');
-    const checklistContainer = document.getElementById('checklist-sections-container'); // Adjust the ID to match your checklist container
-
-    firstTabToggle.addEventListener('change', function() {
-        if (this.checked) {
-            checklistContainer.style.display = ''; // Show the checklist container
+function attachEventListenterToWxButton() {
+    const weatherUpdateButton = document.getElementById('weatherUpdate');
+    if (!weatherUpdateButton) return; // Check if the button exists
+  
+    weatherUpdateButton.addEventListener('click', async function() {
+        const originIcao = localStorage.getItem('originIcaoCode');
+        const destIcao = localStorage.getItem('destIcaoCode');
+        
+        if (!originIcao || !destIcao) {
+            console.log('no airport code');
+            return; // Exit the function if either value is missing
         }
-    });
 
-    secondTabToggle.addEventListener('change', function() {
-        if (this.checked) {
-            checklistContainer.style.display = 'none'; // Hide the checklist container
+        let simOriginWeather;
+        let simDestWeather;
+        
+        if (isInIframe()) {
+            simOriginWeather = await getWeatherFromSim(originIcao);
+            simDestWeather = await getWeatherFromSim(destIcao);
+        }else{
+            simOriginWeather = await fetchWeatherData(originIcao);
+            simDestWeather = await fetchWeatherData(destIcao);
         }
+
+        updateWeatherContainers(simOriginWeather, simDestWeather);
+        updateWeatherChecklistItems(simOriginWeather, simDestWeather);
+
     });
-}
+  }
 
 function attachCheckAllEventListeners() {
     const checkAllButtons = document.querySelectorAll('.section-checkall-button');
@@ -929,106 +1018,121 @@ function attachCheckAllEventListeners() {
     });
 }
 
+//Utility Functions
+function isInIframe() {
+    return window !== window.parent;
+}
+
+function createDottedLine(item, itemExpect, totalLength = 40) {
+    const itemText = item.toString();
+    const expectText = itemExpect.toString();
+
+    const numDots = totalLength - itemText.length - expectText.length;
+    const dots = '.'.repeat(Math.max(numDots, 0)); // Ensure numDots is not negative
+
+    return `<span>${itemText}</span><span>${dots}</span><span>${expectText}</span>`;
+}
+
 function safeText(value, suffix = '') {
     return value != null ? value + suffix : '-';
 }
 
-function updateWeatherContainers(originWeather, destWeather) {
-    const originWeatherSection = document.getElementById('origin-weather-section');
-    const destinationWeatherSection = document.getElementById('destination-weather-section');
+function formatFlightTime(flightTime) {
+    let hours = Math.floor(flightTime / 3600);
+    let minutes = Math.floor((flightTime % 3600) / 60);
 
-    function createWeatherDiv(text, className) {
-        const div = document.createElement('div');
-        div.className = className;
-        div.textContent = text;
-        return div;
+    // Format the hours and minutes with leading zeros if needed
+    hours = hours.toString().padStart(2, '0');
+    minutes = minutes.toString().padStart(2, '0');
+
+    return `${hours}:${minutes}`;
+}
+
+function capitalizeWords(str) {
+    return str.toLowerCase().split(' ').map(word => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
+}
+
+function createIcaoDataHandler() {
+    let originIcao;
+    let destIcao;
+
+    function update(originCode, destCode) {
+        originIcao = originCode;
+        destIcao = destCode;
     }
 
-    originWeatherSection.innerHTML = '';
-    destinationWeatherSection.innerHTML = '';
-
-    function appendWeatherData(section, weatherData, index) {
-        if (!weatherData) {
-            section.appendChild(createWeatherDiv('Weather data not available', `weather-data${index}`));
-            return;
-        }
-    
-        // Append each piece of weather data as a div
-        section.appendChild(createWeatherDiv(`At ${safeText(weatherData.icao)}`, `icao${index}`));
-        
-        // Weather Check for  Gusts
-        let windDataText = `Wind ${safeText(weatherData.wind.degrees, '°')}/${safeText(weatherData.wind.speed_kts, 'kts')}`;
-        if (weatherData.wind.gust_kts && weatherData.wind.gust_kts > weatherData.wind.speed_kts) {
-        windDataText += ` (GST ${safeText(weatherData.wind.gust_kts)}kts)`;
-        }
-        section.appendChild(createWeatherDiv(windDataText, `wind-data${index}`));
-
-        //Append Remaining Weather Data
-        let visibilityText;
-        if (parseInt(weatherData.visibility.miles, 10) === 0) {
-            visibilityText = `${safeText(parseFloat(weatherData.visibility.meters_float).toFixed(0))}m`;
-        } else {
-            visibilityText = `${safeText(weatherData.visibility.miles, 'SM')}`;
-        }
-        section.appendChild(createWeatherDiv(`Temp ${safeText(weatherData.temperature.celsius)}°C Vis ${visibilityText}`, `temp-data${index}`));
-        
-        //Append Altimeter Data
-        section.appendChild(createWeatherDiv(`Baro ${safeText(parseFloat(weatherData.barometer.hg).toFixed(2))} / 
-                                                        ${Math.round(safeText(parseFloat(weatherData.barometer.mb)))}`, `altimeter-data${index}`));
-        
-        //Append Clouds Data
-        const conditionsDiv = document.createElement('div');
-        conditionsDiv.className = `conditions${index}`;
-        conditionsDiv.appendChild(createWeatherDiv('Conditions', `titleconditions${index}`));
-        conditionsDiv.appendChild(createWeatherDiv(processConditionsData(weatherData), `conditions${index}-1`));
-        section.appendChild(conditionsDiv);
-    
-        const cloudsDiv = document.createElement('div');
-        cloudsDiv.className = `clouds${index}`;
-        cloudsDiv.appendChild(createWeatherDiv('Clouds', `titleclouds${index}`));
-
-        const cloudsDataDivs = processCloudsData(weatherData.clouds, index);
-        cloudsDataDivs.forEach(cloudDiv => {
-            cloudsDiv.appendChild(cloudDiv);
-    });
-
-        section.appendChild(cloudsDiv);
-        
-        
-    }
-
-    function processCloudsData(cloudsArray, sectionIndex) {
-        if (!Array.isArray(cloudsArray) || cloudsArray.length === 0) {
-            return [createWeatherDiv('Unreported', `cloud-data-${sectionIndex}-0`)];
-        }
-    
-        return cloudsArray.map((cloud, cloudIndex) => {
-            const code = cloud.code || '-';
-            const baseFeetAgl = cloud.base_feet_agl ? `${cloud.base_feet_agl}ft` : '-';
-            return createWeatherDiv(`${code} at ${baseFeetAgl}`, `cloud-data-${sectionIndex}-${cloudIndex}`);
-        });
-    }
-
-    function processConditionsData(weatherData) {
-        if (!weatherData || !Array.isArray(weatherData.conditions) || weatherData.conditions.length === 0) {
-            return 'None';
-        }
-    
-        const conditionCodes = weatherData.conditions.map(conditionObj => {
-            if (conditionObj.code === '-') {
-                return 'LT';
-            } else if (conditionObj.code === '+') {
-                return 'HVY';
-            } else {
-                return conditionObj.code;
+    async function refreshWeatherView() {
+        if (originIcao && destIcao) {
+            
+            let simOriginWeather;
+            let simDestWeather;
+            
+            if (isInIframe()) {
+                simOriginWeather = await getWeatherFromSim(originIcao);
+                simDestWeather = await getWeatherFromSim(destIcao);
+            }else{
+                simOriginWeather = await fetchWeatherData(originIcao);
+                simDestWeather = await fetchWeatherData(destIcao);
             }
-        });
-    
-        return conditionCodes.join(' ');
+            updateWeatherContainers(simOriginWeather, simDestWeather); // Assuming this function updates the UI with the new weather data
+        } else {
+            console.log("ICAO codes not set. Cannot refresh weather data.");
+        }
     }
 
-    appendWeatherData(originWeatherSection, originWeather, 0);
-    appendWeatherData(destinationWeatherSection, destWeather, 1);
+    return {
+        update: update,
+        refreshView: refreshWeatherView
+    };
+}
+
+function addToLocalStorage(key, item){
+    localStorage.setItem(key, item);
+}
+
+function findRunwayHeading(data, originRwy) {
+    const runway = data.runways.find(r => r.le_ident === originRwy || r.he_ident === originRwy);
+
+    if (runway) {
+        let heading;
+        if (runway.le_ident === originRwy) {
+            heading = parseFloat(runway.le_heading_degT); // Convert to a number in case it's a string
+        } else if (runway.he_ident === originRwy) {
+            heading = parseFloat(runway.he_heading_degT); // Convert to a number in case it's a string
+        }
+
+        if (heading !== undefined) {
+            return Math.round(heading); // Round to nearest whole number
+        }
+    }
+
+    console.log('Runway not found');
+    return null; // or handle this case as you see fit
+}
+
+function convertTrueHeadingToMagnetic(TH, magneticDeclination) {
+    let MH = TH - magneticDeclination;
+    MH = (MH + 360) % 360; // Normalize the heading to be within 0-360 degrees
+
+    return Math.round(MH); // Round to nearest whole number
+}
+
+function convertFlightLevel(number) {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Extract the first three digits
+    let formattedNumber = numberString.length > 3 ? numberString.substring(0, 3) : numberString.padStart(3, '0');
+
+    return formattedNumber;
+}
+
+function clearContainer(container) {
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
 }
 
 //Unused Metar Parsing

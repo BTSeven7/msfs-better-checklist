@@ -350,7 +350,7 @@
     "api variable": "sbMcpHdg"
   },
   "36": {
-    "item": "altimeter",
+    "item": "altimeter origin",
     "expect": "set local",
     "apiData": null,
     "hasAPIData": "TRUE",
@@ -870,7 +870,7 @@
     "api variable": "sbDestTransLevel"
   },
   "88": {
-    "item": "local altimeter",
+    "item": "altimeter dest",
     "expect": "set",
     "apiData": null,
     "hasAPIData": "TRUE",
