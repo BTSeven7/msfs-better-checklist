@@ -28,9 +28,12 @@ body {
 	font-family: 'RobotoMono-VariableFont_wght';
 	color: #8e9196;
 	background-color: #1a1e23;
+    scrollbar-width: none; /* For Firefox */
 }
-p {padding: 0 1em;}
-p span {color: var(--page-text-color-hover);}
+
+body::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
 
 .tab-container {
 	display: grid;
@@ -42,11 +45,8 @@ p span {color: var(--page-text-color-hover);}
 	border: solid rgba(255,255,255,0.03);
 	border-radius: .5em;
     padding: 0;
-    width: 100%;
 	max-width: 800px;
 }
-
-
 
 input[type="radio"] {display: none;}
 
@@ -67,6 +67,16 @@ label {
     font-size: 14px; 
     border-radius: .1em;
 }
+
+label:last-of-type {border: none; }
+label:hover {
+	color: var(--page-text-color-hover);
+	background-color: rgba(255,255,255,0.05);
+}
+
+input#firstTabToggle:checked ~ .tab-content:not(:nth-of-type(1)),
+input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none;}
+
 .section-header-subtext{
     max-width: 85%;
     margin: 5px auto;
@@ -321,11 +331,6 @@ label {
 	}
 }
 
-label:last-of-type {border: none; }
-label:hover {
-	color: var(--page-text-color-hover);
-	background-color: rgba(255,255,255,0.05);
-}
 
 .tab-content {
 	/* display: var(--tab-display); */
@@ -339,9 +344,6 @@ label:hover {
 #fetchButton{
     margin-right: 20px;
 }
-
-input#firstTabToggle:checked ~ .tab-content:not(:nth-of-type(1)),
-input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none;}
 
 .firstTabHeader {
     font-size:40px;
