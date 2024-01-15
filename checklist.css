@@ -80,7 +80,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     max-width: 85%;
     margin: 5px auto;
     text-align: center;
-    font-size: 20px;
+    font-size: 25px;
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
@@ -379,6 +379,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
 .overview-header-simbrief{
     font-size:25px;
     max-width: 650px;
+    margin: auto;
     color:#fcfcfc;
     margin-bottom:8px;
 }
