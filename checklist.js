@@ -167,6 +167,7 @@ function setupFetchButtonEventListener(checkListJson){
     attachEventListenersToMasterResetButtons();
     attachEventListenersToSectionResetButtons();
     attachCheckAllEventListeners();
+    preventDoubleClick();
     saveChecklistContainer();
 
     });
@@ -601,6 +602,7 @@ function restoreChecklistContainer() {
     attachEventListenersToMasterResetButtons();
     attachEventListenersToSectionResetButtons();
     attachCheckAllEventListeners();
+    preventDoubleClick();
     }
 }
 
@@ -1133,6 +1135,18 @@ function clearContainer(container) {
     while (container.firstChild) {
         container.removeChild(container.firstChild);
     }
+}
+
+function preventDoubleClick() {
+    var elements = document.querySelectorAll('*'); // Selects all elements on the page
+
+    elements.forEach(function(element) {
+        element.addEventListener('mousedown', function(event) {
+            if (event.detail > 1) {
+                event.preventDefault();
+            }
+        }, false);
+    });
 }
 
 //Unused Metar Parsing

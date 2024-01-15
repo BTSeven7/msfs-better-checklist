@@ -104,14 +104,13 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     font-family: var(--page-font-family);
     cursor: pointer;
     outline: 0;
-    width: 100%;
     height: 100%;
     display: grid;
     font-weight: bold;
     line-height: 1.5;
     background-color: transparent;
     border: 1px solid transparent;
-    font-size: 1rem;
+    font-size: 1.25rem;
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     color: #00b4ff;
@@ -183,14 +182,14 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     width: 100%;
     max-width: 800px;
     grid-template-columns: 1fr 1fr; 
-    gap: 0px 10px; 
-    grid-template-areas: "origin-weather-section destination-weather-section"; 
+    grid-template-areas: "origin-weather-section destination-weather-section";
+    font-size: 20px;
 }
 
 #origin-weather-section, #destination-weather-section {
     display: grid; 
     grid-template-rows: min-content min-content min-content min-content min-content min-content;
-    margin: auto auto; 
+    margin: 0px 0px 0px 15%; 
     gap: 0px 0px; 
     margin-bottom: 10px;
     margin-top: 10px;
@@ -259,7 +258,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     text-transform: uppercase;
     font-family: var(--page-font-family);
     font-weight: bold;
-    font-size: 30px;
+    font-size: 35px;
 }
 .section-header-reset-buttons{
     display: flex;
@@ -332,12 +331,12 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
 }
 
 .firstTabHeader {
-    font-size:40px;
+    font-size:45px;
     text-transform:uppercase;
     margin-top:10px;
     margin-bottom:10px;
     color: #00b4ff;
-    font-weight: bold;
+    font-weight: bolder;
 }
 .user-input{
     background-color:#1a1e23;
@@ -361,14 +360,14 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     border-left-style:none;
 }
 .fetch-button{
-    color: #00b4ff;
+    color: rgba(0, 180, 255, 0.75);
     border-color: #00b3ff00;
     border-radius: 6px;
     text-transform: uppercase;
     background-color: transparent;
     font-family: var(--page-font-family);
     padding: 3px 15px;
-    font-size:22px;
+    font-size: 26px;
     margin-bottom:15px;
     margin-top:-5px;
 }
@@ -378,7 +377,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     border-color: #00b4ff;
 }
 .overview-header-simbrief{
-    font-size:20px;
+    font-size:25px;
     max-width: 650px;
     color:#fcfcfc;
     margin-bottom:8px;
