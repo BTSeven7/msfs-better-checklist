@@ -63,7 +63,7 @@ label {
 	background-color: var(--tab-background-color);
 	text-align: center;
 	transition: all 250ms;
-    font-size: 14px; 
+    font-size: 22px; 
     border-radius: .1em;
 }
 
@@ -134,7 +134,6 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
 .checklist-item{
     font-family: var(--page-font-family);
     color: white;
-    font-size: clamp(18px, 3.15vw, 25px);
     box-sizing: border-box;
     max-width: 95%;
     margin: 8px auto;
@@ -145,6 +144,22 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     user-select: none;
     word-wrap: break-word;
 }
+
+@media (min-width: 360px) {.checklist-item {font-size: 13.4px;}}
+@media (min-width: 375px) {.checklist-item {font-size: 14px;}}
+@media (min-width: 390px) {.checklist-item {font-size: 14.5px;}}
+@media (min-width: 412px) {.checklist-item {font-size: 15.3px;}}
+@media (min-width: 414px) {.checklist-item {font-size: 15.5px;}}
+@media (min-width: 430px) {.checklist-item {font-size: 16.1px;}}
+@media (min-width: 540px) {.checklist-item {font-size: 20px;}}
+@media (min-width: 600px) {.checklist-item {font-size: 22.9px;}}
+@media (min-width: 650px) {.checklist-item {font-size: 24px;}}
+@media (min-width: 700px) {.checklist-item {font-size: 26px;}}
+@media (min-width: 750px) {.checklist-item {font-size: 27px;}}
+@media (min-width: 768px) {.checklist-item {font-size: 27px;}}
+
+
+
 
 .checklist-item span:nth-child(3) {
     white-space: nowrap; /* Prevents the third span from breaking */
@@ -174,7 +189,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
 #origin-weather-section, #destination-weather-section {
     display: grid; 
     grid-template-rows: min-content min-content min-content min-content min-content min-content;
-    margin: auto; 
+    margin: auto auto; 
     gap: 0px 0px; 
     grid-area: auto;
     margin-bottom: 10px;
@@ -256,7 +271,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     line-height: 1.5;
     background-color: transparent;
     border: 1px solid transparent;
-    font-size: 1rem;
+    font-size: 1.1rem;
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     color: #00b4ff;
@@ -284,7 +299,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     line-height: 1.5;
     background-color: transparent;
     border: 1px solid transparent;
-    font-size: 1rem;
+    font-size: 1.25rem;
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     color: #00b4ff;
@@ -330,8 +345,9 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     margin-bottom:15px;
     margin-left:12px;
     margin-right:12px;
-    width:400px;
-    font-size:21px;
+    width: 95%;
+    max-width:400px;
+    font-size:22px;
     font-family: var(--page-font-family);
     color:#ffffff;
    }
@@ -349,7 +365,7 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     background-color: transparent;
     font-family: var(--page-font-family);
     padding: 3px 15px;
-    font-size:18px;
+    font-size:22px;
     margin-bottom:15px;
     margin-top:-5px;
 }
