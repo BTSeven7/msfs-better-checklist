@@ -192,10 +192,12 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     grid-template-rows: min-content min-content min-content min-content min-content min-content;
     margin: auto auto; 
     gap: 0px 0px; 
-    grid-area: auto;
     margin-bottom: 10px;
     margin-top: 10px;
 }
+
+#origin-weather-section{ grid-area: 'origin-weather-section';}
+#destination-weather-section{ grid-area: 'destinatio-weather-section';}
 
 .weather-section [class*="data"], .weather-section [class*="icao"] {
     justify-self: left; 
