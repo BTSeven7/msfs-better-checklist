@@ -3,10 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isInIframe()) {
         setupIframeListner();
         setupShiftZKeyListener();
+        disableHomeEndKeyListner();
     }
     
     //Base Variables for checklist and checklist name
-    checkListName = 'PMDG 737 Checklist'; //Change Checklist Name
+    checkListName = 'PMDG 737 Check Guide'; //Change Checklist Name
     const checkListJson = './checklistitems.json'; //Change Checklist Json Name
     
     //Create the header for page load
@@ -14,13 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Set up Fetch Flight Plan Button
     setupFetchButtonEventListener(checkListJson);
+
+    //Create Empty Checklist Container
     createChecklistContainer();
 
-    //Load Saved Data
+    //Load Saved Data If Any Exists
     loadPersistedData();
     restoreChecklistContainer();
 
-    //Toggle for views from Checklist/Settings
+    //Toggle for page views from Checklist/Settings
+    checkAndSetChecklistCheckbox();
     setupTabViewToggle();
 
 });
@@ -48,7 +52,7 @@ function createTopOfPageHeaderAndForm(checkListName) {
     //Create Label for Tab 1
     const firstLabel = document.createElement('label');
     firstLabel.setAttribute('for', 'firstTabToggle');
-    firstLabel.textContent = 'Checklist';
+    firstLabel.textContent = 'Check Guide';
     tabContainer.appendChild(firstLabel);
 
     //Create Tab Number 2
@@ -102,7 +106,7 @@ function createTopOfPageHeaderAndForm(checkListName) {
 
     //Create 2nd Tab Conent
     const secondTabContent = document.createElement('div');
-    secondTabContent.classList.add('tab-content')
+    secondTabContent.classList.add('tab-content');
     tabContainer.appendChild(secondTabContent);
 
     //Create a User Input Form
@@ -110,20 +114,24 @@ function createTopOfPageHeaderAndForm(checkListName) {
     const sbFormId = 'simBriefIdLocal'; //ID For Local Storage
     const airportIoApiKeyHolder = 'Enter AirportDB.io API Key' //Place Holder Text
     const airportIoApiID = 'airportIoApiLocal' //ID for Local Storage
+    const wxFormHolder = 'Enter AVWX API key'
+    const wxApiId = 'wxApiLocal'
 
     createUserInputForm(secondTabContent, sbFormHolder, sbFormId);
     createUserInputForm(secondTabContent, airportIoApiKeyHolder, airportIoApiID);
-}
+    createUserInputForm(secondTabContent, wxFormHolder, wxApiId);
 
-function createChecklistContainer(){
-    // Identify the element after which the checklist sections will be appended
-    const referenceElement = document.getElementById('top-of-page-tab'); // Ensure this exists in your HTML
+    //Create Additional Settings Area
+    const settingsContent = document.createElement('div');
+    settingsContent.classList.add('tab-content');
+    settingsContent.id = 'settings-content';
+    secondTabContent.appendChild(settingsContent);
 
-    // Create a container for all sections
-    const sectionsContainer = document.createElement('div');
-    sectionsContainer.id = 'checklist-sections-container';
+    //Create Settings Selectors for Different Checklists
+    createSettingsCheckBox(document.getElementById('settings-content'), 'BLT Check Guide', 'BLT-Checklist');
+    createSettingsCheckBox(document.getElementById('settings-content'), 'AVGeek Checklist', 'AVG-Checklist');
+    createSettingsCheckBox(document.getElementById('settings-content'), 'PMDG Checklist', 'PMDG-Checklist');
 
-    referenceElement.parentNode.insertBefore(sectionsContainer, referenceElement.nextSibling);
 }
 
 //Fetch Flight Plan Functions
@@ -191,25 +199,32 @@ async function fetchFlightPlan(simBriefId, airportDBkey, checkListJson) {
         console.log(sbData); // Or handle the data as needed
 
         //Fetch AirportDB.io Origin Data
-        const airportOriginData = await fetch(`https://airportdb.io/api/v1/airport/${sbData.origin.icao_code}?apiToken=${airportDBkey}`);
+        let airportDbOriginData = null;
+        let airportDbDestData = null;
+        
+        if (airportDBkey){
+            try {
+                const airportOriginResponse = await fetch(`https://airportdb.io/api/v1/airport/${sbData.origin.icao_code}?apiToken=${airportDBkey}`);
+                if (!airportOriginResponse.ok) {
+                    throw new Error(`AirportDB.io error! Status: ${airportOriginResponse.status}`);
+                }
+                airportDbOriginData = await  airportOriginResponse.json();
+                console.log(airportDbOriginData);
 
-        if (!airportOriginData.ok) {
-            throw new Error(`AirportDB.io error! Status: ${airportOriginData.status}`);
+                //Fetch AirportDB.io Dest Data
+                const airportDestResonse = await fetch(`https://airportdb.io/api/v1/airport/${sbData.destination.icao_code}?apiToken=${airportDBkey}`);
+                if (!airportDestResonse.ok) {
+                    throw new Error(`AirportDB.io error! Status: ${airportDestResonse.status}`);
+                }
+
+                airportDbDestData = await  airportDestResonse.json();
+                console.log(airportDbDestData);
+            }catch(error){
+                console.error('Error fetching airport data:', error);
+            }
         }
 
-        const airportDbOriginData = await  airportOriginData.json();
-        console.log(airportDbOriginData);
-
-        //Fetch AirportDB.io Dest Data
-        const airportDestData = await fetch(`https://airportdb.io/api/v1/airport/${sbData.destination.icao_code}?apiToken=${airportDBkey}`);
-
-        if (!airportDestData.ok) {
-            throw new Error(`AirportDB.io error! Status: ${airportDestData.status}`);
-        }
-
-        const airportDbDestData = await  airportDestData.json();
-        console.log(airportDbDestData);
-
+        //Fetch Checklislt Data
         const checklistDataResponse = await fetch(`${checkListJson}`);
 
         if (!checklistDataResponse.ok) {
@@ -333,8 +348,9 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         sbTransAlt: simBrief.origin.trans_alt, // Transition Altitude
         sbPressAlt: `${simBrief.general.initial_altitude}/${Math.round(simBrief.destination.elevation / 50) * 50}`, // Pressure Altitude
         sbMcpAlt: `set cleared (${simBrief.general.initial_altitude})`, // MCP Altitude
-        sbMcpHdg: originAirport.navaids && originAirport.navaids[0] ? convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg) : 
-        null, // MCP Heading
+        sbMcpHdg: originAirport && originAirport.navaids && originAirport.navaids[0]
+            ? convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg) 
+            : null, // MCP Heading
         sbLocalBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}` : null, 
         sbOrigin10kAgl: Math.floor((Number(simBrief.origin.elevation) + 10000) / 1000) * 1000, // Origin 10K AGL
         sbTransAltFl: `FL${convertFlightLevel(simBrief.origin.trans_alt)}`, // Transition Altitude Flight Level
@@ -514,7 +530,7 @@ function updateSubtextForSection(simBrief) {
     
 }
 
-//Top of Page Editing Functions
+//Page Editing Functions
 function createUserInputForm(secondTabContent, placeholder, localId) {
 
     const inputField = document.createElement('input');
@@ -531,6 +547,42 @@ function createUserInputForm(secondTabContent, placeholder, localId) {
     });
 
     secondTabContent.appendChild(inputField);
+}
+
+function createSettingsCheckBox(appendToSection, label, localId){
+
+    // Create Div for Element
+    const checkDiv = document.createElement('div');
+    checkDiv.classList.add('checkbox-div');    
+
+    // Create the outer label element
+    const toggleControlLabel = document.createElement('label');
+    toggleControlLabel.classList.add('toggle-control');
+
+    //Create a checkbox
+    const settingOption = document.createElement('input');
+    settingOption.setAttribute('type', 'checkbox');
+    settingOption.id = localId;
+    settingOption.classList.add('settings-checkbox');
+
+    //Create teh span element
+    const contorlSpan = document.createElement('span');
+    contorlSpan.classList.add('control');
+
+    //Create a label
+    const settingOptionLabel = document.createElement('label');
+    settingOptionLabel.setAttribute('for', localId);
+    settingOptionLabel.classList.add('settings-label');
+    settingOptionLabel.textContent = label;
+
+    checkDiv.appendChild(toggleControlLabel);
+    toggleControlLabel.appendChild(settingOption);
+    toggleControlLabel.appendChild(contorlSpan);
+    checkDiv.appendChild(settingOptionLabel);
+    appendToSection.appendChild(checkDiv);
+
+    //Add Event Listner
+    addCheckboxListener(settingOption, localId);
 }
 
 function removeExistingOverviewHeader(){
@@ -565,6 +617,23 @@ function setupTabViewToggle(){
             checklistContainer.style.display = 'none'; // Hide the checklist container
         }
     });
+}
+
+function clearContainer(container) {
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+}
+
+function createChecklistContainer(){
+    // Identify the element after which the checklist sections will be appended
+    const referenceElement = document.getElementById('top-of-page-tab'); // Ensure this exists in your HTML
+
+    // Create a container for all sections
+    const sectionsContainer = document.createElement('div');
+    sectionsContainer.id = 'checklist-sections-container';
+
+    referenceElement.parentNode.insertBefore(sectionsContainer, referenceElement.nextSibling);
 }
 
 //Rebuild Functions for page reload
@@ -621,6 +690,25 @@ function inputSavedIds(inputField, localId){
     }
 }
 
+function checkAndSetChecklistCheckbox() {
+    // Get the stored checkbox ID or default to 'BLT Check Guide'
+    const defaultList = 'BLT-Checklist'
+    const storedCheckboxId = localStorage.getItem('selectedCheckList') || defaultList;
+
+    // Set the checkbox as checked
+    const checkboxToCheck = document.getElementById(storedCheckboxId);
+    if (checkboxToCheck) {
+        checkboxToCheck.checked = true;
+    } else {
+        // If the checkbox with the stored ID doesn't exist, default to 'BLT Check Guide'
+        const defaultCheckbox = document.getElementById(defaultList);
+        if (defaultCheckbox) {
+            defaultCheckbox.checked = true;
+            localStorage.setItem('selectedCheckList', BLT-Checklist);
+        }
+    }
+}
+
 //Communication with Sim IFrame
 function setupIframeListner(){
 
@@ -669,6 +757,27 @@ function setupShiftZKeyListener() {
             sendParentMessage('hotkey,shiftZ');
             event.preventDefault(); // Optional: Prevent the default action for this key
         }
+    });
+}
+
+function disableHomeEndKeyListner() {
+    window.addEventListener('keydown', function(event) {
+        if (event.keyCode === 36 || event.keyCode === 35) { // 36 for 'Home', 35 for 'End'
+            console.log("Home or End key was pressed");
+            event.preventDefault(); //Prevent default action of the key
+        }
+    });
+}
+
+function preventDoubleClick() {
+    var elements = document.querySelectorAll('*'); // Selects all elements on the page
+
+    elements.forEach(function(element) {
+        element.addEventListener('mousedown', function(event) {
+            if (event.detail > 1) {
+                event.preventDefault();
+            }
+        }, false);
     });
 }
 
@@ -929,22 +1038,7 @@ function attachEventListenersToMasterResetButtons() {
 function attachEventListenerToResetAllButton(){
     const resetAllButton = document.getElementById('resetAll');
     resetAllButton.addEventListener('click', function() {
-        // Clear specific items from local storage
-        localStorage.removeItem('flightOverviewHeader1');
-        localStorage.removeItem('flightOverviewHeader2');
-        localStorage.removeItem('savedChecklistContent');
-        localStorage.removeItem('originIcaoCode');
-        localStorage.removeItem('destIcaoCode');
-        
-    removeExistingOverviewHeader();
-
-    const checklistContainer = document.getElementById('checklist-sections-container');
-    
-    if (checklistContainer){
-        clearContainer(checklistContainer);
-    }
-
-        
+        resetPage();
     });
 }
 
@@ -1020,11 +1114,53 @@ function attachCheckAllEventListeners() {
     });
 }
 
+function addCheckboxListener(checkbox, localId) {
+    checkbox.addEventListener('change', function() {
+
+        // Get all checkboxes
+        const allCheckboxes = document.querySelectorAll('.settings-checkbox');
+
+        // Count how many are checked
+        const checkedCount = Array.from(allCheckboxes).filter(cb => cb.checked).length;
+
+        // If this is the only checked checkbox and the user is trying to uncheck it, prevent this
+        if (checkedCount === 0) {
+            this.checked = true;
+            return; // Skip the rest of the function
+        }
+
+        if (this.checked) {
+            // Update local storage with the id of the checked checkbox
+            localStorage.setItem('selectedCheckList', localId);
+
+            // Uncheck all other checkboxes
+            allCheckboxes.forEach(function(otherCheckbox) {
+                if (otherCheckbox !== checkbox) {
+                    otherCheckbox.checked = false;
+                }
+            });
+        } else {
+            // If the checkbox is unchecked, remove its id from local storage
+            if (localStorage.getItem('selectedCheckList') === localId) {
+                localStorage.removeItem('selectedCheckList');
+            }
+        }
+
+        resetPage();
+    });
+}
+
 //Utility Functions
+//Data Checks
 function isInIframe() {
     return window !== window.parent;
 }
 
+function safeText(value, suffix = '') {
+    return value != null ? value + suffix : '-';
+}
+
+//Text Formmating
 function createDottedLine(item, itemExpect, totalLength = 40) {
     const itemText = item.toString();
     const expectText = itemExpect.toString();
@@ -1033,10 +1169,6 @@ function createDottedLine(item, itemExpect, totalLength = 40) {
     const dots = '.'.repeat(Math.max(numDots, 0)); // Ensure numDots is not negative
 
     return `<span>${itemText}</span><span>${dots}</span><span>${expectText}</span>`;
-}
-
-function safeText(value, suffix = '') {
-    return value != null ? value + suffix : '-';
 }
 
 function formatFlightTime(flightTime) {
@@ -1050,48 +1182,27 @@ function formatFlightTime(flightTime) {
     return `${hours}:${minutes}`;
 }
 
+function convertFlightLevel(number) {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Extract the first three digits
+    let formattedNumber = numberString.length > 3 ? numberString.substring(0, 3) : numberString.padStart(3, '0');
+
+    return formattedNumber;
+}
+
 function capitalizeWords(str) {
     return str.toLowerCase().split(' ').map(word => {
         return word.charAt(0).toUpperCase() + word.slice(1);
     }).join(' ');
 }
 
-function createIcaoDataHandler() {
-    let originIcao;
-    let destIcao;
+function convertTrueHeadingToMagnetic(TH, magneticDeclination) {
+    let MH = TH - magneticDeclination;
+    MH = (MH + 360) % 360; // Normalize the heading to be within 0-360 degrees
 
-    function update(originCode, destCode) {
-        originIcao = originCode;
-        destIcao = destCode;
-    }
-
-    async function refreshWeatherView() {
-        if (originIcao && destIcao) {
-            
-            let simOriginWeather;
-            let simDestWeather;
-            
-            if (isInIframe()) {
-                simOriginWeather = await getWeatherFromSim(originIcao);
-                simDestWeather = await getWeatherFromSim(destIcao);
-            }else{
-                simOriginWeather = await fetchWeatherData(originIcao);
-                simDestWeather = await fetchWeatherData(destIcao);
-            }
-            updateWeatherContainers(simOriginWeather, simDestWeather); // Assuming this function updates the UI with the new weather data
-        } else {
-            console.log("ICAO codes not set. Cannot refresh weather data.");
-        }
-    }
-
-    return {
-        update: update,
-        refreshView: refreshWeatherView
-    };
-}
-
-function addToLocalStorage(key, item){
-    localStorage.setItem(key, item);
+    return Math.round(MH); // Round to nearest whole number
 }
 
 function findRunwayHeading(data, originRwy) {
@@ -1114,39 +1225,25 @@ function findRunwayHeading(data, originRwy) {
     return null; // or handle this case as you see fit
 }
 
-function convertTrueHeadingToMagnetic(TH, magneticDeclination) {
-    let MH = TH - magneticDeclination;
-    MH = (MH + 360) % 360; // Normalize the heading to be within 0-360 degrees
-
-    return Math.round(MH); // Round to nearest whole number
+function addToLocalStorage(key, item){
+    localStorage.setItem(key, item);
 }
 
-function convertFlightLevel(number) {
-    // Convert the number to a string
-    const numberString = number.toString();
+function resetPage(){
+    // Clear specific items from local storage
+    localStorage.removeItem('flightOverviewHeader1');
+    localStorage.removeItem('flightOverviewHeader2');
+    localStorage.removeItem('savedChecklistContent');
+    localStorage.removeItem('originIcaoCode');
+    localStorage.removeItem('destIcaoCode');
+    
+    removeExistingOverviewHeader();
 
-    // Extract the first three digits
-    let formattedNumber = numberString.length > 3 ? numberString.substring(0, 3) : numberString.padStart(3, '0');
+    const checklistContainer = document.getElementById('checklist-sections-container');
 
-    return formattedNumber;
-}
-
-function clearContainer(container) {
-    while (container.firstChild) {
-        container.removeChild(container.firstChild);
+    if (checklistContainer){
+        clearContainer(checklistContainer);
     }
-}
-
-function preventDoubleClick() {
-    var elements = document.querySelectorAll('*'); // Selects all elements on the page
-
-    elements.forEach(function(element) {
-        element.addEventListener('mousedown', function(event) {
-            if (event.detail > 1) {
-                event.preventDefault();
-            }
-        }, false);
-    });
 }
 
 //Unused Metar Parsing

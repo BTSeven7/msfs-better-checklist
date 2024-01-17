@@ -399,3 +399,83 @@ input#secondTabToggle:checked ~ .tab-content:not(:nth-of-type(2)) {display: none
     background-color: #00b4ff;
     border-color: #00b4ff
 }
+
+#settings-content{
+    display: block;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.checkbox-div{
+    display: flex;
+    text-align: justify;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.settings-label{
+    flex-grow: 1;
+    font-size: 22px;
+    background-color: transparent;
+    text-align: left;
+    padding: 0;
+    margin-right: 30%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.toggle-control {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    margin-right: 15px;
+    margin-left: 30%;
+    width: 25px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+  }
+
+.toggle-control input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.toggle-control input:checked ~ .control {
+    background-color: dodgerblue;
+  }
+
+.toggle-control input:checked ~ .control:after {
+    left: 27.5px;
+  }
+
+.toggle-control .control {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 50px;
+    border-radius: 12.5px;
+    background-color: darkgray;
+    transition: background-color 0.15s ease-in;
+}
+
+.toggle-control .control:after {
+    content: "";
+    position: absolute;
+    left: 2.5px;
+    top: 2.5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 25px;
+    background: white;
+    transition: left 0.15s ease-in;
+  }
