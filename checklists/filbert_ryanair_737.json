@@ -1,0 +1,162 @@
+{
+  "1": {
+    "item": "battery",
+    "expect": "on",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 1,
+    "api variable": ""
+  },
+  "2": {
+    "item": "emergency exit lights",
+    "expect": "arm",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 2,
+    "api variable": ""
+  },
+  "3": {
+    "item": "ground power",
+    "expect": "on (establish)",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 3,
+    "api variable": ""
+  },
+  "4": {
+    "item": "gear",
+    "expect": "down 3 greens",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 4,
+    "api variable": ""
+  },
+  "5": {
+    "item": "flaps",
+    "expect": "up",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 5,
+    "api variable": ""
+  },
+  "6": {
+    "item": "fire test",
+    "expect": "test both",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 6,
+    "api variable": ""
+  },
+  "7": {
+    "item": "squibs test",
+    "expect": "test both",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 7,
+    "api variable": ""
+  },
+  "8": {
+    "item": "manual gear ext",
+    "expect": "flap down",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 8,
+    "api variable": ""
+  },
+  "9": {
+    "item": "circuit breakers",
+    "expect": "check all in",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 9,
+    "api variable": ""
+  },
+  "10": {
+    "item": "emergency escape rope",
+    "expect": "stowed/in",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 10,
+    "api variable": ""
+  },
+  "11": {
+    "item": "flight recorder",
+    "expect": "test left & right",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 11,
+    "api variable": ""
+  },
+  "12": {
+    "item": "mach warn test",
+    "expect": "press & hold",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 12,
+    "api variable": ""
+  },
+  "13": {
+    "item": "stall warn test",
+    "expect": "press & hold",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 13,
+    "api variable": ""
+  },
+  "14": {
+    "item": "irs",
+    "expect": "both nav",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 14,
+    "api variable": ""
+  },
+  "15": {
+    "item": "lights",
+    "expect": "test left & right",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 15,
+    "api variable": ""
+  },
+  "16": {
+    "item": "oxygen",
+    "expect": "test left & right",
+    "apiData": null,
+    "hasAPIData": "FALSE",
+    "section": "cold & dark",
+    "section number": 1,
+    "order in section": 16,
+    "api variable": ""
+  }
+}
