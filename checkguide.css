@@ -1,0 +1,410 @@
+@font-face {
+    font-family: 'JetBrainsMono';
+    src: url('./fonts/JetBrainsMono.ttf') format('truetype');
+  }
+
+/* Global Styles */
+:root {
+    --page-font: 'JetBrainsMono';
+    --page-font-weight: bold;
+    --container-max-width: 800px;
+    --page-background-color: #2e2e2e; /* Darker Grey Background */
+    --page-text-color-main: #f5f5f5; /* Light Grey for Text, for Contrast */
+    --page-container-border-color: #3d3d3d; /* Slightly Darker Grey for Borders */
+    --tab-background-color: #424242; /* Medium Grey for Tab Backgrounds */
+    --tab-unselected-color: #757575; /* Lighter Grey for Unselected Tabs */
+    --accent-color: #90caf9; /* Soft Blue for Accents */
+    --secondary-accent-color: #ffcc80; /* Soft Orange for Secondary Accents */
+    --hover-color: #64b5f6; /* Brighter Blue for Hover States */
+    --heading-color: #ffffff; /* White for Headings */
+}
+
+body {
+    background-color: var(--page-background-color);
+    font-family: var(--page-font);
+    font-weight: var(--page-font-weight);
+}
+
+/******* Header (Top of Page) Container Styles *******/
+#header-container {
+    box-sizing: border-box;
+    margin: 10px auto auto auto;
+    border: solid var(--page-container-border-color);
+    border-radius: 8px;
+    max-width: var(--container-max-width);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Radio Button Styles */
+#header-container input[type="radio"] {
+    display: none;
+}
+
+/* Label Styles */
+#header-container label[for="checkguide-radio"], 
+#header-container label[for="settings-radio"], 
+#header-container label[for="aircraft-radio"]  {
+    cursor: pointer;
+    box-sizing: border-box;
+    padding: .5em;
+    border-right: solid 0px var(--page-background-color);
+    background-color: var(--tab-background-color);
+    text-align: center; 
+    font-size: 22px;
+    border-radius: 0px;
+    color: var(--tab-unselected-color);
+    flex-grow: 1;
+    flex-basis: calc(33.33333% - 4px);
+    margin-right: 0;
+    transition: all 250ms;
+}
+
+#header-container label[for="checkguide-radio"] {
+    border-top-left-radius: 4px;
+}
+
+#header-container label[for="settings-radio"]{
+    border-top-right-radius: 4px;
+}
+
+#header-container label[for="settings-radio"]:last-of-type {
+    border-right: none;
+    margin-right: 0;
+    flex-basis: calc(33.3333% - 2px);
+}
+
+#header-container label:hover,
+#header-container input:checked + label {
+    color: var(--accent-color);
+    background-color: var(--page-background-color);
+}
+
+/* Header visibilty settings */
+#header-checkguide-container,
+#header-aircraft-container,
+#header-settings-container {
+    display: none;
+}
+
+#header-container input#checkguide-radio:checked ~ #header-checkguide-container,
+#header-container input#aircraft-radio:checked ~ #header-aircraft-container, 
+#header-container input#settings-radio:checked ~ #header-settings-container {
+    display:flex;
+}
+
+/************** Settings Tab ******************/
+#header-settings-container{
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/******* User Input - Settings Tab - Formatting *******/
+#settings-user-input-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 25px 12px;
+}
+
+#settings-user-input-container input{
+    box-sizing: border-box;
+    background-color: var(--page-background-color);
+    font-family: var(--page-font);
+    border-style: none none solid none;
+    margin: 15px 0 15px 0;
+    width: 100%;
+    max-width: 500px;
+    font-size: 22px;
+    overflow: hidden;
+    color: var(--page-text-color-main);
+}
+
+#settings-user-input-container input:focus {
+    outline: none;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
+}
+
+/******* Color Selection - Settings Tab - Formatting *******/
+#color-settings-container, #no-flight-plan-option-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: auto;
+    color: var(--page-text-color-main);
+    padding: 10px 12px 25px 12px;
+}
+
+#color-settings-container .sliderSwitch, #no-flight-plan-option-container .sliderSwitch{
+    margin-right: 8px;
+}
+
+#color-settings-container span:not(.slider-round), #no-flight-plan-option-container span:not(.slider-round){
+    margin-right: 15px;
+    font-size: 21px;
+}
+
+/***************Check Guide Tab***************/
+#header-checkguide-container{
+    flex-direction: column;
+    width: 100%;
+}
+
+#checkguide-title-container{
+    box-sizing: border-box;
+    margin-top: 15px;
+    color: var(--heading-color);
+    text-align: center;
+    width: 100%;
+}
+
+#checkguide-title-container span:first-of-type {
+    display: inline-block;
+    font-size: 45px;
+    width: 100%;
+}
+
+#checkguide-title-container span:nth-of-type(2) {
+    display: inline-block;
+    font-size: 20px;
+}
+
+#flight-overview-container{
+    color: var(--page-text-color-main);
+    font-size: 22px;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#overview-header-1{
+    margin-bottom: 8px;
+}
+
+#main-button-container{
+    box-sizing: border-box;
+    margin-top: 15px;
+    text-align: center;
+    width: 100%
+}
+
+#main-button-container .main-container-button {
+    box-sizing: border-box;
+    color: var(--accent-color);
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 6px;
+    font-family: var(--page-font);
+    font-size: 26px;
+    padding: 3px 15px;
+    
+}
+
+#main-button-container .main-container-button:hover{
+    color: var(--secondary-accent-color);
+    background-color: transparent;
+    border-radius: 30px;
+}
+
+#error-checkguide-header{
+    color: var(--secondary-accent-color);
+    margin-top: 15px;
+    text-align: center;
+}
+
+/************** Aicraft Tab ******************/
+/******* Aircraft Selection Container Formatting *******/
+#header-aircraft-container{
+    width: 100%;
+}
+
+#aircraft-list-container, #aircraft-checklist-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+#aircraft-list-container{
+    margin-left: 9%;
+}
+
+#aircraft-list-container .aircraft-container, #aircraft-checklist-container .checklist-item-container{
+    display: flex;
+    box-sizing: border-box;
+    padding: 5px 0px 5px 0px;
+    flex-wrap: wrap;
+    align-items: center;
+    color: var(--page-text-color-main)
+}
+
+.aircraft-checklist-container{
+    flex-direction: column;
+}
+
+#aircraft-list-container .sliderSwitch, .checklist-item-container .sliderSwitch{
+    margin-right: 8px;
+    margin-left: 14px;
+}
+
+#aircraft-list-container span:not(.slider-round), .checklist-item-container span:not(.slider-round){
+    margin-right: 15px;
+    font-size: 21px;
+}
+
+/******* All Slider Button Formatting *******/
+#color-settings-container .sliderSwitch, 
+#header-aircraft-container .sliderSwitch, 
+#no-flight-plan-option-container .sliderSwitch{
+    position:relative;
+    display: inline-block;
+    width: 51px;
+    height: 29px;
+}
+
+#color-settings-container .sliderSwitch input, 
+#header-aircraft-container .sliderSwitch input, 
+#no-flight-plan-option-container .sliderSwitch input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+#color-settings-container .slider-round, 
+#header-aircraft-container .slider-round, 
+#no-flight-plan-option-container .slider-round{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+#color-settings-container .slider-round:before, 
+#header-aircraft-container .slider-round:before, 
+#no-flight-plan-option-container .slider-round:before{
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    flex-basis: 0;
+}
+
+#color-settings-container .sliderSwitch input:checked + .slider-round, 
+#header-aircraft-container .sliderSwitch input:checked + .slider-round, 
+#no-flight-plan-option-container .sliderSwitch input:checked + .slider-round{
+    background-color: #2196F3;
+}
+
+#color-settings-container .sliderSwitch input:focus + .slider-round, 
+#header-aircraft-container .sliderSwitch input:focus + .slider-round, 
+#no-flight-plan-option-container .sliderSwitch input:focus + .slider-round{
+    box-shadow: 0 0 1px #2196F3;
+}
+
+#color-settings-container .sliderSwitch input:checked + .slider-round:before, 
+#header-aircraft-container .sliderSwitch input:checked + .slider-round:before,
+#no-flight-plan-option-container .sliderSwitch input:checked + .slider-round:before {
+    -webkit-transform: translateX(23px);
+    -ms-transform: translateX(23px);
+    transform: translateX(23px);
+  }
+
+#color-settings-container .slider-round, 
+#header-aircraft-container .slider-round,
+#no-flight-plan-option-container .slider-round{
+    border-radius: 25px;
+}
+
+#color-settings-container .slider-round:before, 
+#header-aircraft-container .slider-round:before,
+#no-flight-plan-option-container .slider-round::before {
+    border-radius: 25px;
+}
+
+/******* END Slider Button Styling *******/
+
+/******* CHECKLIST STYLING *******/
+#checklist-sections-container{
+    display: flex;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    flex-direction: column;
+    max-width: 800px;
+    margin: auto;
+}
+
+.checklist-section{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+    text-align: center;
+    border: solid var(--page-container-border-color);
+    border-radius: 8px;
+    margin-top: 4px;
+}
+
+.section-header{
+    font-size: 32px;
+    box-sizing: border-box;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    color: var(--hover-color)
+}
+
+.checklist-item{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    font-size: 26px;
+    box-sizing: border-box;
+    max-width: 95%;
+    min-width: 0;
+    flex-wrap: wrap;
+    color: var(--page-text-color-main);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 16px;
+    user-select: none;
+}
+
+.checklist-item:hover{
+    background-color: var(--tab-unselected-color);
+}
+
+@media (min-width: 360px) {.checklist-item {font-size: 13px;}}
+@media (min-width: 375px) {.checklist-item {font-size: 13.6px;}}
+@media (min-width: 390px) {.checklist-item {font-size: 14.2px;}}
+@media (min-width: 412px) {.checklist-item {font-size: 15.0px;}}
+@media (min-width: 414px) {.checklist-item {font-size: 15.1px;}}
+@media (min-width: 430px) {.checklist-item {font-size: 15.7px;}}
+@media (min-width: 540px) {.checklist-item {font-size: 20.1px;}}
+@media (min-width: 600px) {.checklist-item {font-size: 22.9px;}}
+@media (min-width: 650px) {.checklist-item {font-size: 24px;}}
+@media (min-width: 700px) {.checklist-item {font-size: 26px;}}
+@media (min-width: 750px) {.checklist-item {font-size: 27px;}}
+@media (min-width: 768px) {.checklist-item {font-size: 27px;}}

@@ -1,0 +1,77 @@
+{
+    "pmdg737": {
+        "aircraftName":"PMDG 737",
+        "checkLists":{
+            "PMDG_737_blt": {
+               "title": "BLT"  
+            },
+            "PMDG_737_av_geek": {
+                "title": "AV Geek"
+                },
+            "PMDG_737": {
+                    "title": "PMDG"
+                    }
+        }
+    },
+
+    "fenixa320":{
+        "aircraftName":"Fenix A320",
+        "checkLists":{
+            "blt_a320-json": {
+               "title": "BLT A320"  
+            },
+            "av_geek320-json": {
+                "title": "AV Geek A320"
+                },
+            "av_test-json": {
+                    "title": "Fenix A320"
+                    }
+        }
+    },
+
+    "lenoardmaddog":{
+        "aircraftName":"Leonardo MD80",
+        "checkLists": {
+            "blt_maddog-json": {
+                "title": "BLT Maddog"  
+             }
+        }
+    },
+
+    "cessna414aw":{
+        "aircraftName":"Cessna 414AW",
+        "checkLists": {
+            "blt_cessna414-json": {
+                "title": "BLT Cessna 417"  
+             }
+        }
+    },
+
+    "kodiak100":{
+        "aircraftName":"Kodiak 100",
+        "checkLists": {
+            "blt_kodiak100-json": {
+                "title": "BLT Kodiak 100"  
+             }
+        }
+    },
+
+    "cessna310R":{
+        "aircraftName":"Blackbird 310R",
+        "checkLists": {
+            "blt_c310R-json": {
+                "title": "BLT Cessna 310R"  
+             }
+        }
+    },
+
+    "bae146":{
+        "aircraftName":"JF BAE 146",
+        "checkLists":{
+            "blt_BAE146-json": {
+                "title": "BLT BAE 146"  
+             }
+        }
+    }
+
+}
