@@ -15,6 +15,7 @@
     --tab-unselected-color: #757575; /* Lighter Grey for Unselected Tabs */
     --accent-color: #90caf9; /* Soft Blue for Accents */
     --secondary-accent-color: #ffcc80; /* Soft Orange for Secondary Accents */
+    --third-accent-color: #c77c02; 
     --hover-color: #64b5f6; /* Brighter Blue for Hover States */
     --heading-color: #ffffff; /* White for Headings */
 }
@@ -345,6 +346,50 @@ body {
 
 /******* END Slider Button Styling *******/
 
+/******* WEATHER CONTAINER STYLING ******/
+#weather-container{
+    box-sizing: border-box;
+    display: flex;
+    text-align: left;
+    border: solid var(--page-container-border-color);
+    border-radius: 8px;
+    margin-top: 4px;
+    color: #a0a0a0;
+    font-size: 18px;
+}
+
+.icao0, .icao1{
+    color: var(--accent-color);
+}
+
+#origin-weather-section, #destination-weather-section{
+    margin-left: 30px;
+    padding: 8px;
+    flex: 1;
+}
+
+#origin-weather-section, #destination-weather-section {
+    div:is([class^="icao"], [class^="wind-data"], [class^="altimeter-data"], [class^="temp-data"], [class^="conditions"]) {
+        margin-bottom: 6px;
+    }
+}
+
+
+.clouds0, .clouds1{
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    max-width: 800px;
+}
+
+div[class^="cloud-data-"] {
+    max-width: 80px;
+    margin-right: 6px;
+    border: solid 1px var(--page-container-border-color);
+    padding: 8px;
+}
+
+
 /******* CHECKLIST STYLING *******/
 #checklist-sections-container{
     display: flex;
@@ -381,13 +426,14 @@ body {
     justify-content: center;
     margin: auto;
     font-size: 26px;
+    font-weight: normal;
     box-sizing: border-box;
     max-width: 95%;
     min-width: 0;
     flex-wrap: wrap;
     color: var(--page-text-color-main);
     cursor: pointer;
-    padding: 5px;
+    padding: 8px 15px 8px 15px;
     border-radius: 16px;
     user-select: none;
 }
@@ -396,15 +442,65 @@ body {
     background-color: var(--tab-unselected-color);
 }
 
-@media (min-width: 360px) {.checklist-item {font-size: 13px;}}
-@media (min-width: 375px) {.checklist-item {font-size: 13.6px;}}
+@media (min-width: 360px) {.checklist-item {font-size: 21px;}}
+@media (min-width: 375px) {.checklist-item {font-size: 12.8px;}}
 @media (min-width: 390px) {.checklist-item {font-size: 14.2px;}}
 @media (min-width: 412px) {.checklist-item {font-size: 15.0px;}}
 @media (min-width: 414px) {.checklist-item {font-size: 15.1px;}}
-@media (min-width: 430px) {.checklist-item {font-size: 15.7px;}}
+@media (min-width: 430px) {.checklist-item {font-size: 15px;}}
 @media (min-width: 540px) {.checklist-item {font-size: 20.1px;}}
 @media (min-width: 600px) {.checklist-item {font-size: 22.9px;}}
 @media (min-width: 650px) {.checklist-item {font-size: 24px;}}
 @media (min-width: 700px) {.checklist-item {font-size: 26px;}}
 @media (min-width: 750px) {.checklist-item {font-size: 27px;}}
 @media (min-width: 768px) {.checklist-item {font-size: 27px;}}
+
+.section-header{
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    padding: 10px 10px 0px 10px;
+    color: var(--accent-color);
+    font-size: 38px;
+}
+
+.section-reset-button {
+    box-sizing: border-box;
+    color: var(--third-accent-color);
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 6px;
+    font-family: var(--page-font);
+    font-size: 26px;
+    padding: 3px 15px;    
+}
+
+.section-reset-button:hover{
+    color: var(--secondary-accent-color);
+    background-color: transparent;
+    border-radius: 30px;
+}
+
+.section-header-subtext{
+    color: #a0a0a0;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.section-checkall-button {
+    box-sizing: border-box;
+    color: #a0a0a0;
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 6px;
+    font-family: var(--page-font);
+    font-size: 24px;
+    padding: 3px 15px; 
+    margin-top: 4px;
+    margin-bottom: 8px;   
+}
+
+.section-checkall-button:hover{
+    color: var(--secondary-accent-color);
+    background-color: transparent;
+    border-radius: 30px;
+}

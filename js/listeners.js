@@ -103,7 +103,7 @@ function setupSecondaryCheckboxListeners() {
 
     // Add a change event listener to each checkbox
     checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', clearCheckListData);
+        checkbox.addEventListener('change', resetPage);
     });
 }
 
@@ -301,3 +301,10 @@ function attachEventListenterToWxButton() {
 
     });
   }
+
+function noFlightPlanButtonListener() {
+    const nfpButton = document.getElementById('no-flight-plan');
+    if (!nfpButton) return;
+
+    nfpButton.addEventListener('change', () => resetPage());
+}

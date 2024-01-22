@@ -89,4 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     flightPlanButton.addEventListener('click',buildChecklist);
     resetAllButton.addEventListener('click',resetPage);
 
+    //Other Listeners
+    noFlightPlanButtonListener();
+
 })
