@@ -157,54 +157,52 @@ function appendWeatherData(section, weatherData, index) {
 
 }
 
+/**
+ * Processes the conditions data from the weather API response.
+ * Returns a string with the condition codes joined by spaces.
+ * Handles mapping some special condition codes to words.
+ */
 function processConditionsData(weatherData) {
-    if (!weatherData || !Array.isArray(weatherData.conditions) || weatherData.conditions.length === 0) {
-        return 'None';
+  if (
+    !weatherData ||
+    !Array.isArray(weatherData.conditions) ||
+    weatherData.conditions.length === 0
+  ) {
+    return "None";
+  }
+
+  const conditionCodes = weatherData.conditions.map((conditionObj) => {
+    if (conditionObj.code === "-") {
+      return "LT";
+    } else if (conditionObj.code === "+") {
+      return "HVY";
+    } else {
+      return conditionObj.code;
     }
+  });
 
-    const conditionCodes = weatherData.conditions.map(conditionObj => {
-        if (conditionObj.code === '-') {
-            return 'LT';
-        } else if (conditionObj.code === '+') {
-            return 'HVY';
-        } else {
-            return conditionObj.code;
-        }
-    });
-
-    return conditionCodes.join(' ');
+  return conditionCodes.join(" ");
 }
-
-// function processCloudsData(cloudsArray, sectionIndex) {
-//     if (!Array.isArray(cloudsArray) || cloudsArray.length === 0) {
-//         return [createWeatherDiv('Unreported', `cloud-data-${sectionIndex}-0`)];
-//     }
-
-//     return cloudsArray.map((cloud, cloudIndex) => {
-//         const code = cloud.code || '-';
-//         const baseFeetAgl = cloud.base_feet_agl ? `${cloud.base_feet_agl}ft` : '-';
-//         return createWeatherDiv(`${code} at ${baseFeetAgl}`, `cloud-data-${sectionIndex}-${cloudIndex}`);
-//     });
-// }
 
 function processCloudsData(cloudsArray, sectionIndex) {
     if (!Array.isArray(cloudsArray) || cloudsArray.length === 0) {
         const div = createWeatherDiv('', `cloud-data-${sectionIndex}-0`);
-        div.appendChild(createSpan('Unreported', 'cloud-code'));
-        div.appendChild(createSpan('', 'cloud-base'));
+        div.appendChild(createSpan('Unreported', 'cloud-info'));
         return [div];
     }
 
     return cloudsArray.map((cloud, cloudIndex) => {
-        const div = createWeatherDiv('', `cloud-data-${sectionIndex}-${cloudIndex}`);
         const code = cloud.code || '-';
-        const baseFeetAgl = cloud.base_feet_agl ? `${cloud.base_feet_agl}ft` : '-';
+        // Use convertFlightLevel to format cloud.base_feet_agl, if it exists
+        // Ensure that cloud.base_feet_agl is a number before passing it to convertFlightLevel
+        const baseFeetAgl = cloud.base_feet_agl ? convertFlightLevel(parseInt(cloud.base_feet_agl, 10)) : '-';
+
+        const cloudInfo = `${code}${baseFeetAgl}`; // Combine code and baseFeetAgl into one string
+
+        // Create a single span with the combined text
+        const span = createSpan(cloudInfo, 'cloud-info');
         
-        // Split the text into two parts: 'FEW at' and '1000ft'
-        div.appendChild(createSpan(`${code} at`, 'cloud-code'));
-        div.appendChild(createSpan(baseFeetAgl, 'cloud-base'));
-        
-        return div;
+        return span; // Return the span instead of a div
     });
 }
 
@@ -214,16 +212,4 @@ function createSpan(text, className) {
     span.textContent = text;
     return span;
 }
-
-
-//Dynamic Grid for Clouds
-// function setDynamicGridColumns() {
-//     const cloudContainers = document.querySelectorAll('.clouds0, .clouds1');
-
-//     cloudContainers.forEach(container => {
-//         const numberOfChildren = container.children.length;
-//         const gridTemplateColumnsValue = `repeat(${numberOfChildren}, minmax(auto, 100px))`;
-//         container.style.gridTemplateColumns = gridTemplateColumnsValue;
-//     });
-// }
 

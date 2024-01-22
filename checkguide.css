@@ -358,35 +358,30 @@ body {
     font-size: 18px;
 }
 
+/* All child elements of #weather-container will inherit box-sizing: border-box; */
+#weather-container *, #weather-container *::before, #weather-container *::after {
+    box-sizing: inherit;
+}
+
 .icao0, .icao1{
     color: var(--accent-color);
 }
 
 #origin-weather-section, #destination-weather-section{
-    margin-left: 30px;
-    padding: 8px;
+    padding: 8px 8px 8px 10%;
     flex: 1;
+    flex-wrap: wrap;
 }
 
-#origin-weather-section, #destination-weather-section {
-    div:is([class^="icao"], [class^="wind-data"], [class^="altimeter-data"], [class^="temp-data"], [class^="conditions"]) {
-        margin-bottom: 6px;
-    }
-}
-
-
-.clouds0, .clouds1{
+#origin-weather-section div, #destination-weather-section div{
     display: flex;
     flex-wrap: wrap;
-    box-sizing: border-box;
-    max-width: 800px;
+    padding-bottom: 6px;
+    word-wrap: normal;
 }
 
-div[class^="cloud-data-"] {
-    max-width: 80px;
-    margin-right: 6px;
-    border: solid 1px var(--page-container-border-color);
-    padding: 8px;
+.cloud-info{
+    padding-right: 8px;
 }
 
 
@@ -439,6 +434,12 @@ div[class^="cloud-data-"] {
 }
 
 .checklist-item:hover{
+    border: solid var(--page-container-border-color);
+    background-color: var(--tab-unselected-color);
+}
+
+.checklist-item.hover-effect {
+    border: solid var(--page-container-border-color);
     background-color: var(--tab-unselected-color);
 }
 
@@ -481,9 +482,12 @@ div[class^="cloud-data-"] {
 }
 
 .section-header-subtext{
+    box-sizing: border-box;
     color: #a0a0a0;
     font-size: 24px;
     font-weight: normal;
+    padding: 8px 0px 15px 0px;
+
 }
 
 .section-checkall-button {
@@ -501,6 +505,43 @@ div[class^="cloud-data-"] {
 
 .section-checkall-button:hover{
     color: var(--secondary-accent-color);
+    background-color: transparent;
+    border-radius: 30px;
+}
+
+/****** RESET BUTTONS CONTAINER *******/
+
+.reset-buttons{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: auto auto;
+    border: solid var(--page-container-border-color);
+    border-radius: .5em;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 5px;
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+}
+
+.section-master-reset-button {
+    box-sizing: border-box;
+    color: var(--secondary-accent-color);
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 6px;
+    font-family: var(--page-font);
+    font-size: 19px;
+    padding: 0px 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;    
+}
+
+.section-master-reset-button:hover{
+    color: var(--page-text-color-main);
     background-color: transparent;
     border-radius: 30px;
 }

@@ -102,6 +102,7 @@ async function buildChecklist(){
     attachEventListenersToSectionResetButtons();
     attachEventListenersToMasterResetButtons();
     attachCheckAllEventListeners();
+    setupChecklistKeyListener();
     preventDoubleClick();
 
     //Save Checklist Header

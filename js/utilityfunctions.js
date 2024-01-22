@@ -140,13 +140,11 @@ function formatFlightTime(flightTime) {
 }
 
 function convertFlightLevel(number) {
-    // Convert the number to a string
-    const numberString = number.toString();
-
-    // Extract the first three digits
-    let formattedNumber = numberString.length > 3 ? numberString.substring(0, 3) : numberString.padStart(3, '0');
-
-    return formattedNumber;
+    if (number < 100) {
+        return '000';
+    }
+    let flightLevel = Math.floor(number / 100);
+    return flightLevel.toString().padStart(3, '0');
 }
 
 function convertTrueHeadingToMagnetic(TH, magneticDeclination) {
