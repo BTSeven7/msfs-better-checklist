@@ -50,8 +50,8 @@ async function buildChecklist(){
     //Get Weather Data
     const wxApiKey = document.getElementById('wxApiKeyLocal').value;
     if (isInIframe()){
-        // originWeather = await getWeatherFromSim(sbData.origin.icao_code);
-        // destWeatherestWeather = await getWeatherFromSim(sbData.destination.icao_code);
+        originWeather = await getWeatherFromSim(sbData.origin.icao_code);
+        destWeatherestWeather = await getWeatherFromSim(sbData.destination.icao_code);
     }else if(airportIoValueCheck(wxApiKey)){
         originWeather = await getApiWeatherData(sbData.origin.icao_code, wxApiKey);
         destWeather = await getApiWeatherData(sbData.destination.icao_code, wxApiKey);
