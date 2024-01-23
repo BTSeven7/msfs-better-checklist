@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         disableKeysListener([35, 36]); //disable 35 'End' & 36 'Home'
 
         //Check if there are already stored settings
-        if(!areLocalStorageKeysSet){
+        if(!areLocalStorageKeysSet()){
         const settingsData = await getStoredSettingsFromSim();
         setSimStoredSettings(settingsData);
         };
