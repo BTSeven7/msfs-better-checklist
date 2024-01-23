@@ -1,3 +1,4 @@
+//Settings Inputs
 function setupUserInputListeners() {
     const userInputContainer = document.getElementById('settings-user-input-container');
     const userInputs = userInputContainer.querySelectorAll('input[type="text"]');
@@ -10,6 +11,7 @@ function setupUserInputListeners() {
     });
 }
 
+//Checkboxes - Aircraft
 function setupAircraftCheckboxListeners() {
     const checkboxes = document.querySelectorAll('.aircraft-checkbox');
     const checklistDivs = document.querySelectorAll('.aircraft-checklist-container');
@@ -62,6 +64,7 @@ function setupAircraftCheckboxListeners() {
     });
 }
 
+//Checkboxes - Checklists
 function setupAircraftChecklistCheckboxListeners() {
     const checklistContainers = document.querySelectorAll('.aircraft-checklist-container');
 
@@ -96,6 +99,7 @@ function setupAircraftChecklistCheckboxListeners() {
     });
 }
 
+//Checkboxes - Reset Function
 function setupSecondaryCheckboxListeners() {
     // Select all checkboxes with the specified classes
     const checkboxes = document.querySelectorAll('.aircraft-checkbox, .aircraft-checklist');
@@ -107,6 +111,7 @@ function setupSecondaryCheckboxListeners() {
     });
 }
 
+//Radio Buttons - Main Header
 function setupRadioButtonListeners() {
     const checkguideRadio = document.getElementById('checkguide-radio')
     const aircraftRadio = document.getElementById('aircraft-radio');
@@ -127,6 +132,7 @@ function setupRadioButtonListeners() {
     }
 }
 
+//Checklist Items
 function attachEventListenersToChecklistItems() {
     const checklistItems = document.querySelectorAll('.checklist-item');
     checklistItems.forEach(item => {
@@ -162,6 +168,7 @@ function attachEventListenersToChecklistItems() {
     });
 }
 
+//Reset - Checklist Section
 function attachEventListenersToSectionResetButtons() {
     const resetButtons = document.querySelectorAll('.section-reset-button');
     resetButtons.forEach(resetButton => {
@@ -184,6 +191,7 @@ savePageData();
     });
 }
 
+//Reset ALL
 function attachEventListenersToMasterResetButtons() {
     const masterResetButtons = document.querySelectorAll('.section-master-reset-button');
     masterResetButtons.forEach(resetButton => {
@@ -218,6 +226,7 @@ function attachEventListenersToMasterResetButtons() {
     });
 }
 
+//Check  All
 function attachCheckAllEventListeners() {
     const checkAllButtons = document.querySelectorAll('.section-checkall-button');
 
@@ -260,6 +269,7 @@ function attachCheckAllEventListeners() {
     });
 }
 
+//Update Wx Button
 function attachEventListenterToWxButton() {
     const weatherUpdateButton = document.getElementById('wx-update-button');
     if (!weatherUpdateButton) return; // Check if the button exists
@@ -289,8 +299,8 @@ function attachEventListenterToWxButton() {
         let simDestWeather;
         
         if (isInIframe()) {
-            //simOriginWeather = await getWeatherFromSim(originIcao);
-            //simDestWeather = await getWeatherFromSim(destIcao);
+            simOriginWeather = await getWeatherFromSim(originIcao);
+            simDestWeather = await getWeatherFromSim(destIcao);
         }else{
             simOriginWeather = await getApiWeatherData(originIcao, weatherAPI);
             simDestWeather = await getApiWeatherData(destIcao, weatherAPI);
@@ -302,6 +312,7 @@ function attachEventListenterToWxButton() {
     });
   }
 
+//No Flight Plan Button
 function noFlightPlanButtonListener() {
     const nfpButton = document.getElementById('no-flight-plan');
     if (!nfpButton) return;
