@@ -448,18 +448,13 @@ body::-webkit-scrollbar {
     background-color: var(--tab-unselected-color);
 }
 
-@media (min-width: 360px) {.checklist-item {font-size: 21px;}}
-@media (min-width: 375px) {.checklist-item {font-size: 12.8px;}}
-@media (min-width: 390px) {.checklist-item {font-size: 14.2px;}}
-@media (min-width: 412px) {.checklist-item {font-size: 15.0px;}}
-@media (min-width: 414px) {.checklist-item {font-size: 15.1px;}}
-@media (min-width: 430px) {.checklist-item {font-size: 15px;}}
-@media (min-width: 540px) {.checklist-item {font-size: 20.1px;}}
-@media (min-width: 600px) {.checklist-item {font-size: 22.9px;}}
-@media (min-width: 650px) {.checklist-item {font-size: 24px;}}
-@media (min-width: 700px) {.checklist-item {font-size: 26px;}}
-@media (min-width: 750px) {.checklist-item {font-size: 27px;}}
-@media (min-width: 768px) {.checklist-item {font-size: 27px;}}
+@media (min-width: 350px) {.checklist-item {font-size: 17.4px;}}
+@media (min-width: 525px) {.checklist-item {font-size: 19.4px;}}
+@media (min-width: 565px) {.checklist-item {font-size: 20.4px;}}
+@media (min-width: 610px) {.checklist-item {font-size: 22.4px;}}
+@media (min-width: 655px) {.checklist-item {font-size: 24.4px;}}
+@media (min-width: 695px) {.checklist-item {font-size: 25.4px;}}
+@media (min-width: 735px) {.checklist-item {font-size: 27px;}}
 
 .section-header{
     border-top-right-radius: 8px;
