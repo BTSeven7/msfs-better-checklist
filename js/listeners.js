@@ -320,7 +320,7 @@ function noFlightPlanButtonListener() {
     nfpButton.addEventListener('change', () => resetPage());
 }
 
-//Test
+//J Key For Checklist Check Item
 function setupChecklistKeyListener() {
     document.addEventListener('keydown', (event) => {
         const shortcutKeyCode = 74; // keyCode for 'J'

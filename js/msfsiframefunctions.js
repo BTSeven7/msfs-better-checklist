@@ -18,39 +18,39 @@ function setupIframeListner(){
 //     });
 // }
 
-function setupHotKeyListener(modifierKey, keyCode) {
+function setupHotKeyListener(keyCode, modifierKey = null) {
     window.addEventListener('keydown', (event) => {
-        let modifierKeyPressed = false;
+        let modifierKeyPressed = modifierKey ? false : true; // Default to true if no modifier is required
 
-        switch (modifierKey) {
-            case 'alt':
-                modifierKeyPressed = event.altKey;
-                break;
-            case 'ctrl':
-                modifierKeyPressed = event.ctrlKey;
-                break;
-            case 'shift':
-                modifierKeyPressed = event.shiftKey;
-                break;
-            case 'ShiftLeft':
-                modifierKeyPressed = event.getModifierState('ShiftLeft');
-                break;
-            case 'ShiftRight':
-                modifierKeyPressed = event.getModifierState('ShiftRight');
-                break;
-            case 'ControlLeft':
-                modifierKeyPressed = event.getModifierState('ControlLeft');
-                break;
-            case 'ControlRight':
-                modifierKeyPressed = event.getModifierState('ControlRight');
-                break;
-            // Add cases for other specific keys if needed
-            default:
-                modifierKeyPressed = true; // No specific modifier required
+        if (modifierKey) {
+            switch (modifierKey.toLowerCase()) {
+                case 'alt':
+                    modifierKeyPressed = event.altKey;
+                    break;
+                case 'ctrl':
+                    modifierKeyPressed = event.ctrlKey;
+                    break;
+                case 'shift':
+                    modifierKeyPressed = event.shiftKey;
+                    break;
+                case 'shiftleft':
+                    modifierKeyPressed = event.getModifierState('ShiftLeft');
+                    break;
+                case 'shiftright':
+                    modifierKeyPressed = event.getModifierState('ShiftRight');
+                    break;
+                case 'controlleft':
+                    modifierKeyPressed = event.getModifierState('ControlLeft');
+                    break;
+                case 'controlright':
+                    modifierKeyPressed = event.getModifierState('ControlRight');
+                    break;
+                // Add cases for other specific keys if needed
+            }
         }
 
         if (modifierKeyPressed && event.keyCode === keyCode) {
-            console.log(`Key with keyCode ${keyCode} and ${modifierKey} was pressed`);
+            console.log(`Key with keyCode ${keyCode}${modifierKey ? ' and ' + modifierKey : ''} was pressed`);
             sendParentMessage(`hotkey,pressed`);
             event.preventDefault(); // Prevent the default action for this key
         }
