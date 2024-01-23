@@ -131,3 +131,12 @@ function setSimStoredSettings(settingsData){
     localStorage.setItem('aircraftSelected', settingsData[2]);
     localStorage.setItem('aircraftSelectedChecklist', settingsData[3]);
 }
+
+function areLocalStorageKeysSet() {
+    const keysToCheck = ['aircraftSelected', 'aircraftSelectedChecklist', 'simBriefIdLocal', 'airportIoApiLocal'];
+
+    return keysToCheck.every(key => {
+        const value = localStorage.getItem(key);
+        return value !== null && value !== '';
+    });
+}

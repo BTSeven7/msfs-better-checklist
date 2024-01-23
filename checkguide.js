@@ -5,9 +5,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupHotKeyListener('shift', 90); //90 for Z
         disableKeysListener([35, 36]); //disable 35 'End' & 36 'Home'
 
+        //Check if there are already stored settings
+        if(!areLocalStorageKeysSet){
         const settingsData = await getStoredSettingsFromSim();
         setSimStoredSettings(settingsData);
-
+        };
     }
 
     const body = document.querySelector('body');
