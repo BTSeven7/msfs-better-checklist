@@ -79,10 +79,10 @@ function processParentMessage(message){
 
     switch(command) {
         case 'ids':
-           const sbId = parts.slice(1);
-           const airportKey = parts.slice(2);
-           const aircraft = parts.slice(3);
-           const checklist = parts.slice(4);
+           const sbId = parts[1];
+           const airportKey = parts[2];
+           const aircraft = parts[3];
+           const checklist = parts[4];
            
            const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, airportKey, aircraft, checklist]});
            document.dispatchEvent(settingsData);
@@ -118,10 +118,16 @@ function getStoredSettingsFromSim(){
         sendParentMessage(`idRequest,`);
 
         document.addEventListener('settingsDataReceived', function(event) {
-            console.log(`iFrame Received: ${event}`);
             const settingsData = event.detail;
             resolve(settingsData);
         }, {once: true});
 
     });
+}
+
+function setSimStoredSettings(settingsData){
+    localStorage.setItem('simBriefIdLocal', settingsData[0]);
+    localStorage.setItem('airportIoApiLocal', settingsData[1]);
+    localStorage.setItem('aircraftSelected', settingsData[2]);
+    localStorage.setItem('aircraftSelectedChecklist', settingsData[3]);
 }

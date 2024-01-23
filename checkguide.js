@@ -6,8 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         disableKeysListener([35, 36]); //disable 35 'End' & 36 'Home'
 
         const settingsData = await getStoredSettingsFromSim();
-        console.log(`Settings Data iFrame Received: ${settingsData}`);
-        console.log(settingsData);
+        setSimStoredSettings(settingsData);
 
     }
 
