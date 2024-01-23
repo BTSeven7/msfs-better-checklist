@@ -2,12 +2,21 @@ function isInIframe() {
     return window !== window.parent;
 }
 
-function setupIframeListner(){
-    window.addEventListener('message', function(event) {
-        console.log('Message received from Parent:', event.data);
-        processParentMessage(event.data);
-        });
-};
+// function setupIframeListner(){
+//     window.addEventListener('message', function(event) {
+//         console.log('Message received from Parent:', event.data);
+//         processParentMessage(event.data);
+//         });
+// };
+
+function setupIframeListener() {
+    return new Promise((resolve, reject) => {
+        window.addEventListener('message', function(event) {
+            console.log('Message received from Parent:', event.data);
+            resolve(event.data); // Resolve the promise with the message data
+        }, { once: true });
+    });
+}
 
 function setupHotKeyListener(modifierKey, keyCode) {
     window.addEventListener('keydown', (event) => {
