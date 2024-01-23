@@ -24,6 +24,11 @@ body {
     background-color: var(--page-background-color);
     font-family: var(--page-font);
     font-weight: var(--page-font-weight);
+    scrollbar-width: none; /* For Firefox */
+}
+
+body::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
 }
 
 /******* Header (Top of Page) Container Styles *******/
