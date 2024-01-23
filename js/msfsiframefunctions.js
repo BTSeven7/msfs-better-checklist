@@ -70,13 +70,13 @@ function processParentMessage(message){
 
     switch(command) {
         case 'ids':
-            addToLocalStorage('simBriefIdLocal', parts[1]);
-            addToLocalStorage('airportIoApiLocal', parts[2]);
+           localStorage.setItem('simBriefIdLocal', parts[1]);
+           localStorage.setItem('airportIoApiLocal', parts[2]);
         break;
 
         case 'aircraft':
-            addToLocalStorage('aircraftSelected', parts[1]);
-            addToLocalStorage('aircraftSelectedChecklist', parts[2]);
+            localStorage.setItem('aircraftSelected', parts[1]);
+            localStorage.setItem('aircraftSelectedChecklist', parts[2]);
         break;
         
         case 'weather':
