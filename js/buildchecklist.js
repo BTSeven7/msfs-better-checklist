@@ -19,8 +19,9 @@ async function buildChecklist(){
     }
 
     //If in Simulator send ID/API to update data storage
-    if (isInIframe){
+    if (isInIframe()){
         sendParentMessage(`ids,${simBriefId},${airportIoApiKey}`);
+        sendParentMessage(`checklist,`)
     }
 
     //Delcare Data Holder Variables
@@ -155,6 +156,10 @@ async function getChecklistData(checklistName){
         console.error('Error fetching airportIO Data:',error);
         return null;
     }
+
+}
+
+function getSelectedAicraft(){
 
 }
 

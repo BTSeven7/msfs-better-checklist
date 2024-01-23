@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
-    if(isInIframe) {
+    if(isInIframe()) {
         setupHotKeyListener('shift', 90); //90 for Z
         disableKeysListener([35, 36]); //disable 35 'End' & 36 'Home'
 
