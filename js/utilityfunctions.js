@@ -68,7 +68,6 @@ function restoreChecklistDataLocalStorage(){
     attachEventListenersToSectionResetButtons();
     attachEventListenersToMasterResetButtons();
     attachCheckAllEventListeners();
-    setupChecklistKeyListener();
     preventDoubleClick();
 }
 

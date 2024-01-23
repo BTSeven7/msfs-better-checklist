@@ -175,7 +175,7 @@ body::-webkit-scrollbar {
 
 #checkguide-title-container span:first-of-type {
     display: inline-block;
-    font-size: 45px;
+    font-size: 50px;
     width: 100%;
 }
 
@@ -186,7 +186,7 @@ body::-webkit-scrollbar {
 
 #flight-overview-container{
     color: var(--page-text-color-main);
-    font-size: 22px;
+    font-size: 25px;
     text-align: center;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -383,6 +383,7 @@ body::-webkit-scrollbar {
     flex-wrap: wrap;
     padding-bottom: 6px;
     word-wrap: normal;
+    font-size: 24px;
 }
 
 .cloud-info{
@@ -439,12 +440,10 @@ body::-webkit-scrollbar {
 }
 
 .checklist-item:hover{
-    border: solid var(--page-container-border-color);
     background-color: var(--tab-unselected-color);
 }
 
 .checklist-item.hover-effect {
-    border: solid var(--page-container-border-color);
     background-color: var(--tab-unselected-color);
 }
 

@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     //Other Listeners
     noFlightPlanButtonListener();
+    setupChecklistKeyListener(); //Checklist Hot Key, searches for element
 
     //Request SimBriefId, API Keys, Aircraft, and Checklist
     
