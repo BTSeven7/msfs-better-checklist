@@ -323,31 +323,11 @@ function noFlightPlanButtonListener() {
 //Test
 function setupChecklistKeyListener() {
     document.addEventListener('keydown', (event) => {
-        const shortcutKey = 'KeyN';
+        const shortcutKeyCode = 74; // keyCode for 'J'
 
-        if (event.code === shortcutKey) {
+        if (event.keyCode === shortcutKeyCode) {
             event.preventDefault();
-            
-            const items = document.querySelectorAll('.checklist-item');
-  
-            const nextItem = Array.from(items).find(
-                item => item.style.display !== 'none'
-            );
-  
-            if (nextItem) {
-                // Add hover-effect class
-                nextItem.classList.add('hover-effect');
-                
-                // Remove hover-effect class after 500ms and then trigger the click event
-                setTimeout(() => {
-                    nextItem.classList.remove('hover-effect');
-                    
-                    // Trigger the click event after removing the hover-effect
-                    setTimeout(() => {
-                        nextItem.click();
-                    }, 25); // Slight delay to visually separate hover effect from the click action
-                }, 50);
-            };
+            triggerNextChecklistItem();
         }
     });
 }

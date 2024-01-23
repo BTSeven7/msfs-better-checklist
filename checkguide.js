@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if(isInIframe()) {
         setupIframeListner();
-        setupHotKeyListener('shift', 90); //90 for Z
+        setupHotKeyListener(85); //85 for U - Panel Visibility
         disableKeysListener([35, 36]); //disable 35 'End' & 36 'Home'
 
         //Check if there are already stored settings

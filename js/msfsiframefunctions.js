@@ -93,6 +93,10 @@ function processParentMessage(message){
             const weatherEvent = new CustomEvent('weatherDataReceived', {detail: weatherData});
             document.dispatchEvent(weatherEvent);
         break;
+
+        case 'checkShortCut':
+            triggerNextChecklistItem(); //Utilityfunctions
+        break;
     }
     };
 }
