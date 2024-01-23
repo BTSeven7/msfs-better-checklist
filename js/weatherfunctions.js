@@ -4,6 +4,7 @@ function getWeatherFromSim(icao){
         sendParentMessage(`weather,${icao}`);
 
         document.addEventListener('weatherDataReceived', function(event) {
+            console.log(`iFrame Received: ${event}`);
             const weatherArray = event.detail;
             const weatherData = metarParser(weatherArray[0]);
             resolve(weatherData);
