@@ -1,9 +1,17 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
     if(isInIframe) {
         setupIframeListner (); 
         setupHotKeyListener('shift', 90); //90 for Z
         disableKeysListener([35, 36]); //disable 35 'End' & 36 'Home'
+
+        try {
+            const message = await setupIframeListener();
+            processParentMessage(message);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
     }
 
     const body = document.querySelector('body');
