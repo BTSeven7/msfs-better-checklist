@@ -1,18 +1,3 @@
-function getWeatherFromSim(icao){
-    return new Promise((resolve, reject) => {
-
-        sendParentMessage(`weather,${icao}`);
-
-        document.addEventListener('weatherDataReceived', function(event) {
-            console.log(`iFrame Received: ${event}`);
-            const weatherArray = event.detail;
-            const weatherData = metarParser(weatherArray[0]);
-            resolve(weatherData);
-        }, {once: true});
-
-    });
-}
-
 async function getApiWeatherData(icao, weatherApiKey) {
     const token = weatherApiKey;
     const url = `https://avwx.rest/api/metar/${icao}?token=${weatherApiKey}`;

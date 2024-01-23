@@ -79,13 +79,13 @@ function processParentMessage(message){
 
     switch(command) {
         case 'ids':
-           localStorage.setItem('simBriefIdLocal', parts[1]);
-           localStorage.setItem('airportIoApiLocal', parts[2]);
-        break;
-
-        case 'aircraft':
-            localStorage.setItem('aircraftSelected', parts[1]);
-            localStorage.setItem('aircraftSelectedChecklist', parts[2]);
+           const sbId = parts.slice(1);
+           const airportKey = parts.slice(2);
+           const aircraft = parts.slice(3);
+           const checklist = parts.slice(4);
+           
+           const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, airportKey, aircraft, checklist]});
+           document.dispatchEvent(settingsData);
         break;
         
         case 'weather':

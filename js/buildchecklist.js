@@ -4,6 +4,8 @@ async function buildChecklist(){
     const airportIoApiKey = document.getElementById('airportIoApiLocal').value;
     const errorDiv = document.getElementById('error-checkguide-header');
     const noFlightPlanCheckbox = document.getElementById('no-flight-plan');
+    const aircrafId = getSelectedAicraft();
+    const checklistId = getSelectedChecklist();
 
     //Clear the Checklist Container
     resetPage();
@@ -20,8 +22,7 @@ async function buildChecklist(){
 
     //If in Simulator send ID/API to update data storage
     if (isInIframe()){
-        sendParentMessage(`ids,${simBriefId},${airportIoApiKey}`);
-        sendParentMessage(`checklist,`)
+        sendParentMessage(`ids,${simBriefId},${airportIoApiKey},${aircrafId},${checklistId}`);
     }
 
     //Delcare Data Holder Variables
@@ -89,16 +90,18 @@ async function buildChecklist(){
     //Create Checklist Sections
     createChecklistSections(checklistWithApi); 
 
+    //If 'No Flight Plan' Option is NOT selected, update weather containers
     if (!noFlightPlanCheckbox.checked){
         updateWeatherContainers(originWeather, destWeather);
     }
-        
+    
+    //Set Checklist Container Visible, Add Checklist Items, Update SubText
     const checkContainer = document.getElementById('checklist-sections-container');
     checkContainer.style.display = 'flex'; //Set Checklist Container visible
     addChecklistItemsToSections(checklistWithApi); //Create Checklist Items
     updateSubtextForSection(sbData, buildUniqueSectionsWithSubtext(checklistData));
 
-    //Attach Event Listeners
+    //Attach All Eent Listeners
     attachEventListenersToChecklistItems();
     attachEventListenersToSectionResetButtons();
     attachEventListenersToMasterResetButtons();
@@ -160,7 +163,17 @@ async function getChecklistData(checklistName){
 }
 
 function getSelectedAicraft(){
+    const checkboxes = document.querySelectorAll('.aircraft-checkbox');
+    let selectedValue = null;
 
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            selectedValue = checkbox.id; // or checkbox.id or any other attribute you need
+            return;
+        }
+    });
+
+    return selectedValue;
 }
 
 function getSelectedChecklist(){

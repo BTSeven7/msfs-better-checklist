@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupIframeListner();
         setupHotKeyListener('shift', 90); //90 for Z
         disableKeysListener([35, 36]); //disable 35 'End' & 36 'Home'
+
+        const settingsData = await getStoredSettingsFromSim();
+        console.log(`Settings Data iFrame Received: ${settingsData}`);
+        console.log(settingsData);
+
     }
 
     const body = document.querySelector('body');
@@ -93,7 +98,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     noFlightPlanButtonListener();
 
     //Request SimBriefId, API Keys, Aircraft, and Checklist
-    const settingsData = await getStoredSettingsFromSim();
-    console.log(`Settigns Data iFrame Received: ${settingsData}`);
+    
 
 })
