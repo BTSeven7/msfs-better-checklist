@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     noFlightPlanButtonListener();
 
     //Request SimBriefId, API Keys, Aircraft, and Checklist
-    const settingsData = await getSettingsData();
+    const settingsData = await getStoredSettingsFromSim();
     console.log(`Settigns Data iFrame Received: ${settingsData}`);
 
 })
