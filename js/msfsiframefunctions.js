@@ -2,21 +2,21 @@ function isInIframe() {
     return window !== window.parent;
 }
 
-// function setupIframeListner(){
-//     window.addEventListener('message', function(event) {
-//         console.log('Message received from Parent:', event.data);
-//         processParentMessage(event.data);
-//         });
-// };
+function setupIframeListner(){
+    window.addEventListener('message', function(event) {
+        console.log('Message received from Parent:', event.data);
+        processParentMessage(event.data);
+        });
+};
 
-function setupIframeListener() {
-    return new Promise((resolve, reject) => {
-        window.addEventListener('message', function(event) {
-            console.log('Message received from Parent:', event.data);
-            resolve(event.data); // Resolve the promise with the message data
-        }, { once: true });
-    });
-}
+// function setupIframeListener() {
+//     return new Promise((resolve, reject) => {
+//         window.addEventListener('message', function(event) {
+//             console.log('Message received from Parent:', event.data);
+//             resolve(event.data); // Resolve the promise with the message data
+//         }, { once: true });
+//     });
+// }
 
 function setupHotKeyListener(modifierKey, keyCode) {
     window.addEventListener('keydown', (event) => {
@@ -95,4 +95,33 @@ function processParentMessage(message){
         break;
     }
     };
+}
+
+function getWeatherFromSim(icao){
+    return new Promise((resolve, reject) => {
+
+        sendParentMessage(`weather,${icao}`);
+
+        document.addEventListener('weatherDataReceived', function(event) {
+            console.log(`iFrame Received: ${event}`);
+            const weatherArray = event.detail;
+            const weatherData = metarParser(weatherArray[0]);
+            resolve(weatherData);
+        }, {once: true});
+
+    });
+}
+
+function getStoredSettingsFromSim(){
+    return new Promise((resolve, reject) => {
+
+        sendParentMessage(`idRequest,`);
+
+        document.addEventListener('settingsDataReceived', function(event) {
+            console.log(`iFrame Received: ${event}`);
+            const settingsData = event.detail;
+            resolve(settingsData);
+        }, {once: true});
+
+    });
 }
