@@ -110,6 +110,7 @@ async function buildChecklist(){
 
     //Save Checklist Header
     savePageData();
+    location.reload();
 }
 
 //Data Collection Functions
