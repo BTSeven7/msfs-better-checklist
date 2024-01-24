@@ -3,9 +3,14 @@
     src: url('./fonts/JetBrainsMono.ttf') format('truetype');
   }
 
+@font-face {
+    font-family: 'NotoSansMono';
+    src: url('./fonts/NotoSansMono.ttf') format('truetype');
+}
+
 /* Global Styles */
 :root {
-    --page-font: 'JetBrainsMono';
+    --page-font: 'NotoSansMono';
     --page-font-weight: bold;
     --container-max-width: 800px;
     --page-background-color: #2e2e2e; /* Darker Grey Background */
@@ -18,10 +23,21 @@
     --third-accent-color: #c77c02; 
     --hover-color: #64b5f6; /* Brighter Blue for Hover States */
     --heading-color: #ffffff; /* White for Headings */
+
+    --sFar-left: #1f3a5f;
+    --sTab-Unselected-Text: #4d648d;
+    --sAccent-Text: #acc2ef;
+    --sSecond-Left: #3d4a80;
+    --sFirst-Left: #cee8ff;
+    --sBackground-Color: #0f1c2e;
+    --sOff-Background: #1f2b3e;
+    --sContainer-Background: #374357;
+    --sMain-Text: #FFFFFF;
+    --sFar-Right: #e0e0e0;
 }
 
 body {
-    background-color: var(--page-background-color);
+    background-color: var(--sBackground-Color);
     font-family: var(--page-font);
     font-weight: var(--page-font-weight);
     scrollbar-width: none; /* For Firefox */
@@ -36,7 +52,9 @@ body::-webkit-scrollbar {
     box-sizing: border-box;
     margin: 10px auto auto auto;
     border: solid var(--page-container-border-color);
-    border-radius: 8px;
+    background-color: var(--sContainer-Background);
+    border: transparent;
+    border-radius: 20px;
     max-width: var(--container-max-width);
     display: flex;
     flex-wrap: wrap;
@@ -55,11 +73,11 @@ body::-webkit-scrollbar {
     box-sizing: border-box;
     padding: .5em;
     border-right: solid 0px var(--page-background-color);
-    background-color: var(--tab-background-color);
+    background-color: var(--sOff-Background);
     text-align: center; 
     font-size: 22px;
     border-radius: 0px;
-    color: var(--tab-unselected-color);
+    color: var(--sTab-Unselected-Text);
     flex-grow: 1;
     flex-basis: calc(33.33333% - 4px);
     margin-right: 0;
@@ -67,11 +85,11 @@ body::-webkit-scrollbar {
 }
 
 #header-container label[for="checkguide-radio"] {
-    border-top-left-radius: 4px;
+    border-top-left-radius: 20px;
 }
 
 #header-container label[for="settings-radio"]{
-    border-top-right-radius: 4px;
+    border-top-right-radius: 20px;
 }
 
 #header-container label[for="settings-radio"]:last-of-type {
@@ -82,8 +100,8 @@ body::-webkit-scrollbar {
 
 #header-container label:hover,
 #header-container input:checked + label {
-    color: var(--accent-color);
-    background-color: var(--page-background-color);
+    color: var(--sAccent-Text);
+    background-color: var(--sContainer-Background);
 }
 
 /* Header visibilty settings */
@@ -103,6 +121,7 @@ body::-webkit-scrollbar {
 #header-settings-container{
     width: 100%;
     flex-wrap: wrap;
+    margin-bottom: 8px;
 }
 
 /******* User Input - Settings Tab - Formatting *******/
@@ -119,8 +138,8 @@ body::-webkit-scrollbar {
 
 #settings-user-input-container input{
     box-sizing: border-box;
-    background-color: var(--page-background-color);
-    font-family: var(--page-font);
+    background-color: var(--sContainer-Background);
+    font-family: var(--sMain-Text);
     border-style: none none solid none;
     margin: 15px 0 15px 0;
     width: 100%;
@@ -146,7 +165,7 @@ body::-webkit-scrollbar {
     justify-content: center;
     width: 100%;
     margin: auto;
-    color: var(--page-text-color-main);
+    color: var(--sMain-Text);
     padding: 10px 12px 25px 12px;
 }
 
@@ -157,12 +176,14 @@ body::-webkit-scrollbar {
 #color-settings-container span:not(.slider-round), #no-flight-plan-option-container span:not(.slider-round){
     margin-right: 15px;
     font-size: 21px;
+    font-weight: 500;
 }
 
 /***************Check Guide Tab***************/
 #header-checkguide-container{
     flex-direction: column;
     width: 100%;
+    margin-bottom: 15px;
 }
 
 #checkguide-title-container{
@@ -185,11 +206,11 @@ body::-webkit-scrollbar {
 }
 
 #flight-overview-container{
-    color: var(--page-text-color-main);
+    color: var(--sMain-Text);
+    font-weight: 500;
     font-size: 25px;
     text-align: center;
     margin-top: 15px;
-    margin-bottom: 15px;
 }
 
 #overview-header-1{
@@ -200,29 +221,30 @@ body::-webkit-scrollbar {
     box-sizing: border-box;
     margin-top: 15px;
     text-align: center;
-    width: 100%
+    width: 100%;
+    background-color: var(--sOff-Background);
+    align-self: center;
 }
 
 #main-button-container .main-container-button {
     box-sizing: border-box;
     color: var(--accent-color);
     background-color: transparent;
-    border-color: transparent;
-    border-radius: 6px;
+    font-weight: 600;
     font-family: var(--page-font);
     font-size: 26px;
-    padding: 3px 15px;
-    
+    padding: 10px 20px 10px 20px;
+    border: transparent;
 }
 
 #main-button-container .main-container-button:hover{
     color: var(--secondary-accent-color);
-    background-color: transparent;
-    border-radius: 30px;
 }
 
 #error-checkguide-header{
     color: var(--secondary-accent-color);
+    font-weight: 500;
+    font-size: 20px;
     margin-top: 15px;
     text-align: center;
 }
@@ -238,22 +260,24 @@ body::-webkit-scrollbar {
     flex: 1;
     flex-direction: column;
     box-sizing: border-box;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     width: 100%;
 }
 
 #aircraft-list-container{
-    margin-left: 9%;
+    /* margin-left: 9%; */
+    justify-items: center;
 }
 
 #aircraft-list-container .aircraft-container, #aircraft-checklist-container .checklist-item-container{
     display: flex;
     box-sizing: border-box;
-    padding: 5px 0px 5px 0px;
+    padding: 10px 0px 10px 0px;
     flex-wrap: wrap;
     align-items: center;
-    color: var(--page-text-color-main)
+    padding-left: 25%;
+    color: var(--sMain-Text);
 }
 
 .aircraft-checklist-container{
@@ -268,6 +292,8 @@ body::-webkit-scrollbar {
 #aircraft-list-container span:not(.slider-round), .checklist-item-container span:not(.slider-round){
     margin-right: 15px;
     font-size: 21px;
+    color:var(--sMain-Text);
+    font-weight: 500;
 }
 
 /******* All Slider Button Formatting *******/
@@ -297,7 +323,7 @@ body::-webkit-scrollbar {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: var(--sFar-Right);
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -311,7 +337,7 @@ body::-webkit-scrollbar {
     width: 22px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: var(--sTab-Unselected-Text);
     -webkit-transition: .4s;
     transition: .4s;
     flex-basis: 0;
@@ -320,13 +346,13 @@ body::-webkit-scrollbar {
 #color-settings-container .sliderSwitch input:checked + .slider-round, 
 #header-aircraft-container .sliderSwitch input:checked + .slider-round, 
 #no-flight-plan-option-container .sliderSwitch input:checked + .slider-round{
-    background-color: #2196F3;
+    background-color: var(--sFirst-Left);
 }
 
 #color-settings-container .sliderSwitch input:focus + .slider-round, 
 #header-aircraft-container .sliderSwitch input:focus + .slider-round, 
 #no-flight-plan-option-container .sliderSwitch input:focus + .slider-round{
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px var(--sFirst-Left);
 }
 
 #color-settings-container .sliderSwitch input:checked + .slider-round:before, 
@@ -354,31 +380,58 @@ body::-webkit-scrollbar {
 /******* WEATHER CONTAINER STYLING ******/
 #weather-container{
     box-sizing: border-box;
-    display: flex;
-    text-align: left;
-    border: solid var(--page-container-border-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: transparent;
     border-radius: 8px;
-    margin-top: 4px;
+    margin-top: 16px;
     color: #a0a0a0;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 /* All child elements of #weather-container will inherit box-sizing: border-box; */
 #weather-container *, #weather-container *::before, #weather-container *::after {
     box-sizing: inherit;
+    word-break: break-all;
 }
 
 .icao0, .icao1{
+    display: flex;
     color: var(--accent-color);
+    background-color: var(--sOff-Background);
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    justify-content: center;
+    margin-bottom: 8px;
+    padding: 8px 0px 8px 0px;
+    font-size: 22px;
 }
 
-#origin-weather-section, #destination-weather-section{
-    padding: 8px 8px 8px 10%;
-    flex: 1;
-    flex-wrap: wrap;
+#origin-weather-section {
+    background-color: var(--sContainer-Background);
+    border-radius: 20px;
+    margin-right: 4px;
 }
 
-#origin-weather-section div, #destination-weather-section div{
+#destination-weather-section{
+    background-color: var(--sContainer-Background);
+    border-radius: 20px;
+    margin-left: 4px;
+}
+
+.wind-data0, .temp-data0, .altimeter-data0, .conditions0, .clouds0,
+    .wind-data1, .temp-data1, .altimeter-data1, .conditions1, .clouds1{
+    padding: 5px 0px 5px 10%;
+    text-wrap: normal;
+    color: var(--sMain-Text);
+    font-weight: 500;
+}
+
+.clouds0, .clouds1{
+    padding-bottom: 12px;
+}
+
+/*#origin-weather-section div, #destination-weather-section div{
     display: flex;
     flex-wrap: wrap;
     padding-bottom: 6px;
@@ -388,7 +441,7 @@ body::-webkit-scrollbar {
 
 .cloud-info{
     padding-right: 8px;
-}
+}*/
 
 
 /******* CHECKLIST STYLING *******/
@@ -402,16 +455,17 @@ body::-webkit-scrollbar {
 }
 
 .checklist-section{
-    display: flex;
+    display: block;
     flex-direction: column;
     flex: 1;
     width: 100%;
     max-width: 800px;
     box-sizing: border-box;
     text-align: center;
-    border: solid var(--page-container-border-color);
-    border-radius: 8px;
-    margin-top: 4px;
+    border: transparent;
+    background-color: var(--sContainer-Background);
+    border-radius: 20px;
+    margin-top: 16px;
 }
 
 .section-header{
@@ -419,7 +473,19 @@ body::-webkit-scrollbar {
     box-sizing: border-box;
     margin-top: 4px;
     margin-bottom: 4px;
-    color: var(--hover-color)
+    color: var(--hover-color);
+    background-color: var(--sOff-Background);
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    padding: 10px 0px 10px 0px;
+}
+
+.section-header-checkall-button{
+    box-sizing: border-box;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    padding: 10px 0px 10px 0px;
+    color: var(--sFirst-Left);
 }
 
 .checklist-item{
@@ -432,7 +498,7 @@ body::-webkit-scrollbar {
     max-width: 95%;
     min-width: 0;
     flex-wrap: wrap;
-    color: var(--page-text-color-main);
+    color: var(--sMain-Text);
     cursor: pointer;
     padding: 8px 15px 8px 15px;
     border-radius: 16px;
@@ -440,11 +506,15 @@ body::-webkit-scrollbar {
 }
 
 .checklist-item:hover{
-    background-color: var(--tab-unselected-color);
+    background-color: var(--sFar-Right);
+    color: var(--sFar-left);
+    font-weight: 600;
 }
 
 .checklist-item.hover-effect {
     background-color: var(--tab-unselected-color);
+    color: var(--sFar-left);
+    font-weight: 600;
 }
 
 @media (min-width: 350px) {.checklist-item {font-size: 17.4px;}}
@@ -455,17 +525,9 @@ body::-webkit-scrollbar {
 @media (min-width: 695px) {.checklist-item {font-size: 25.4px;}}
 @media (min-width: 735px) {.checklist-item {font-size: 27px;}}
 
-.section-header{
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
-    padding: 10px 10px 0px 10px;
-    color: var(--accent-color);
-    font-size: 38px;
-}
-
 .section-reset-button {
     box-sizing: border-box;
-    color: var(--third-accent-color);
+    color: var(--sFirst-Left);
     background-color: transparent;
     border-color: transparent;
     border-radius: 6px;
@@ -482,16 +544,16 @@ body::-webkit-scrollbar {
 
 .section-header-subtext{
     box-sizing: border-box;
-    color: #a0a0a0;
+    color: var(--sFar-Right);
     font-size: 24px;
-    font-weight: normal;
-    padding: 8px 0px 15px 0px;
+    font-weight: 500;
+    padding: 8px 5% 15px 5%;
 
 }
 
 .section-checkall-button {
     box-sizing: border-box;
-    color: #a0a0a0;
+    color: var(--sFirst-Left);
     background-color: transparent;
     border-color: transparent;
     border-radius: 6px;
@@ -514,25 +576,26 @@ body::-webkit-scrollbar {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin: auto auto;
-    border: solid var(--page-container-border-color);
+    border: transparent;
+    background-color: var(--sContainer-Background);
     border-radius: .5em;
     box-sizing: border-box;
     padding: 10px;
     width: 100%;
     max-width: 800px;
-    margin-top: 5px;
+    margin-top: 16px;
     grid-column-gap: 8px;
     grid-row-gap: 8px;
 }
 
 .section-master-reset-button {
     box-sizing: border-box;
-    color: var(--secondary-accent-color);
+    color: var(--sFirst-Left);
     background-color: transparent;
     border-color: transparent;
     border-radius: 6px;
     font-family: var(--page-font);
-    font-size: 19px;
+    font-size: 23px;
     padding: 0px 15px;
     white-space: nowrap;
     overflow: hidden;
@@ -540,7 +603,7 @@ body::-webkit-scrollbar {
 }
 
 .section-master-reset-button:hover{
-    color: var(--page-text-color-main);
+    color: var(--secondary-accent-color);
     background-color: transparent;
     border-radius: 30px;
 }
