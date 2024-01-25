@@ -184,6 +184,17 @@ body::-webkit-scrollbar {
     font-weight: 500;
 }
 
+/*************INSTURCTIONS-INFO***************/
+#information-settings-container{
+    color: var(--sMain-Text);
+    font-weight: 400;
+    padding: 0 25px 0 25px;
+}
+
+#information-settings-container li{
+    margin-bottom: 25px;
+}
+
 /***************Check Guide Tab***************/
 #header-checkguide-container{
     flex-direction: column;
@@ -442,7 +453,7 @@ body::-webkit-scrollbar {
     padding-bottom: 12px;
 }
 
-.clouds0 span{
+.clouds0 span, .clouds1 span{
     padding-right: 8px;
 }
 

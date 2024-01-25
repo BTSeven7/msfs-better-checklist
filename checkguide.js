@@ -41,11 +41,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const colorSettingsContainer = createDOMElement('div', 'color-settings-container', containerSettings, undefined,'settings-container');
     createSliderCheckbox(colorSettingsContainer,'color1','Light Colors')
 
-    const informationContainer = createDOMElement('div', 'information-settings-container', containerSettings, undefined,'settings-container');
-    const information1Text = createDOMElement('p', 'information-text', informationContainer, '');
-    const information2Text = createDOMElement('p', 'information-text', informationContainer, '');
-    const information3Text = createDOMElement('p', 'information-text', informationContainer, '');
-    information1Text.textContent = 'This is A Test';
+    const informationContainer = createDOMElement('div', 'information-settings-container', containerSettings, undefined, 'settings-container');
+    informationContainer.innerHTML = `
+    <ul>
+        <li>Shortcut Keys: 'J' to mark off items and 'U' to toggle the panel's visibility in the simulator.</li>
+        
+        <li>If you haven't filed a flight plan on SimBrief, select the 'No Flight Plan' option.</li>
+        
+        <li>When using this as an in-game panel, rest assured that weather data is seamlessly pulled directly from the simulator for your convenience!</li>
+        
+        <li>To access RWY Heading data, register at <span>https://airportdb.io/</span> and obtain your API key. The check guide works without an API key if you don't require RWY Heading data.</li>
+        
+        <li>If you want weather data outside of the simulator, register at <span>https://account.avwx.rest/getting-started</span> and obtain an API token.</li>
+    </ul>`;
+
 
     //Aicraft Tab
     //Build List of Aircraft
