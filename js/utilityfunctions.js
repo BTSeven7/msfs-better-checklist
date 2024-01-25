@@ -44,7 +44,7 @@ function restoreUserDataLocalStorage() {
         updateCheckGuideTitle(); 
     }
 
-    const specificCheckboxKeys = ['no-flight-plan', 'color1', 'font2'];
+    const specificCheckboxKeys = ['no-flight-plan', 'color1', 'font2','background'];
     specificCheckboxKeys.forEach(key => {
         const isTrue = localStorage.getItem(key) === 'true';
         const checkboxElement = document.getElementById(key);
@@ -274,5 +274,15 @@ function toggleFontStyle(isChecked) {
     } else {
         document.documentElement.classList.remove('root-alternate-font');
         localStorage.setItem('font2', 'false');
+    }
+}
+
+function toggleBackground(isChecked) {
+    if (isChecked) {
+        document.documentElement.classList.add('root-alternate-background');
+        localStorage.setItem('background', 'true');
+    } else {
+        document.documentElement.classList.remove('root-alternate-background');
+        localStorage.setItem('background', 'false');
     }
 }

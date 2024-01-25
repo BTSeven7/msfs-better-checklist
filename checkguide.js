@@ -39,8 +39,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     createSliderCheckbox(noFlightPlanContainer,'no-flight-plan', 'No Flight Plan');
 
     const colorSettingsContainer = createDOMElement('div', 'color-settings-container', containerSettings, undefined,'settings-container');
-    createSliderCheckbox(colorSettingsContainer,'color1','Light Colors');
-    createSliderCheckbox(colorSettingsContainer,'font2', 'Alternate Font');
+    createSliderCheckbox(colorSettingsContainer,'color1','Light/Dark');
+    createSliderCheckbox(colorSettingsContainer,'font2', 'Alt Font');
+    createSliderCheckbox(colorSettingsContainer,'background', 'Background');
 
     const informationContainer = createDOMElement('div', 'information-settings-container', containerSettings, undefined, 'settings-container');
     informationContainer.innerHTML = `
@@ -102,6 +103,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             toggleColorPalette(colorPaletteSwitch.checked);
             const fontSwitch = document.getElementById('font2');
             toggleFontStyle(fontSwitch.checked);
+            const backgroundSwitch = document.getElementById('background');
+            toggleBackground(backgroundSwitch.checked);
 
         })
         .catch(error => {
@@ -119,6 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupChecklistKeyListener(); //Checklist Hot Key, searches for element
     colorPalletteSwitchListener();
     fontSwitchListener();
+    backgroundSwitchListener();
     
 
 })

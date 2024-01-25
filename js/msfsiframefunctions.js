@@ -77,8 +77,9 @@ function processParentMessage(message){
            const color = parts[5];
            const font = parts[6];
            const nfpStatus = parts[7];
+           const background = parts[8];
            
-           const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, airportKey, aircraft, checklist, color, font, nfpStatus]});
+           const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, airportKey, aircraft, checklist, color, font, nfpStatus, background]});
            document.dispatchEvent(settingsData);
         break;
         
@@ -131,6 +132,7 @@ function setSimStoredSettings(settingsData){
     localStorage.setItem('font2', settingsData[4]);
     localStorage.setItem('color1', settingsData[5]);
     localStorage.setItem('no-flight-plan', settingsData[6]);
+    localStorage.setItem('backgroun', settingsData[7]);
 }
 
 function areLocalStorageKeysSet() {

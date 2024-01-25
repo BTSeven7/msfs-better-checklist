@@ -369,10 +369,20 @@ function colorPalletteSwitchListener() {
     });
 }
 
+//Font Switch
 function fontSwitchListener() {
     const fontSwitch = document.getElementById('font2');
     fontSwitch.addEventListener('change', function() {
         toggleFontStyle(this.checked);
         sendParentMessage(`font,${this.checked.toString()}`);
+    });
+}
+
+//Background Switch
+function backgroundSwitchListener(){
+    const backgroundSwitch = document.getElementById('background');
+    backgroundSwitch.addEventListener('change', function() {
+        toggleBackground(this.checked);
+        sendParentMessage(`background,${this.checked.toString()}`);
     });
 }
