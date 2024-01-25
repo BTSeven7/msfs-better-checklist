@@ -9,15 +9,6 @@ function setupIframeListner(){
         });
 };
 
-// function setupIframeListener() {
-//     return new Promise((resolve, reject) => {
-//         window.addEventListener('message', function(event) {
-//             console.log('Message received from Parent:', event.data);
-//             resolve(event.data); // Resolve the promise with the message data
-//         }, { once: true });
-//     });
-// }
-
 function setupHotKeyListener(keyCode, modifierKey = null) {
     window.addEventListener('keydown', (event) => {
         let modifierKeyPressed = modifierKey ? false : true; // Default to true if no modifier is required
@@ -83,8 +74,11 @@ function processParentMessage(message){
            const airportKey = parts[2];
            const aircraft = parts[3];
            const checklist = parts[4];
+           const color = parts[5];
+           const font = parts[6];
+           const nfpStatus = parts[7];
            
-           const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, airportKey, aircraft, checklist]});
+           const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, airportKey, aircraft, checklist, color, font, nfpStatus]});
            document.dispatchEvent(settingsData);
         break;
         
@@ -134,10 +128,13 @@ function setSimStoredSettings(settingsData){
     localStorage.setItem('airportIoApiLocal', settingsData[1]);
     localStorage.setItem('aircraftSelected', settingsData[2]);
     localStorage.setItem('aircraftSelectedChecklist', settingsData[3]);
+    localStorage.setItem('font2', settingsData[4]);
+    localStorage.setItem('color1', settingsData[5]);
+    localStorage.setItem('no-flight-plan', settingsData[6]);
 }
 
 function areLocalStorageKeysSet() {
-    const keysToCheck = ['aircraftSelected', 'aircraftSelectedChecklist', 'simBriefIdLocal', 'airportIoApiLocal'];
+    const keysToCheck = ['aircraftSelected', 'aircraftSelectedChecklist', 'simBriefIdLocal', 'airportIoApiLocal','font2','color1','noFlightPlan'];
 
     return keysToCheck.every(key => {
         const value = localStorage.getItem(key);

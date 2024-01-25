@@ -40,6 +40,12 @@ async function buildChecklist(){
     if (!simBriefValueCheck(simBriefId)){
         return;
     }else{
+        //Display Fetching Flight Plan Message
+        const errorDiv = document.getElementById('error-checkguide-header')
+        errorDiv.textContent = 'Retrieving SimBrief Flight Plan & Weather...'
+        errorDiv.style.display = 'block'
+
+        //Get SimBrief Data
         sbData = await getSimBriefData(simBriefId);
     }
 
@@ -115,6 +121,11 @@ async function buildChecklist(){
     attachCheckAllEventListeners();
     preventDoubleClick();
 
+    //If Error Message Displayed Remove Element
+    if (errorDiv.style.display !== 'none') {
+        errorDiv.style.display = 'none';
+    }
+
     //Save Checklist Header
     savePageData();
     clearCheckListData();
@@ -132,7 +143,7 @@ async function getSimBriefData(simBriefId){
         return simBriefData;
         
     } catch (error) {
-        const errorDivd = document.getElementById('error-checkguide-header');
+        const errorDiv = document.getElementById('error-checkguide-header');
         errorDiv.textContent = 'No Flight Plan or Invalid SimBrief ID'
         errorDiv.style.display = 'block'
         console.error('Error fetching SimBrief Data:',error);

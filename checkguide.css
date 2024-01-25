@@ -10,20 +10,9 @@
 
 /* Global Styles */
 :root {
-    --page-font: 'NotoSansMono';
+    --page-font: 'JetBrainsMono';
     --page-font-weight: bold;
     --container-max-width: 800px;
-    --page-background-color: #2e2e2e; /* Darker Grey Background */
-    --page-text-color-main: #f5f5f5; /* Light Grey for Text, for Contrast */
-    --page-container-border-color: #3d3d3d; /* Slightly Darker Grey for Borders */
-    --tab-background-color: #424242; /* Medium Grey for Tab Backgrounds */
-    --tab-unselected-color: #757575; /* Lighter Grey for Unselected Tabs */
-    --accent-color: #90caf9; /* Soft Blue for Accents */
-    --third-accent-color: #c77c02; 
-    --hover-color: #64b5f6; /* Brighter Blue for Hover States */
-    --heading-color: #ffffff; /* White for Headings */
-
-
     --sFar-left: #1f3a5f; /* Hover Checklist Text */
     --sTab-Unselected-Text: #4d648d; /*Unslected Tab Text */
     --sSlider-On:#0f1c2e;
@@ -39,6 +28,31 @@
     --sMain-Text: #FFFFFF;
     --sFar-Right: #e0e0e0; /*Header SubText*/
     --secondary-accent-color: #ffcc80; /* Warning Colors */
+}
+
+.root-alternate {
+    --page-font: 'JetBrainsMono';
+    --page-font-weight: bold;
+    --container-max-width: 800px;
+    --sFar-left: #1f3a5f; /* Hover Checklist Text */
+    --sTab-Unselected-Text: #313d44; /*Unslected Tab Text */
+    --sSlider-On:#313d44;
+    --sSlider-Off: #b6ccd8;
+    --sSlider-Button: #fffefb;
+    --sChecklist-Hover: #cccbc8;
+    --sAccent-Text: #313d44; /*Header Text */
+    --sSecond-Left: #3d4a80; /* Not Used */
+    --sFirst-Left: #00668c; /*Reset and Check all*/
+    --sBackground-Color: #fffefb;
+    --sOff-Background: #d4eaf7; /*Main Button Background and Section Header */
+    --sContainer-Background: #f5f4f1;
+    --sMain-Text: #1d1c1c;
+    --sFar-Right: #3b3c3d; /*Header SubText*/
+    --secondary-accent-color: #ff8c00; /* Warning Colors */
+}
+
+.root-alternate-font{
+    --page-font: 'NotoSansMono';
 }
 
 body {

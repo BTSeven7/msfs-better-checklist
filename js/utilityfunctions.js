@@ -41,8 +41,17 @@ function restoreUserDataLocalStorage() {
     const aircraftSelectedChecklistId = localStorage.getItem('aircraftSelectedChecklist');
     if (aircraftSelectedChecklistId) {
         // Call the specific function here
-        updateCheckGuideTitle(); // Replace with the actual function you want to call
+        updateCheckGuideTitle(); 
     }
+
+    const specificCheckboxKeys = ['no-flight-plan', 'color1', 'font2'];
+    specificCheckboxKeys.forEach(key => {
+        const isTrue = localStorage.getItem(key) === 'true';
+        const checkboxElement = document.getElementById(key);
+        if (checkboxElement && checkboxElement.type === 'checkbox') {
+            checkboxElement.checked = isTrue;
+        }
+    });
 }
 
 function restoreChecklistDataLocalStorage(){
@@ -239,5 +248,31 @@ function triggerNextChecklistItem() {
                 nextItem.click();
             }, 25); // Slight delay to visually separate hover effect from the click action
         }, 50);
+    }
+}
+
+function getCurrentDateTime() {
+    const now = new Date();
+    const options = { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+    return now.toLocaleString('en-US', options);
+}
+
+function toggleColorPalette(checked) {
+    if (checked) {
+        document.documentElement.classList.add('root-alternate');
+        localStorage.setItem('color1', 'true');
+    } else {
+        document.documentElement.classList.remove('root-alternate');
+        localStorage.setItem('color1', 'false');
+    }
+}
+
+function toggleFontStyle(isChecked) {
+    if (isChecked) {
+        document.documentElement.classList.add('root-alternate-font');
+        localStorage.setItem('font2', 'true');
+    } else {
+        document.documentElement.classList.remove('root-alternate-font');
+        localStorage.setItem('font2', 'false');
     }
 }

@@ -297,11 +297,18 @@ function attachEventListenterToWxButton() {
 
         let simOriginWeather;
         let simDestWeather;
+        let weatherSource;
+
+        const errorDiv = document.getElementById('error-checkguide-header')
+        errorDiv.textContent = `Retrieving Weather...`;
+        errorDiv.style.display = 'block'
         
         if (isInIframe()) {
+            weatherSource = 'Sim';
             simOriginWeather = await getWeatherFromSim(originIcao);
             simDestWeather = await getWeatherFromSim(destIcao);
         }else{
+            weatherSource = 'API';
             simOriginWeather = await getApiWeatherData(originIcao, weatherAPI);
             simDestWeather = await getApiWeatherData(destIcao, weatherAPI);
         }
@@ -309,6 +316,18 @@ function attachEventListenterToWxButton() {
         updateWeatherContainers(simOriginWeather, simDestWeather);
         updateWeatherChecklistItems(simOriginWeather, simDestWeather);
 
+        //Display Fetching Flight Plan Message
+        if (weatherSource === 'Sim') {
+            const errorDiv = document.getElementById('error-checkguide-header')
+            const dateTime = getCurrentDateTime();
+            errorDiv.textContent = `Weather Updated from MSFS ${dateTime}`;
+            errorDiv.style.display = 'block'
+        }else{
+            const errorDiv = document.getElementById('error-checkguide-header')
+            const dateTime = getCurrentDateTime();
+            errorDiv.textContent = `Weather Updated from AVWXI ${dateTime}`
+            errorDiv.style.display = 'block'
+        }
     });
   }
 
@@ -317,8 +336,17 @@ function noFlightPlanButtonListener() {
     const nfpButton = document.getElementById('no-flight-plan');
     if (!nfpButton) return;
 
-    nfpButton.addEventListener('change', () => resetPage());
+    // Update localStorage based on the current state of the button
+    //localStorage.setItem('no-flight-plan', nfpButton.checked.toString());
+
+    nfpButton.addEventListener('change', function() {
+        // Update localStorage whenever the button state changes
+        localStorage.setItem('no-flight-plan', this.checked.toString());
+        sendParentMessage(`nfpStatus,${this.checked.toString()}`);
+        resetPage();
+    });
 }
+
 
 //J Key For Checklist Check Item
 function setupChecklistKeyListener() {
@@ -329,5 +357,22 @@ function setupChecklistKeyListener() {
             event.preventDefault();
             triggerNextChecklistItem();
         }
+    });
+}
+
+//Color Pallette Switch
+function colorPalletteSwitchListener() {
+    const colorPaletteSwitch = document.getElementById('color1');
+    colorPaletteSwitch.addEventListener('change', function() {
+        toggleColorPalette(this.checked);
+        sendParentMessage(`color,${this.checked.toString()}`);
+    });
+}
+
+function fontSwitchListener() {
+    const fontSwitch = document.getElementById('font2');
+    fontSwitch.addEventListener('change', function() {
+        toggleFontStyle(this.checked);
+        sendParentMessage(`font,${this.checked.toString()}`);
     });
 }

@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     createSliderCheckbox(noFlightPlanContainer,'no-flight-plan', 'No Flight Plan');
 
     const colorSettingsContainer = createDOMElement('div', 'color-settings-container', containerSettings, undefined,'settings-container');
-    createSliderCheckbox(colorSettingsContainer,'color1','Light Colors')
+    createSliderCheckbox(colorSettingsContainer,'color1','Light Colors');
+    createSliderCheckbox(colorSettingsContainer,'font2', 'Alternate Font');
 
     const informationContainer = createDOMElement('div', 'information-settings-container', containerSettings, undefined, 'settings-container');
     informationContainer.innerHTML = `
@@ -48,13 +49,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         <li>If you haven't filed a flight plan on SimBrief, select the 'No Flight Plan' option.</li>
         
-        <li>When using this as an in-game panel, rest assured that weather data is seamlessly pulled directly from the simulator for your convenience!</li>
+        <li>When using this as an in-game panel, the weather data is pulled directly from the simulator!</li>
         
         <li>To access RWY Heading data, register at <span>https://airportdb.io/</span> and obtain your API key. The check guide works without an API key if you don't require RWY Heading data.</li>
         
         <li>If you want weather data outside of the simulator, register at <span>https://account.avwx.rest/getting-started</span> and obtain an API token.</li>
     </ul>`;
-
 
     //Aicraft Tab
     //Build List of Aircraft
@@ -97,6 +97,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             restoreChecklistDataLocalStorage();
             setupSecondaryCheckboxListeners();
 
+            //Restore Color and Font Settings
+            const colorPaletteSwitch = document.getElementById('color1');
+            toggleColorPalette(colorPaletteSwitch.checked);
+            const fontSwitch = document.getElementById('font2');
+            toggleFontStyle(fontSwitch.checked);
+
         })
         .catch(error => {
             console.error('Fetching API data failed:', error);
@@ -111,7 +117,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     //Other Listeners
     noFlightPlanButtonListener();
     setupChecklistKeyListener(); //Checklist Hot Key, searches for element
-
+    colorPalletteSwitchListener();
+    fontSwitchListener();
     
 
 })
