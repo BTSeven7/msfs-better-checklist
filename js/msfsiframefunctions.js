@@ -132,7 +132,7 @@ function setSimStoredSettings(settingsData){
     localStorage.setItem('font2', settingsData[4]);
     localStorage.setItem('color1', settingsData[5]);
     localStorage.setItem('no-flight-plan', settingsData[6]);
-    localStorage.setItem('backgroun', settingsData[7]);
+    localStorage.setItem('background', settingsData[7]);
 }
 
 function areLocalStorageKeysSet() {
