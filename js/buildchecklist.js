@@ -71,6 +71,13 @@ async function buildChecklist(){
     const checklistData = await getChecklistData(selectedChecklist);
     const sortedChecklist = sortChecklistSections(checklistData); //sortChecklist Sections
     
+    //Show No Flight Plan Selected Message
+    if (noFlightPlanCheckbox.checked) {
+        const errorDiv = document.getElementById('error-checkguide-header')
+        errorDiv.textContent = 'Selected No Flight Plan Option'
+        errorDiv.style.display = 'block'
+    }
+
     //Create Overview Header and API Variables - Skip if no flight plan
     if (!noFlightPlanCheckbox.checked) {
         createOverviewHeader(sbData); //Create Overview Header
@@ -110,7 +117,9 @@ async function buildChecklist(){
 
     //Save Checklist Header
     savePageData();
-    location.reload();
+    clearCheckListData();
+    restoreChecklistDataLocalStorage();
+
 }
 
 //Data Collection Functions

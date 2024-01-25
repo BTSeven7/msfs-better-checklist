@@ -19,21 +19,26 @@
     --tab-background-color: #424242; /* Medium Grey for Tab Backgrounds */
     --tab-unselected-color: #757575; /* Lighter Grey for Unselected Tabs */
     --accent-color: #90caf9; /* Soft Blue for Accents */
-    --secondary-accent-color: #ffcc80; /* Soft Orange for Secondary Accents */
     --third-accent-color: #c77c02; 
     --hover-color: #64b5f6; /* Brighter Blue for Hover States */
     --heading-color: #ffffff; /* White for Headings */
 
-    --sFar-left: #1f3a5f;
-    --sTab-Unselected-Text: #4d648d;
-    --sAccent-Text: #acc2ef;
-    --sSecond-Left: #3d4a80;
-    --sFirst-Left: #cee8ff;
+
+    --sFar-left: #1f3a5f; /* Hover Checklist Text */
+    --sTab-Unselected-Text: #4d648d; /*Unslected Tab Text */
+    --sSlider-On:#0f1c2e;
+    --sSlider-Off: #e0e0e0;
+    --sSlider-Button: #FFFFFF;
+    --sChecklist-Hover: #e0e0e0;
+    --sAccent-Text: #acc2ef; /*Header Text */
+    --sSecond-Left: #3d4a80; /* Not Used */
+    --sFirst-Left: #cee8ff; /*Reset and Check all*/
     --sBackground-Color: #0f1c2e;
-    --sOff-Background: #1f2b3e;
+    --sOff-Background: #1f2b3e; /*Main Button Background and Section Header */
     --sContainer-Background: #374357;
     --sMain-Text: #FFFFFF;
-    --sFar-Right: #e0e0e0;
+    --sFar-Right: #e0e0e0; /*Header SubText*/
+    --secondary-accent-color: #ffcc80; /* Warning Colors */
 }
 
 body {
@@ -146,7 +151,7 @@ body::-webkit-scrollbar {
     max-width: 500px;
     font-size: 22px;
     overflow: hidden;
-    color: var(--page-text-color-main);
+    color: var(--sMain-Text);
 }
 
 #settings-user-input-container input:focus {
@@ -189,7 +194,7 @@ body::-webkit-scrollbar {
 #checkguide-title-container{
     box-sizing: border-box;
     margin-top: 15px;
-    color: var(--heading-color);
+    color: var(--sMain-Text);
     text-align: center;
     width: 100%;
 }
@@ -228,7 +233,7 @@ body::-webkit-scrollbar {
 
 #main-button-container .main-container-button {
     box-sizing: border-box;
-    color: var(--accent-color);
+    color: var(--sAccent-Text);
     background-color: transparent;
     font-weight: 600;
     font-family: var(--page-font);
@@ -323,7 +328,7 @@ body::-webkit-scrollbar {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--sFar-Right);
+    background-color: var(--sSlider-Off);
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -337,7 +342,7 @@ body::-webkit-scrollbar {
     width: 22px;
     left: 4px;
     bottom: 4px;
-    background-color: var(--sTab-Unselected-Text);
+    background-color: var(--sSlider-Button);
     -webkit-transition: .4s;
     transition: .4s;
     flex-basis: 0;
@@ -346,13 +351,13 @@ body::-webkit-scrollbar {
 #color-settings-container .sliderSwitch input:checked + .slider-round, 
 #header-aircraft-container .sliderSwitch input:checked + .slider-round, 
 #no-flight-plan-option-container .sliderSwitch input:checked + .slider-round{
-    background-color: var(--sFirst-Left);
+    background-color: var(--sSlider-On);
 }
 
 #color-settings-container .sliderSwitch input:focus + .slider-round, 
 #header-aircraft-container .sliderSwitch input:focus + .slider-round, 
 #no-flight-plan-option-container .sliderSwitch input:focus + .slider-round{
-    box-shadow: 0 0 1px var(--sFirst-Left);
+    box-shadow: 0 0 1px var(--sSlider-On);
 }
 
 #color-settings-container .sliderSwitch input:checked + .slider-round:before, 
@@ -385,7 +390,6 @@ body::-webkit-scrollbar {
     border: transparent;
     border-radius: 8px;
     margin-top: 16px;
-    color: #a0a0a0;
     font-size: 20px;
 }
 
@@ -395,9 +399,16 @@ body::-webkit-scrollbar {
     word-break: break-all;
 }
 
+.weather-data0, .weather-data1{
+    padding: 18px;
+    font-weight: 400;
+    text-align: center;
+    color: var(--sFar-Right);
+}
+
 .icao0, .icao1{
     display: flex;
-    color: var(--accent-color);
+    color: var(--sAccent-Text);
     background-color: var(--sOff-Background);
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -429,6 +440,10 @@ body::-webkit-scrollbar {
 
 .clouds0, .clouds1{
     padding-bottom: 12px;
+}
+
+.clouds0 span{
+    padding-right: 8px;
 }
 
 /*#origin-weather-section div, #destination-weather-section div{
@@ -471,9 +486,8 @@ body::-webkit-scrollbar {
 .section-header{
     font-size: 32px;
     box-sizing: border-box;
-    margin-top: 4px;
-    margin-bottom: 4px;
-    color: var(--hover-color);
+    margin: 4px 0px 4px 0px;
+    color: var(--sAccent-Text);
     background-color: var(--sOff-Background);
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -506,13 +520,13 @@ body::-webkit-scrollbar {
 }
 
 .checklist-item:hover{
-    background-color: var(--sFar-Right);
+    background-color: var(--sChecklist-Hover);
     color: var(--sFar-left);
     font-weight: 600;
 }
 
 .checklist-item.hover-effect {
-    background-color: var(--tab-unselected-color);
+    background-color: var(--sTab-Unselected-Text);
     color: var(--sFar-left);
     font-weight: 600;
 }

@@ -39,9 +39,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     createSliderCheckbox(noFlightPlanContainer,'no-flight-plan', 'No Flight Plan');
 
     const colorSettingsContainer = createDOMElement('div', 'color-settings-container', containerSettings, undefined,'settings-container');
-    createSliderCheckbox(colorSettingsContainer,'color1','Light')
-    createSliderCheckbox(colorSettingsContainer,'color2','Default');
-    createSliderCheckbox(colorSettingsContainer,'color3','Dark');
+    createSliderCheckbox(colorSettingsContainer,'color1','Light Colors')
+
+    const informationContainer = createDOMElement('div', 'information-settings-container', containerSettings, undefined,'settings-container');
+    const information1Text = createDOMElement('p', 'information-text', informationContainer, '');
+    const information2Text = createDOMElement('p', 'information-text', informationContainer, '');
+    const information3Text = createDOMElement('p', 'information-text', informationContainer, '');
+    information1Text.textContent = 'This is A Test';
 
     //Aicraft Tab
     //Build List of Aircraft
@@ -99,7 +103,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     noFlightPlanButtonListener();
     setupChecklistKeyListener(); //Checklist Hot Key, searches for element
 
-    //Request SimBriefId, API Keys, Aircraft, and Checklist
     
 
 })
