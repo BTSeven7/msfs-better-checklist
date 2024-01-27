@@ -1,0 +1,23 @@
+{
+    "pmdg737": {
+        "aircraftName":"PMDG 737",
+        "checkLists":{
+            "pmdg_737_blt": {
+               "title": "BLT"  
+            },
+            "pmdg_737_av_geek": {
+                "title": "AV Geek"
+                }
+        }
+    },
+
+    "lenoardomaddog":{
+        "aircraftName":"Leonardo MD80",
+        "checkLists": {
+            "md80_blt": {
+                "title": "BLT"  
+             }
+        }
+    }
+
+}

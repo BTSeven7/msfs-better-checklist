@@ -92,6 +92,7 @@ function resetPage(){
     document.getElementById('error-checkguide-header').innerHTML = '';
     document.getElementById('error-checkguide-header').style.display = 'none';
 
+    deleteSbData();
     clearCheckListData();
 
 }

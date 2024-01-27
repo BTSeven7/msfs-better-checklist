@@ -140,6 +140,7 @@ async function getSimBriefData(simBriefId){
     try{
         const simBriefData = await fetchApiData(`https://www.simbrief.com/api/xml.fetcher.php?username=${simBriefId}&json=1`);
         console.log(simBriefData);
+        setSbData(simBriefData);
         return simBriefData;
         
     } catch (error) {
@@ -330,8 +331,14 @@ function sortChecklistSections(checklistItems) {
 function createDynamicVariables(simBrief, originAirport, destAirport, simOriginWeather, simDestWeather){
     const dynamicVariables = {
         //***SimBrief Variables***
+        //Origin ICAO
+        sbOriginIcao: simBrief.origin.icao_code,
+        //Dest ICAO
+        sbDestIcao: simBrief.destination.icao_code,
         //Fuel
-        sbFuel: simBrief.fuel.plan_ramp, 
+        sbFuel: simBrief.fuel.plan_ramp,
+        //Fuel Round
+        sbFuelRound: Math.round((simBrief.fuel.plan_ramp / 1000) * 10) / 10,
         //ZFW as 000.0
         sbZfw: Math.round((simBrief.weights.est_zfw / 1000) * 10) / 10,
         //Route as Origin + Dest: ICAOICAO
@@ -340,6 +347,12 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         sbFlightNo: simBrief.atc.callsign,
         //Cost Index
         sbCi: simBrief.general.costindex,
+        //Avg Isa
+        sbAvgIsa: Number(simBrief.general.avg_temp_dev) >= 0 ? `+${simBrief.general.avg_temp_dev}` : simBrief.general.avg_temp_dev,
+        //TOW
+        sbTOW: Math.round((simBrief.weights.est_tow / 1000) * 10) / 10,
+        //Origin RWY
+        sbOriginRwy: simBrief.origin.plan_rwy,
         // ALT + RES in 0.0 format
         sbReserve: ((Number(simBrief.fuel.alternate_burn) + Number(simBrief.fuel.reserve)) / 1000).toFixed(1), 
         // Cruise ALT FL000
@@ -348,6 +361,8 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         sbCrzWind: `${simBrief.general.avg_wind_dir}/${simBrief.general.avg_wind_spd}`, 
         // Transition Altitude of origin airport
         sbTransAlt: simBrief.origin.trans_alt,
+        // Destination Eleveation
+        sbDestElev: `${Math.round(simBrief.destination.elevation / 50) * 50}`,
         // Pressurization ALT equal Cruise ALT and Destination Altitue
         sbPressAlt: `${simBrief.general.initial_altitude}/${Math.round(simBrief.destination.elevation / 50) * 50}`, 
         // MCP Altitude for no clearned (SET CLEARD (FL000))
@@ -371,8 +386,17 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         //Baro Presure at Origin airport 00.00/0000 (HG/QNH)
         wxOriginBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
         //Baro Pressure at Dest Airport 00.00/0000 (HG/QNG)
-        wxDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null
+        wxDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null,
+        //QNG mb Orign Airport
+        wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
+
+        //****Special Variables Per Plane ******/
+        maddogEfbPerfOrigin: simOriginWeather ? `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy}/(${simOriginWeather.wind.degrees}/${simOriginWeather.wind.speed_kts})/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}/${simOriginWeather.temperature.celsius}/${Math.round((simBrief.weights.est_tow / 1000) * 10) / 10}`: null,
+        maddogEfbPerfDest: simOriginWeather ? `${simBrief.destination.icao_code}/${simBrief.destination.plan_rwy}/(${simDestWeather.wind.degrees}/${simDestWeather.wind.speed_kts})/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}/${simDestWeather.temperature.celsius}/${Math.round((simBrief.weights.est_ldw / 1000) * 10) / 10}`: null,
+
     };
+
+    //console.log(dynamicVariables);
 
     return dynamicVariables;
 

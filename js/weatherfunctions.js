@@ -33,10 +33,22 @@ async function getApiWeatherData(icao, weatherApiKey) {
 //If 'wx update' true match to variables in this function
 async function updateWeatherChecklistItems(simOriginWeather, simDestWeather){
     
+    const simBrief = getSbData();
+
     const wxVariables = {
+        //Wind at Origin Airport as 000/00
         wxOriginWind: simOriginWeather ? `${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}` : null,
+        //Baro Presure at Origin airport 00.00/0000 (HG/QNH)
         wxOriginBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
-        wxDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null
+        //Baro Pressure at Dest Airport 00.00/0000 (HG/QNG)
+        wxDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null,
+        //QNG mb Orign Airport
+        wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
+
+        //****Special Variables Per Plane ******/
+        maddogEfbPerfOrigin: simOriginWeather ? `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy}/(${simOriginWeather.wind.degrees}/${simOriginWeather.wind.speed_kts})/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}/${simOriginWeather.temperature.celsius}/${Math.round((simBrief.weights.est_tow / 1000) * 10) / 10}`: null,
+        maddogEfbPerfDest: simOriginWeather ? `${simBrief.destination.icao_code}/${simBrief.destination.plan_rwy}/(${simDestWeather.wind.degrees}/${simDestWeather.wind.speed_kts})/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}/${simDestWeather.temperature.celsius}/${Math.round((simBrief.weights.est_ldw / 1000) * 10) / 10}`: null,
+
         }
     
     // Find the checked .aircraft-checklist checkbox
