@@ -1284,18 +1284,6 @@
     "sectionSubText": "FALSE"
   },
   "107": {
-    "item": "Flaps",
-    "expect": "Stowed",
-    "apiData": null,
-    "hasApiData": "FALSE",
-    "apiVar": "",
-    "wxUpdate": "FALSE",
-    "section": "Climb",
-    "sectionNumber": 12,
-    "sectionOrder": 5,
-    "sectionSubText": "FALSE"
-  },
-  "108": {
     "item": "Landing Lights Off at",
     "expect": "10k AGL",
     "apiData": null,
@@ -1304,10 +1292,10 @@
     "wxUpdate": "FALSE",
     "section": "Climb",
     "sectionNumber": 12,
-    "sectionOrder": 6,
+    "sectionOrder": 5,
     "sectionSubText": "FALSE"
   },
-  "109": {
+  "108": {
     "item": "Altimeter Set STD at",
     "expect": "Trans ALT",
     "apiData": null,
@@ -1316,10 +1304,10 @@
     "wxUpdate": "FALSE",
     "section": "Climb",
     "sectionNumber": 12,
-    "sectionOrder": 7,
+    "sectionOrder": 6,
     "sectionSubText": "FALSE"
   },
-  "110": {
+  "109": {
     "item": "Cruise Thrust",
     "expect": "Set",
     "apiData": null,
@@ -1331,7 +1319,7 @@
     "sectionOrder": 1,
     "sectionSubText": "FALSE"
   },
-  "111": {
+  "110": {
     "item": "Passenger Signs",
     "expect": "As Required",
     "apiData": null,
@@ -1343,6 +1331,18 @@
     "sectionOrder": 2,
     "sectionSubText": "FALSE"
   },
+  "111": {
+    "item": "Flaps",
+    "expect": "Stowed",
+    "apiData": null,
+    "hasApiData": "FALSE",
+    "apiVar": "",
+    "wxUpdate": "FALSE",
+    "section": "Climb",
+    "sectionNumber": 13,
+    "sectionOrder": 3,
+    "sectionSubText": "FALSE"
+  },
   "112": {
     "item": "Terrain Radar",
     "expect": "Off",
@@ -1352,7 +1352,7 @@
     "wxUpdate": "FALSE",
     "section": "Cruise",
     "sectionNumber": 13,
-    "sectionOrder": 3,
+    "sectionOrder": 4,
     "sectionSubText": "FALSE"
   },
   "113": {
@@ -1364,7 +1364,7 @@
     "wxUpdate": "FALSE",
     "section": "Cruise",
     "sectionNumber": 13,
-    "sectionOrder": 4,
+    "sectionOrder": 5,
     "sectionSubText": "FALSE"
   },
   "114": {
