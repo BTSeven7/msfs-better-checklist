@@ -268,10 +268,12 @@ body::-webkit-scrollbar {
     font-size: 26px;
     padding: 10px 20px 10px 20px;
     border: transparent;
+    cursor: pointer; 
 }
 
 #main-button-container .main-container-button:hover{
     color: var(--secondary-accent-color);
+    cursor: pointer; 
 }
 
 #error-checkguide-header{
@@ -575,7 +577,8 @@ body::-webkit-scrollbar {
     border-radius: 6px;
     font-family: var(--page-font);
     font-size: 26px;
-    padding: 3px 15px;    
+    padding: 3px 15px;
+    cursor: pointer;    
 }
 
 .section-reset-button:hover{
@@ -603,7 +606,8 @@ body::-webkit-scrollbar {
     font-size: 24px;
     padding: 3px 15px; 
     margin-top: 4px;
-    margin-bottom: 8px;   
+    margin-bottom: 8px;
+    cursor: pointer;   
 }
 
 .section-checkall-button:hover{
@@ -628,6 +632,7 @@ body::-webkit-scrollbar {
     margin-top: 16px;
     grid-column-gap: 8px;
     grid-row-gap: 8px;
+    cursor: pointer; 
 }
 
 .section-master-reset-button {
@@ -648,4 +653,5 @@ body::-webkit-scrollbar {
     color: var(--secondary-accent-color);
     background-color: transparent;
     border-radius: 30px;
+    cursor: pointer; 
 }

@@ -18,6 +18,15 @@
                 "title": "BLT"  
              }
         }
+    },
+
+    "fenixa320":{
+        "aircraftName":"Fenix A320",
+        "checkLists": {
+            "fenixa320_blt": {
+                "title": "BLT"  
+             }
+        }
     }
 
 }

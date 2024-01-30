@@ -375,6 +375,12 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         sbDestTransLevel: `FL${convertFlightLevel(simBrief.destination.trans_level)}`,
         // Destination 10k AGL for Landing Lights on
         sbDest10kAgl: Math.floor((Number(simBrief.destination.elevation) + 10000) / 1000) * 1000, // Destination 10K AGL
+        // Estimated LW
+        sbLandWeight: Math.round((simBrief.weights.est_ldw / 1000) * 10) / 10,
+        // ALTN Fuel
+        sbAltnFuel: (Number(simBrief.fuel.alternate_burn) / 1000).toFixed(1),
+        // Reserve Fuel
+        sbReserveFuel: (Number(simBrief.fuel.reserve) / 1000).toFixed(1),
         //***AirportDB.io Variables***
         //Calculate RWY Heading by using nearest NAVaid for Magnetic Variation with RWY True Heading
         airportIoMcpHdg: originAirport && originAirport.navaids && originAirport.navaids[0]
@@ -389,6 +395,10 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         wxDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null,
         //QNG mb Orign Airport
         wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
+        //Destination Airport Temperature
+        wxDestTemp: simDestWeather ? `${simDestWeather.temperature.celsius}°`: null,
+        //Destination Wind
+        wxDestWind: simDestWeather ? `${simDestWeather.wind.degrees}°/${simDestWeather.wind.speed_kts}` : null,
 
         //****Special Variables Per Plane ******/
         maddogEfbPerfOrigin: simOriginWeather ? `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy}/(${simOriginWeather.wind.degrees}/${simOriginWeather.wind.speed_kts})/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}/${simOriginWeather.temperature.celsius}/${Math.round((simBrief.weights.est_tow / 1000) * 10) / 10}`: null,

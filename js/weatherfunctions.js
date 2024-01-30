@@ -44,6 +44,10 @@ async function updateWeatherChecklistItems(simOriginWeather, simDestWeather){
         wxDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null,
         //QNG mb Orign Airport
         wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
+        //Destination Airport Temperature
+        wxDestTemp: simDestWeather ? `${simDestWeather.temperature.celsius}°`: null,
+        //Destination Wind
+        wxDestWind: simDestWeather ? `${simDestWeather.wind.degrees}°/${simDestWeather.wind.speed_kts}` : null,
 
         //****Special Variables Per Plane ******/
         maddogEfbPerfOrigin: simOriginWeather ? `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy}/(${simOriginWeather.wind.degrees}/${simOriginWeather.wind.speed_kts})/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}/${simOriginWeather.temperature.celsius}/${Math.round((simBrief.weights.est_tow / 1000) * 10) / 10}`: null,
