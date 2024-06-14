@@ -84,10 +84,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const checklistContainer = createDOMElement('div', 'checklist-sections-container', body, '','container');
     checklistContainer.style.display = 'none';
 
+    //Update Aircraft Checklist Builder
+    const checklistDirectory = './checklists';
+
+
+
     //Fetch aircraft file
-    fetchLocalJson('checklists/aircraft.json')
+    fetchLocalJson('checklists/checklist_directory.json')
         .then(data => {
-            console.log(data);
+            console.log('Aircraft List:', data);
             createAircraftList(data);
             createAircraftChecklistsList(data);
             setupAircraftCheckboxListeners();
@@ -123,6 +128,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     colorPalletteSwitchListener();
     fontSwitchListener();
     backgroundSwitchListener();
-    
 
 })

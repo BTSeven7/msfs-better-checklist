@@ -1,0 +1,42 @@
+{
+    "aircraft": {
+        "Fenix A320": [
+            {
+                "author": "BLT",
+                "fileName": "Fenix_A320_BLT_checkguide.json",
+                "lastUpdated": "2024-06-14T17:10:54Z",
+                "fileSize": "23433"
+            }
+        ],
+        "Leonardo MD82": [
+            {
+                "author": "BLT",
+                "fileName": "Leonardo_MD82_BLT_checkguide.json",
+                "lastUpdated": "2024-06-10T21:09:18Z",
+                "fileSize": "23424"
+            }
+        ],
+        "PMDG 737": [
+            {
+                "author": "Big Stick",
+                "fileName": "PMDG_737_Big Stick_checkguide.json",
+                "lastUpdated": "2024-06-10T21:07:46Z",
+                "fileSize": "23425"
+            },
+            {
+                "author": "BLT",
+                "fileName": "PMDG_737_BLT_checkguide.json",
+                "lastUpdated": "2024-06-10T21:07:02Z",
+                "fileSize": "23419"
+            }
+        ],
+        "Test Plane": [
+            {
+                "author": "The BLT",
+                "fileName": "Test_Plane_The BLT_checkguide.json",
+                "lastUpdated": "2024-06-14T17:32:24Z",
+                "fileSize": "741"
+            }
+        ]
+    }
+}

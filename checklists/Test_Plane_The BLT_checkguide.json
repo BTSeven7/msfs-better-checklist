@@ -1,0 +1,36 @@
+{
+  "Header": {
+    "aircraft": "Test Plane",
+    "author": "The BLT"
+  },
+  "Sections": [
+    {
+      "id": "section-01",
+      "title": "Preflight",
+      "subtext": "${flightPlan}",
+      "checkItems": [
+        {
+          "item": "Local Baro",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${wxOriginBaro}",
+          "wxUpdates": true
+        },
+        {
+          "item": "Dest Wind",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${wxDestWind}",
+          "wxUpdates": true
+        },
+        {
+          "item": "Dest Temp",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${wxDestTemp}",
+          "wxUpdates": true
+        }
+      ]
+    }
+  ]
+}

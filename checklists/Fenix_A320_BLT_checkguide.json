@@ -1,0 +1,1016 @@
+{
+  "Header": {
+    "aircraft": "Fenix A320",
+    "author": "BLT"
+  },
+  "Sections": [
+    {
+      "id": "section-01",
+      "title": "Preflight",
+      "subtext": "This is a Test",
+      "checkItems": [
+        {
+          "item": "EFB - Flightplan",
+          "expect": "Import",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Pushback",
+          "expect": "Planned",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Battery 1 & 2",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "External Power",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Nav & Logo Lights",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "No Smoking",
+          "expect": "Auto",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Emergency Exit Lights",
+          "expect": "Arm",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Ice Ind/STBY Compass",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Oxygen Crew Supply",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "GND Ctrl",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "ADIRS",
+          "expect": "NAV",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Fuel Pumps",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-02",
+      "title": "MCDU Set Up",
+      "subtext": "${flightPlan}",
+      "checkItems": [
+        {
+          "item": "INIT A - CO Rte",
+          "expect": "Init Request",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "FLT NBR",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${sbFlightNo}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Cost Index",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${sbCi}",
+          "wxUpdates": false
+        },
+        {
+          "item": "CRZ FL",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${sbCrzAlt}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Wind",
+          "expect": "Wind Request",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "F-PLN",
+          "expect": "Entered & Checked",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Sec F-PLN",
+          "expect": "Entered & Checked",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Radio Nav",
+          "expect": "As Required",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "EFB - Mass & Balance",
+          "expect": "Load Aircraft",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "INIT B - ZFW/ZFWCG",
+          "expect": "Enter from EFB",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Block",
+          "expect": "Enter from EFB",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "ALTN",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${sbAltnFuel}",
+          "wxUpdates": false
+        },
+        {
+          "item": "FINAL",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${sbReserveFuel}",
+          "wxUpdates": false
+        },
+        {
+          "item": "PERF",
+          "expect": "Calculate at EFB",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "V1, VR, V2",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Flaps, Flex, Eng Out",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-03",
+      "title": "FCU & APU Start",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Altimeter",
+          "expect": "Set Local",
+          "apiData": null,
+          "apiVar": "${wxOriginBaro}",
+          "wxUpdates": false
+        },
+        {
+          "item": "FCT Alt Sel",
+          "expect": "set cleared",
+          "apiData": null,
+          "apiVar": "set cleared or (${sbCrzAlt})",
+          "wxUpdates": false
+        },
+        {
+          "item": "Xpndr",
+          "expect": "Set Auto & Stby",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "APU Master",
+          "expect": "On -> 3 sec",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "APU Start",
+          "expect": "On -> APU Avail",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Seat Belt Signs",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "APU Bleed",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "External Power",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-04",
+      "title": "Pushback & Eng Start",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Beacon",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Ground Services",
+          "expect": "Removed",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Doors",
+          "expect": "Closed",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Pushback",
+          "expect": "Requested",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Eng Mode Select",
+          "expect": "IGN/Start",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Eng 2 Master",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Eng 2 Param",
+          "expect": "Monitor",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Eng 1 Master",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Eng 1 Param",
+          "expect": "Monitor",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-05",
+      "title": "Before Taxi",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Eng Mode Select",
+          "expect": "As Req/Norm",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "APU Bleed",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "APU Master",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Pack 1 & 2",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Anti-Ice",
+          "expect": "As Required",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Strobes",
+          "expect": "Auto",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Nose Lights",
+          "expect": "Taxi",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "RWY Turn Off",
+          "expect": "As Req/On @ Night",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Auto Brake",
+          "expect": "Max",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Flaps",
+          "expect": "Set for TO",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Spoilers",
+          "expect": "Arm",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-06",
+      "title": "RWY Turn On",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Terrain Radar",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Xpndr",
+          "expect": "TA/RA",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Pack 1 & 2",
+          "expect": "As Required",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "PWS",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Nose Light",
+          "expect": "TO",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Landing Lights",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "RWY Turn Off",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Timer",
+          "expect": "Start",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "TO Config",
+          "expect": "Checked",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-07",
+      "title": "Take Off",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Gear",
+          "expect": "Up",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Autopilot",
+          "expect": "On Abv 500ft",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Flaps",
+          "expect": "Retracted",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-08",
+      "title": "After Take Off",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Packs 1 & 2",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Spoiler",
+          "expect": "Disarm",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-09",
+      "title": "Climb",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Landing Lights Off at",
+          "expect": "10000 ft AGL",
+          "apiData": null,
+          "apiVar": "${sbOrigin10kAgl}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Altimeter Set STD At",
+          "expect": "Trans Alt Dep",
+          "apiData": null,
+          "apiVar": "${sbTransAlt}",
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-10",
+      "title": "Cruise",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Passenger Signs",
+          "expect": "As Required",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Terrain Radar",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-11",
+      "title": "Before Descent",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Apporach",
+          "expect": "Reviewed",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "",
+          "expect": "Enter MCDU APPR Data",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Destination QNH",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${wxDestBaro}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Destination Temperature",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${wxDestTemp}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Destination Wind",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${wxDestWind}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Trans FL",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${sbDestTransLevel}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Baro Minimums",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "EFB Arrival Perf",
+          "expect": "Calculate at EFB",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Landing WT",
+          "expect": "Entered",
+          "apiData": null,
+          "apiVar": "${sbLandWeight}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Autobrake",
+          "expect": "As Req/Med",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-12",
+      "title": "Descent",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "FCU Alt at TOD",
+          "expect": "Set -> Push In",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Passenger Signs",
+          "expect": "As Required",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Terrain Radar",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Landing Lights On At",
+          "expect": "10k FT AGL",
+          "apiData": null,
+          "apiVar": "${sbDest10kAgl}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Local Altimeter",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${wxDestBaro}",
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-13",
+      "title": "Approach",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "MCDU Approach",
+          "expect": "Activate",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "LS Button",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Spoilers",
+          "expect": "ARM",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-14",
+      "title": "Final Approach",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "APPR",
+          "expect": "Activate",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "ILS AP",
+          "expect": "AP1 & AP2",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Gear",
+          "expect": "Down",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Flaps",
+          "expect": "Full",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-15",
+      "title": "Landed",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Strobes",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Landing Lights",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "RWY Turn Off",
+          "expect": "As Required",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Nose Lights",
+          "expect": "Taxi",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Flaps",
+          "expect": "Retract",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Spoilers",
+          "expect": "Disarm/Retract",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Terrain On ND",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Xpndr",
+          "expect": "STDBY",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Flight Director",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "LS Button",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "PWS",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "APU",
+          "expect": "Start",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-16",
+      "title": "At Dest Gate",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Parking Brake",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Nose Lights",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "RWY Turn Off",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Anti-Ice",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "APU Bleed",
+          "expect": "On",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Timer",
+          "expect": "Stop",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Eng Master 1 & 2",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Seat Belt Signs",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Beacon",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Fuel Pumps",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Xpndr",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-17",
+      "title": "Shutdown",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Oygen Crew Supply",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "ADIRS",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "APU Bleed",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "APU Master",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Emer Exit Lights",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "No Smoking",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "External Power",
+          "expect": "As Required",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Battery 1 & 2",
+          "expect": "Off",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    }
+  ]
+}
