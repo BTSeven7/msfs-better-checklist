@@ -8,6 +8,7 @@ async function buildChecklist(){
     const checklistId = getSelectedChecklist();
 
     //Clear the Checklist Container
+    //This is a test comment
     resetPage();
 
     //If Error Message Displayed Remove Element
