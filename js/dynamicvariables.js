@@ -14,6 +14,8 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         sbFuelRound: Math.round((simBrief.fuel.plan_ramp / 1000) * 10) / 10,
         //ZFW as 000.0
         sbZfw: Math.round((simBrief.weights.est_zfw / 1000) * 10) / 10,
+        //ZFW Raw
+        sbZfwRaw: simBrief.weights.est_zfw,
         //Route as Origin + Dest: ICAOICAO
         sbRoute: simBrief.origin.icao_code + simBrief.destination.icao_code, 
         //FLT Number as AAA000
@@ -59,13 +61,11 @@ function createDynamicVariables(simBrief, originAirport, destAirport, simOriginW
         
         //***AirportDB.io Variables***
         //Calculate RWY Heading by using nearest NAVaid for Magnetic Variation with RWY True Heading
-        airportIoMcpHdg: originAirport && originAirport.navaids && originAirport.navaids[0]
-            ? convertTrueHeadingToMagnetic(findRunwayHeading(originAirport, simBrief.origin.plan_rwy), originAirport.navaids[0].magnetic_variation_deg) 
+        airportIoMcpHdg: simBrief.origin.plan_rwy && simBrief.tlr.takeoff.runway 
+            ? simBrief.tlr.takeoff.runway.find(rwy => rwy.identifier === simBrief.origin.plan_rwy)?.magnetic_course 
             : null,
         
-        
-        
-            //***Weather Variables -- Only if Weather Data Exists will these populate***
+        //***Weather Variables -- Only if Weather Data Exists will these populate***
         //Wind at Origin Airport as 000/00
         wxOriginWind: simOriginWeather ? `${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}` : null,
         //Baro Presure at Origin airport 00.00/0000 (HG/QNH)

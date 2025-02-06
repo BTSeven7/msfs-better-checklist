@@ -138,17 +138,17 @@ function updateCheckGuideTitle() {
     if (selectedAircraftId) {
         const aircraftLabelSpan = selectedAircraftId;
         const aircraftTitleSpan = document.createElement('span');
-        aircraftTitleSpan.textContent = aircraftLabelSpan ? aircraftLabelSpan + ' Check Guide' : '';
+        aircraftTitleSpan.textContent = aircraftLabelSpan ? aircraftLabelSpan : '';
         titleContainer.appendChild(aircraftTitleSpan);
     }
 
     // Append the second span with the checklist title
-    if (selectedChecklistId) {
-        const checklistLabelSpan = selectedChecklistAuthor;
-        const checklistTitleSpan = document.createElement('span');
-        checklistTitleSpan.textContent = checklistLabelSpan ? 'by ' + checklistLabelSpan : '';
-        titleContainer.appendChild(checklistTitleSpan);
-    }
+    // if (selectedChecklistId) {
+    //     const checklistLabelSpan = selectedChecklistAuthor;
+    //     const checklistTitleSpan = document.createElement('span');
+    //     checklistTitleSpan.textContent = checklistLabelSpan ? 'by ' + checklistLabelSpan : '';
+    //     titleContainer.appendChild(checklistTitleSpan);
+    // }
 }
 
 async function loadAicraft() {

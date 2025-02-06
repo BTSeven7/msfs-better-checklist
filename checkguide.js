@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     //User Input Container
     const userInputSettingsContainer = createDOMElement('div', 'settings-user-input-container', containerSettings,undefined,'settings-container');
     createUserInput(userInputSettingsContainer,'simBriefIdLocal','Enter SimBrief ID:','settings-text-input');
-    createUserInput(userInputSettingsContainer,'airportIoApiLocal', 'Enter AirportDB.io API Key:', 'settings-text-input');
-    createUserInput(userInputSettingsContainer,'wxApiKeyLocal', 'Enter AVWX API Key:', 'setting-text-input');
+    // createUserInput(userInputSettingsContainer,'airportIoApiLocal', 'Enter AirportDB.io API Key:', 'settings-text-input');
+    // createUserInput(userInputSettingsContainer,'wxApiKeyLocal', 'Enter AVWX API Key:', 'setting-text-input');
     setupUserInputListeners();
 
     const noFlightPlanContainer = createDOMElement('div', 'no-flight-plan-option-container', containerSettings,undefined,'settings-container');
@@ -51,10 +51,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         <li>If you haven't filed a flight plan on SimBrief, select the 'No Flight Plan' option.</li>
         
         <li>When using this as an in-game panel, the weather data is pulled directly from the simulator!</li>
-        
-        <li>To access RWY Heading data, register at <span>https://airportdb.io/</span> and obtain your API key. The check guide works without an API key if you don't require RWY Heading data.</li>
-        
-        <li>If you want weather data outside of the simulator, register at <span>https://account.avwx.rest/getting-started</span> and obtain an API token.</li>
     </ul>`;
 
     //Aicraft Tab
@@ -86,8 +82,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     //Update Aircraft Checklist Builder
     const checklistDirectory = './checklists';
-
-
 
     //Fetch aircraft file
     fetchLocalJson('checklists/checklist_directory.json')
