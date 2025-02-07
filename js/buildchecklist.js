@@ -28,8 +28,6 @@ async function buildChecklist(){
 
     //Delcare Data Holder Variables
     let sbData = null;
-    let airportDbOriginData = null;
-    let airportDbDestData = null;
     let originWeather = null;
     let destWeather = null;
     let apiVariables = null;
@@ -89,6 +87,7 @@ async function buildChecklist(){
     //Create Overview Header and API Variables - Skip if no flight plan
     if (!noFlightPlanCheckbox.checked) {
         createOverviewHeader(sbData); //Create Overview Header
+        console.log('About to call createDynamicVariables with:', {sbData, originWeather, destWeather});
         apiVariables = createDynamicVariables(sbData, originWeather, destWeather) //Create Dynamic Variables
         console.log('Calculated apiVariables:', apiVariables);
     }
