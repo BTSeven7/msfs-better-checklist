@@ -133,7 +133,7 @@ function setSimStoredSettings(settingsData){
     localStorage.setItem('no-flight-plan', settingsData[5]);
     localStorage.setItem('background', settingsData[6]);
     if (settingsData[7] === 1) {
-        document.body.classList.add('vr-zoom');
+        document.body.classList.add('vr-scale');
     }
 }
 
