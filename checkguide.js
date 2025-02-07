@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const noFlightPlanContainer = createDOMElement('div', 'no-flight-plan-option-container', containerSettings,undefined,'settings-container');
     createSliderCheckbox(noFlightPlanContainer,'no-flight-plan', 'No Flight Plan');
+    createSliderCheckbox(noFlightPlanContainer,'vr-scale', 'VR Scale');
 
     const colorSettingsContainer = createDOMElement('div', 'color-settings-container', containerSettings, undefined,'settings-container');
     createSliderCheckbox(colorSettingsContainer,'color1','Light/Dark');
@@ -118,6 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     //Other Listeners
     noFlightPlanButtonListener();
+    vrScaleSwitchListener();
     setupChecklistKeyListener(); //Checklist Hot Key, searches for element
     colorPalletteSwitchListener();
     fontSwitchListener();

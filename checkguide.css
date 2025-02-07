@@ -59,6 +59,11 @@
     --sBackground-Color: transparent;
 }
 
+.vr-scale {
+    transform: scale(4);
+    transform-origin: top left;
+}
+
 body {
     background-color: var(--sBackground-Color);
     font-family: var(--page-font);

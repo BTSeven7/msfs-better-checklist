@@ -13,7 +13,14 @@
           "item": "Fuel Set in Panel",
           "expect": "Set",
           "apiData": null,
-          "apiVar": "${sbFuel}",
+          "apiVar": "${sbFuelInGame}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Payload Set in Panel",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${sbPayload}",
           "wxUpdates": false
         },
         {
@@ -118,8 +125,8 @@
           "item": "TO - OAT",
           "expect": "Set",
           "apiData": null,
-          "apiVar": null,
-          "wxUpdates": false
+          "apiVar": "${wxOriginTemp}",
+          "wxUpdates": true
         },
         {
           "item": "TO - QNH",
@@ -166,6 +173,13 @@
         {
           "item": "RT Engine @ N2 20%",
           "expect": "Run",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "",
+          "expect": "Repeat Left Engine",
           "apiData": null,
           "apiVar": null,
           "wxUpdates": false
@@ -218,6 +232,13 @@
           "apiData": null,
           "apiVar": "${wxOriginBaro}",
           "wxUpdates": true
+        },
+        {
+          "item": "Set ALT",
+          "expect": "Set Cleared",
+          "apiData": null,
+          "apiVar": "${sbMcpAlt}",
+          "wxUpdates": false
         },
         {
           "item": "Set RWY HDG",

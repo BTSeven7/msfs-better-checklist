@@ -388,3 +388,12 @@ function backgroundSwitchListener(){
         sendParentMessage(`background,${this.checked.toString()}`);
     });
 }
+
+//VR Scale Switch
+function vrScaleSwitchListener() {
+    const vrSwitch = document.getElementById('vr-scale');
+    vrSwitch.addEventListener('change', function() {
+        document.body.classList.toggle('vr-scale');
+        localStorage.setItem('vrScale', this.checked);
+    });
+}

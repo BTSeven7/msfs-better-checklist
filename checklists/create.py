@@ -50,7 +50,7 @@ def convert_excel_to_checklist():
 
         # Process items for each section
         for _, item in section_items.iterrows():
-            if pd.notna(item['item']):  # Skip blank rows
+            if pd.notna(item['item']) or pd.notna(item['expect']):  # Skip blank rows
                 item_dict = {
                     "item": item['item'] if pd.notna(item['item']) else "",
                     "expect": item['expect'] if pd.notna(item['expect']) else "",

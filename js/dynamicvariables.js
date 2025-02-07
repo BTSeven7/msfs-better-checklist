@@ -10,10 +10,14 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         sbDestIcao: simBrief.destination.icao_code,
         //Fuel
         sbFuel: simBrief.fuel.plan_ramp,
+        //Fuel for In Game Entry
+        sbFuelInGame: Math.floor(simBrief.fuel.plan_ramp / 2),
         //Fuel Round
         sbFuelRound: Math.round((simBrief.fuel.plan_ramp / 1000) * 10) / 10,
         //ZFW as 000.0
         sbZfw: Math.round((simBrief.weights.est_zfw / 1000) * 10) / 10,
+        //Payload
+        sbPayload: simBrief.weights.payload,
         //ZFW Raw
         sbZfwRaw: simBrief.weights.est_zfw,
         //Route as Origin + Dest: ICAOICAO
@@ -57,8 +61,6 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         // Reserve Fuel
         sbReserveFuel: (Number(simBrief.fuel.reserve) / 1000).toFixed(1),
         
-        
-        
         //AirportDB.io Variables
         airportIoMcpHdg: (function() {
             if (!simBrief.origin.plan_rwy || !simBrief.tlr.takeoff.runway) return null;
@@ -77,6 +79,8 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         wxOriginWind: simOriginWeather ? `${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}` : null,
         //Baro Presure at Origin airport 00.00/0000 (HG/QNH)
         wxOriginBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
+        //Origin Airport Temperature
+        wxOriginTemp: simOriginWeather ? `${simOriginWeather.temperature.celsius}°`: null,
         //Baro Pressure at Dest Airport 00.00/0000 (HG/QNG)
         wxDestBaro: simDestWeather && simDestWeather.barometer ? 
             parseFloat(simDestWeather.barometer.hg).toFixed(2) + '/' + 
