@@ -15,7 +15,7 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         //ZFW as 000.0
         sbZfw: Math.round((simBrief.weights.est_zfw / 1000) * 10) / 10,
         //ZFW Raw
-        // sbZfwRaw: simBrief.weights.est_zfw,
+        sbZfwRaw: simBrief.weights.est_zfw,
         //Route as Origin + Dest: ICAOICAO
         sbRoute: simBrief.origin.icao_code + simBrief.destination.icao_code, 
         //FLT Number as AAA000
@@ -60,11 +60,11 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         
         
         //AirportDB.io Variables
-        airportIoMcpHdg: simBrief.origin.plan_rwy && simBrief.tlr.takeoff.runway
-            ? simBrief.tlr.takeoff.runway.find(function(rwy) {
-                return rwy.identifier === simBrief.origin.plan_rwy;
-            })?.magnetic_course
-            : null,
+        // airportIoMcpHdg: simBrief.origin.plan_rwy && simBrief.tlr.takeoff.runway
+        //     ? simBrief.tlr.takeoff.runway.find(function(rwy) {
+        //         return rwy.identifier === simBrief.origin.plan_rwy;
+        //     })?.magnetic_course
+        //     : null,
         
         // //***Weather Variables -- Only if Weather Data Exists will these populate***
         // //Wind at Origin Airport as 000/00
