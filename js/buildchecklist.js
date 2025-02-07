@@ -89,7 +89,7 @@ async function buildChecklist(){
     //Create Overview Header and API Variables - Skip if no flight plan
     if (!noFlightPlanCheckbox.checked) {
         createOverviewHeader(sbData); //Create Overview Header
-        apiVariables = createDynamicVariables(sbData, airportDbOriginData, airportDbDestData, originWeather, destWeather) //Create Dynamic Variables
+        apiVariables = createDynamicVariables(sbData, originWeather, destWeather) //Create Dynamic Variables
         console.log('Calculated apiVariables:', apiVariables);
     }
     
