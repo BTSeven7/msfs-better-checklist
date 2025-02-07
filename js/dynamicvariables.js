@@ -83,8 +83,8 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
         //Destination Airport Temperature
         wxDestTemp: simDestWeather ? `${simDestWeather.temperature.celsius}°`: null,
-        // //Destination Wind
-        // wxDestWind: simDestWeather ? `${simDestWeather.wind?.degrees ?? 'Error'}°/${simDestWeather.wind?.speed_kts ?? 'Error'}` : null,
+        //Destination Wind
+        wxDestWind: simDestWeather ? `${simDestWeather.wind?.degrees ?? 'Error'}°/${simDestWeather.wind?.speed_kts ?? 'Error'}` : null,
 
         //****Special Variables Per Plane ******/
         // maddogEfbPerfOrigin: simOriginWeather ? `${simBrief.origin?.icao_code ?? 'Error'}/${simBrief.origin?.plan_rwy ?? 'Error'}/(${simOriginWeather.wind?.degrees ?? 'Error'}/${simOriginWeather.wind?.speed_kts ?? 'Error'})/${isNaN(simOriginWeather.barometer?.mb) ? 'Error' : parseFloat(simOriginWeather.barometer.mb).toFixed(0)}/${simOriginWeather.temperature?.celsius ?? 'Error'}/${simBrief.weights.est_tow != null ? Math.round((simBrief.weights.est_tow / 1000) * 10) / 10 : 'Error'}` : 'Error',
