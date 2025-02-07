@@ -103,7 +103,9 @@ function appendWeatherData(section, weatherData, index) {
     section.appendChild(createWeatherDiv(`At ${safeText(weatherData.icao)}`, `icao${index}`));
     
     // Weather Check for  Gusts
-    let windDataText = `Wind: ${safeText(weatherData.wind?.degrees, '°')}/${safeText(weatherData.wind?.speed_kts, 'kts')}`;
+    let windDataText = 'Wind: ' + 
+        safeText(weatherData.wind && weatherData.wind.degrees, '°') + '/' + 
+        safeText(weatherData.wind && weatherData.wind.speed_kts, 'kts');
     
         if (weatherData.wind && weatherData.wind.gust_kts && 
             weatherData.wind.gust_kts > (weatherData.wind && weatherData.wind.speed_kts || 0)) {
