@@ -22,7 +22,8 @@ async function buildChecklist(){
 
     //If in Simulator send ID/API to update data storage
     if (isInIframe()){
-        sendParentMessage(`ids,${simBriefId},${airportIoApiKey},${aircrafId},${checklistId}`);
+        // sendParentMessage(`ids,${simBriefId},${airportIoApiKey},${aircrafId},${checklistId}`);
+        sendParentMessage(`ids,${simBriefId},${aircrafId},${checklistId}`);
     }
 
     //Delcare Data Holder Variables
