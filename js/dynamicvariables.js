@@ -67,8 +67,8 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         //     : null,
         
         // //***Weather Variables -- Only if Weather Data Exists will these populate***
-        // //Wind at Origin Airport as 000/00
-        // wxOriginWind: simOriginWeather ? `${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}` : null,
+        //Wind at Origin Airport as 000/00
+        wxOriginWind: simOriginWeather ? `${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}` : null,
         // //Baro Presure at Origin airport 00.00/0000 (HG/QNH)
         // wxOriginBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
         // //Baro Pressure at Dest Airport 00.00/0000 (HG/QNG)
