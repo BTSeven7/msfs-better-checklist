@@ -70,16 +70,15 @@ function processParentMessage(message){
 
     switch(command) {
         case 'ids':
-           const sbId = parts[1];
-           const airportKey = parts[2];
-           const aircraft = parts[3];
-           const checklist = parts[4];
-           const color = parts[5];
-           const font = parts[6];
-           const nfpStatus = parts[7];
-           const background = parts[8];
+            const sbId = parts[1];
+            const aircraft = parts[2];
+            const checklist = parts[3];
+            const color = parts[4];
+            const font = parts[5];
+            const nfpStatus = parts[6];
+            const background = parts[7];
            
-           const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, airportKey, aircraft, checklist, color, font, nfpStatus, background]});
+           const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, aircraft, checklist, color, font, nfpStatus, background]});
            document.dispatchEvent(settingsData);
         break;
         
@@ -126,17 +125,23 @@ function getStoredSettingsFromSim(){
 
 function setSimStoredSettings(settingsData){
     localStorage.setItem('simBriefIdLocal', settingsData[0]);
-    localStorage.setItem('airportIoApiLocal', settingsData[1]);
-    localStorage.setItem('aircraftSelected', settingsData[2]);
-    localStorage.setItem('aircraftSelectedChecklist', settingsData[3]);
-    localStorage.setItem('font2', settingsData[4]);
-    localStorage.setItem('color1', settingsData[5]);
-    localStorage.setItem('no-flight-plan', settingsData[6]);
-    localStorage.setItem('background', settingsData[7]);
+    localStorage.setItem('aircraftSelected', settingsData[1]);
+    localStorage.setItem('aircraftSelectedChecklist', settingsData[2]);
+    localStorage.setItem('font2', settingsData[3]);
+    localStorage.setItem('color1', settingsData[4]);
+    localStorage.setItem('no-flight-plan', settingsData[5]);
+    localStorage.setItem('background', settingsData[6]);
 }
 
 function areLocalStorageKeysSet() {
-    const keysToCheck = ['aircraftSelected', 'aircraftSelectedChecklist', 'simBriefIdLocal', 'airportIoApiLocal','font2','color1','noFlightPlan'];
+    const keysToCheck = [
+        'aircraftSelected', 
+        'aircraftSelectedChecklist', 
+        'simBriefIdLocal',
+        'font2',
+        'color1',
+        'noFlightPlan'
+    ];
 
     return keysToCheck.every(key => {
         const value = localStorage.getItem(key);
