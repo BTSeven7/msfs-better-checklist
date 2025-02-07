@@ -84,9 +84,5 @@ function createDynamicVariables2(simBrief, simOriginWeather, simDestWeather){
         maddogEfbPerfDest: simDestWeather ? `${simBrief.destination?.icao_code ?? 'Error'}/${simBrief.destination?.plan_rwy ?? 'Error'}/(${simDestWeather.wind?.degrees ?? 'Error'}/${simDestWeather.wind?.speed_kts ?? 'Error'})/${isNaN(simDestWeather.barometer?.mb) ? 'Error' : parseFloat(simDestWeather.barometer.mb).toFixed(0)}/${simDestWeather.temperature?.celsius ?? 'Error'}/${simBrief.weights.est_ldw != null ? Math.round((simBrief.weights.est_ldw / 1000) * 10) / 10 : 'Error'}` : 'Error',
 
     };
-
-    //console.log(dynamicVariables);
-
     return dynamicVariables;
-
 }
