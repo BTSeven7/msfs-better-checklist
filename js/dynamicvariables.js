@@ -1,4 +1,4 @@
-function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
+function createDynamicVariables2(simBrief, simOriginWeather, simDestWeather){
     const dynamicVariables = {
         //***SimBrief Variables***
         flightPlan: simBrief ? `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy} `
