@@ -111,7 +111,7 @@
           "item": "Perf - ZFW",
           "expect": "Set",
           "apiData": null,
-          "apiVar": "${sbZfw}",
+          "apiVar": "${sbZfwRaw}",
           "wxUpdates": false
         },
         {
