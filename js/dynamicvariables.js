@@ -61,11 +61,11 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         
         //***AirportDB.io Variables***
         //Calculate RWY Heading by using nearest NAVaid for Magnetic Variation with RWY True Heading
-        airportIoMcpHdg: simBrief.origin.plan_rwy && simBrief.tlr.takeoff.runway
-            ? simBrief.tlr.takeoff.runway.find(function(rwy) {
-                return rwy.identifier === simBrief.origin.plan_rwy;
-            })?.magnetic_course
-            : null,
+        // airportIoMcpHdg: simBrief.origin.plan_rwy && simBrief.tlr.takeoff.runway
+        //     ? simBrief.tlr.takeoff.runway.find(function(rwy) {
+        //         return rwy.identifier === simBrief.origin.plan_rwy;
+        //     })?.magnetic_course
+        //     : null,
         
         //***Weather Variables -- Only if Weather Data Exists will these populate***
         //Wind at Origin Airport as 000/00
