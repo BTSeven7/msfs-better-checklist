@@ -59,10 +59,6 @@ async function buildChecklist(){
         originWeather = await getWeatherFromSim(sbData.origin.icao_code);
         destWeather = await getWeatherFromSim(sbData.destination.icao_code);
     }
-    // else if(airportIoValueCheck(wxApiKey)){
-    //     originWeather = await getApiWeatherData(sbData.origin.icao_code, wxApiKey);
-    //     destWeather = await getApiWeatherData(sbData.destination.icao_code, wxApiKey);
-    // }
 
     //Add ICAOs to Local Storage
     localStorage.setItem('originIcao',sbData.origin.icao_code);
