@@ -60,11 +60,17 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         
         
         //AirportDB.io Variables
-        airportIoMcpHdg: simBrief.origin.plan_rwy && simBrief.tlr.takeoff.runway
-            ? simBrief.tlr.takeoff.runway.find(function(rwy) {
-                return rwy.identifier === simBrief.origin.plan_rwy;
-            })?.magnetic_course
-            : null,
+        airportIoMcpHdg: (function() {
+            if (!simBrief.origin.plan_rwy || !simBrief.tlr.takeoff.runway) return null;
+            var runway = null;
+            for (var i = 0; i < simBrief.tlr.takeoff.runway.length; i++) {
+                if (simBrief.tlr.takeoff.runway[i].identifier === simBrief.origin.plan_rwy) {
+                    runway = simBrief.tlr.takeoff.runway[i];
+                    break;
+                }
+            }
+            return runway ? runway.magnetic_course : null;
+        })(),        
         
         // //***Weather Variables -- Only if Weather Data Exists will these populate***
         //Wind at Origin Airport as 000/00
