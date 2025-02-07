@@ -78,13 +78,13 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         //Baro Presure at Origin airport 00.00/0000 (HG/QNH)
         wxOriginBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
         //Baro Pressure at Dest Airport 00.00/0000 (HG/QNG)
-        wxDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null,
-        //QNG mb Orign Airport
-        wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
-        //Destination Airport Temperature
-        wxDestTemp: simDestWeather ? `${simDestWeather.temperature.celsius}°`: null,
-        //Destination Wind
-        wxDestWind: simDestWeather ? `${simDestWeather.wind?.degrees ?? 'Error'}°/${simDestWeather.wind?.speed_kts ?? 'Error'}` : null,
+        // wxDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null,
+        // //QNG mb Orign Airport
+        // wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
+        // //Destination Airport Temperature
+        // wxDestTemp: simDestWeather ? `${simDestWeather.temperature.celsius}°`: null,
+        // //Destination Wind
+        // wxDestWind: simDestWeather ? `${simDestWeather.wind?.degrees ?? 'Error'}°/${simDestWeather.wind?.speed_kts ?? 'Error'}` : null,
 
         //****Special Variables Per Plane ******/
         // maddogEfbPerfOrigin: simOriginWeather ? `${simBrief.origin?.icao_code ?? 'Error'}/${simBrief.origin?.plan_rwy ?? 'Error'}/(${simOriginWeather.wind?.degrees ?? 'Error'}/${simOriginWeather.wind?.speed_kts ?? 'Error'})/${isNaN(simOriginWeather.barometer?.mb) ? 'Error' : parseFloat(simOriginWeather.barometer.mb).toFixed(0)}/${simOriginWeather.temperature?.celsius ?? 'Error'}/${simBrief.weights.est_tow != null ? Math.round((simBrief.weights.est_tow / 1000) * 10) / 10 : 'Error'}` : 'Error',
