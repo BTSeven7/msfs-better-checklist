@@ -81,8 +81,8 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         wxDestBaro: simDestWeather ? `${parseFloat(simDestWeather.barometer.hg).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb).toFixed(0)}` : null,
         //QNH mb Orign Airport
         wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
-        // //Destination Airport Temperature
-        // wxDestTemp: simDestWeather ? `${simDestWeather.temperature.celsius}°`: null,
+        //Destination Airport Temperature
+        wxDestTemp: simDestWeather ? `${simDestWeather.temperature.celsius}°`: null,
         // //Destination Wind
         // wxDestWind: simDestWeather ? `${simDestWeather.wind?.degrees ?? 'Error'}°/${simDestWeather.wind?.speed_kts ?? 'Error'}` : null,
 
