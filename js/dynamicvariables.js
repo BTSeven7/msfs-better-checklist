@@ -1,4 +1,4 @@
-function createDynamicVariables2(simBrief, simOriginWeather, simDestWeather){
+function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
     const dynamicVariables = {
         //***SimBrief Variables***
         flightPlan: simBrief ? `${simBrief.origin.icao_code}/${simBrief.origin.plan_rwy} `
@@ -61,8 +61,10 @@ function createDynamicVariables2(simBrief, simOriginWeather, simDestWeather){
         
         //***AirportDB.io Variables***
         //Calculate RWY Heading by using nearest NAVaid for Magnetic Variation with RWY True Heading
-        airportIoMcpHdg: simBrief.origin.plan_rwy && simBrief.tlr.takeoff.runway 
-            ? simBrief.tlr.takeoff.runway.find(rwy => rwy.identifier === simBrief.origin.plan_rwy)?.magnetic_course 
+        airportIoMcpHdg: simBrief.origin.plan_rwy && simBrief.tlr.takeoff.runway
+            ? simBrief.tlr.takeoff.runway.find(function(rwy) {
+                return rwy.identifier === simBrief.origin.plan_rwy;
+            })?.magnetic_course
             : null,
         
         //***Weather Variables -- Only if Weather Data Exists will these populate***
