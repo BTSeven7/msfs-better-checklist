@@ -77,8 +77,9 @@ function processParentMessage(message){
             const font = parts[5];
             const nfpStatus = parts[6];
             const background = parts[7];
+            const VRStatus = parts[8];
            
-           const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, aircraft, checklist, color, font, nfpStatus, background]});
+           const settingsData = new CustomEvent('settingsDataReceived', {detail: [sbId, aircraft, checklist, color, font, nfpStatus, background, VRStatus]});
            document.dispatchEvent(settingsData);
         break;
         
@@ -131,6 +132,9 @@ function setSimStoredSettings(settingsData){
     localStorage.setItem('color1', settingsData[4]);
     localStorage.setItem('no-flight-plan', settingsData[5]);
     localStorage.setItem('background', settingsData[6]);
+    if (settingsData[7] === 1) {
+        document.body.classList.add('vr-zoom');
+    }
 }
 
 function areLocalStorageKeysSet() {
