@@ -12,102 +12,139 @@ function setupUserInputListeners() {
 }
 
 //Checkboxes - Aircraft
-function setupAircraftCheckboxListeners() {
+// function setupAircraftCheckboxListeners() {
+//     const checkboxes = document.querySelectorAll('.aircraft-checkbox');
+//     const checklistDivs = document.querySelectorAll('.aircraft-checklist-container');
+
+//     checkboxes.forEach(checkbox => {
+//         checkbox.addEventListener('change', function() {
+            
+//             // Uncheck all .aircraft-checklist checkboxes
+//             const checklistCheckboxes = document.querySelectorAll('.aircraft-checklist');
+//             checklistCheckboxes.forEach(chk => {
+//                 chk.checked = false;
+//             });
+            
+//             // Count the number of checked checkboxes
+//             const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+
+//             // If it's the only checkbox checked, prevent it from being unchecked
+//             if (checkedCount === 0) {
+//                 this.checked = true;
+//                 return;
+//             }
+
+//             // Uncheck all other checkboxes and hide their corresponding divs
+//             checkboxes.forEach(cb => {
+//                 if (cb.id !== this.id) {
+//                     cb.checked = false;
+//                     const checklistDiv = document.getElementById(cb.id + '-checklist-container');
+//                     if (checklistDiv) {
+//                         checklistDiv.style.display = 'none';
+//                     }
+//                 }
+//             });
+
+//             // Update localStorage with the ID of the checked checkbox
+//             localStorage.setItem('aircraftSelected', this.id);
+
+//             // Show the corresponding checklist div for the checked checkbox
+//             const checklistDivId = this.id + '-checklist-container';
+//             const checklistDiv = document.getElementById(checklistDivId);
+//             if (checklistDiv) {
+//                 checklistDiv.style.display = 'flex'; // Show the checklist div
+//                 const firstCheckbox = checklistDiv.querySelector('.aircraft-checklist');
+//                  if (firstCheckbox && !firstCheckbox.checked) {
+//                      firstCheckbox.checked = true;
+//                      firstCheckbox.dispatchEvent(new Event('change')); // Trigger the change event
+//                  }
+//             }
+
+//         });
+//     });
+// }
+
+//Checkboxes - Checklists
+// function setupAircraftChecklistCheckboxListeners() {
+//     const checklistContainers = document.querySelectorAll('.aircraft-checklist-container');
+
+//     checklistContainers.forEach(container => {
+//         const checkboxes = container.querySelectorAll('.aircraft-checklist');
+        
+//         checkboxes.forEach(checkbox => {
+//             checkbox.addEventListener('change', function() {
+//                 // Count the number of checked checkboxes within this container
+//                 const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+
+//                 if (checkedCount === 0) {
+//                     // If it's the only checkbox checked, prevent it from being unchecked
+//                     this.checked = true;
+//                     return;
+//                 }
+
+//                 // Uncheck all other checkboxes within the same container
+//                 checkboxes.forEach(cb => {
+//                     if (cb !== this) {
+//                         cb.checked = false;
+//                     }
+//                 });
+
+//                 // Update localStorage with the ID of the checked checkbox
+//                 localStorage.setItem('aircraftSelectedChecklist', this.id);
+//                 localStorage.setItem('aircraftSelectedChecklistFileName', this.getAttribute('data-file-name'));
+//                 localStorage.setItem('aircraftSelectedChecklistAuthor', this.getAttribute('author'));
+
+//                 //Create Header based on change
+//                 updateCheckGuideTitle();
+//             });
+//         });
+//     });
+// }
+
+function setupChecklistSelectionListeners() {
     const checkboxes = document.querySelectorAll('.aircraft-checkbox');
-    const checklistDivs = document.querySelectorAll('.aircraft-checklist-container');
 
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
-            
-            // Uncheck all .aircraft-checklist checkboxes
-            const checklistCheckboxes = document.querySelectorAll('.aircraft-checklist');
-            checklistCheckboxes.forEach(chk => {
-                chk.checked = false;
-            });
-            
-            // Count the number of checked checkboxes
+            // Count checked checkboxes
             const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
 
-            // If it's the only checkbox checked, prevent it from being unchecked
+            // Prevent unchecking if it's the only one checked
             if (checkedCount === 0) {
                 this.checked = true;
                 return;
             }
 
-            // Uncheck all other checkboxes and hide their corresponding divs
+            // Uncheck all other checkboxes
             checkboxes.forEach(cb => {
-                if (cb.id !== this.id) {
+                if (cb !== this) {
                     cb.checked = false;
-                    const checklistDiv = document.getElementById(cb.id + '-checklist-container');
-                    if (checklistDiv) {
-                        checklistDiv.style.display = 'none';
-                    }
                 }
             });
 
-            // Update localStorage with the ID of the checked checkbox
-            localStorage.setItem('aircraftSelected', this.id);
+            // Get the checklist data from the checkbox's data attributes
+            const aircraft = this.getAttribute('data-aircraft');
+            const displayName = this.getAttribute('data-display-name');
+            const fileName = this.getAttribute('data-file-name');
+            const author = this.getAttribute('data-author');
 
-            // Show the corresponding checklist div for the checked checkbox
-            const checklistDivId = this.id + '-checklist-container';
-            const checklistDiv = document.getElementById(checklistDivId);
-            if (checklistDiv) {
-                checklistDiv.style.display = 'flex'; // Show the checklist div
-                const firstCheckbox = checklistDiv.querySelector('.aircraft-checklist');
-                 if (firstCheckbox && !firstCheckbox.checked) {
-                     firstCheckbox.checked = true;
-                     firstCheckbox.dispatchEvent(new Event('change')); // Trigger the change event
-                 }
-            }
+            // Store selection in localStorage with consistent naming
+            localStorage.setItem('aircraftSelected', aircraft);
+            localStorage.setItem('aircraftSelectedChecklist', displayName);
+            localStorage.setItem('aircraftSelectedChecklistFileName', fileName);
+            localStorage.setItem('aircraftSelectedChecklistAuthor', author);
 
-        });
-    });
-}
-
-//Checkboxes - Checklists
-function setupAircraftChecklistCheckboxListeners() {
-    const checklistContainers = document.querySelectorAll('.aircraft-checklist-container');
-
-    checklistContainers.forEach(container => {
-        const checkboxes = container.querySelectorAll('.aircraft-checklist');
-        
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                // Count the number of checked checkboxes within this container
-                const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-
-                if (checkedCount === 0) {
-                    // If it's the only checkbox checked, prevent it from being unchecked
-                    this.checked = true;
-                    return;
-                }
-
-                // Uncheck all other checkboxes within the same container
-                checkboxes.forEach(cb => {
-                    if (cb !== this) {
-                        cb.checked = false;
-                    }
-                });
-
-                // Update localStorage with the ID of the checked checkbox
-                localStorage.setItem('aircraftSelectedChecklist', this.id);
-                localStorage.setItem('aircraftSelectedChecklistFileName', this.getAttribute('data-file-name'));
-                localStorage.setItem('aircraftSelectedChecklistAuthor', this.getAttribute('author'));
-
-                //Create Header based on change
-                updateCheckGuideTitle();
-            });
+            // Update header
+            updateCheckGuideTitle();
         });
     });
 }
 
 //Checkboxes - Reset Function
 function setupSecondaryCheckboxListeners() {
-    // Select all checkboxes with the specified classes
-    const checkboxes = document.querySelectorAll('.aircraft-checkbox, .aircraft-checklist');
+    const checkboxes = document.querySelectorAll('.aircraft-checkbox');
     console.log(`Found ${checkboxes.length} checkboxes`);
 
-    // Add a change event listener to each checkbox
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', resetPage);
     });
@@ -162,6 +199,10 @@ function attachEventListenersToChecklistItems() {
                 if (resetButton) {
                     resetButton.style.display = 'block'; // Show the corresponding reset button
                 }
+            }
+
+            if (isInIframe()) {
+                sendParentMessage('CheckOff');
             }
 
     savePageData();

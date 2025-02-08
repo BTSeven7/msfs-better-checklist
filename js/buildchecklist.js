@@ -1,7 +1,6 @@
 async function buildChecklist(){
     
     const simBriefId = document.getElementById('simBriefIdLocal').value;
-    // const airportIoApiKey = document.getElementById('airportIoApiLocal').value;
     const errorDiv = document.getElementById('error-checkguide-header');
     const noFlightPlanCheckbox = document.getElementById('no-flight-plan');
     const aircrafId = getSelectedAicraft();
@@ -448,24 +447,25 @@ function simBriefValueCheck(simBriefId) {
 
 }
 
-function airportIoValueCheck(airportIoApiKey){
-    if (!airportIoApiKey.trim()){
-        return false;
-    }
+// function airportIoValueCheck(airportIoApiKey){
+//     if (!airportIoApiKey.trim()){
+//         return false;
+//     }
 
-    return true;
+//     return true;
 
-}
+// }
 
 function aircraftChecklistValueCheck() {
-    const checkboxes = document.querySelectorAll('.aircraft-checklist');
+    const checkboxes = document.querySelectorAll('.aircraft-checkbox');
     for (let checkbox of checkboxes) {
         if (checkbox.checked) {
             return true; // At least one checkbox is checked
         }
     }
+    
     const errorDiv = document.getElementById('error-checkguide-header')
-        errorDiv.textContent = 'Please Select an Aircraft and Checklist'
-        errorDiv.style.display = 'block'
+    errorDiv.textContent = 'Please Select an Aircraft Checklist'
+    errorDiv.style.display = 'block'
     return false; // No checkboxes are checked
 }

@@ -1,3 +1,59 @@
+// function restoreUserDataLocalStorage() {
+//     // Array of localStorage keys for input elements
+//     const inputKeys = ['simBriefIdLocal', 'wxApiKeyLocal', 'airportIoApiLocal'];
+
+//     // Restore values for input elements
+//     inputKeys.forEach(key => {
+//         const storedValue = localStorage.getItem(key);
+//         if (storedValue) {
+//             const inputElement = document.getElementById(key);
+//             if (inputElement && inputElement.tagName === 'INPUT') {
+//                 inputElement.value = storedValue;
+//             }
+//         }
+//     });
+
+//     // Array of localStorage keys for checkbox elements
+//     const checkboxKeys = ['aircraftSelected','aircraftSelectedChecklist'];
+
+//     // Restore checked state for checkboxes
+//     checkboxKeys.forEach(key => {
+//         const checkboxId = localStorage.getItem(key);
+//         if (checkboxId) {
+//             const checkboxElement = document.getElementById(checkboxId);
+//             if (checkboxElement && checkboxElement.type === 'checkbox') {
+//                 checkboxElement.checked = true;
+
+//                 // Make the container of the checkbox visible
+//                 // Navigate two levels up to reach the 'aircraft-checklist-container'
+//                 let container = checkboxElement.parentElement;
+//                 while (container && !container.classList.contains('aircraft-checklist-container')) {
+//                     container = container.parentElement;
+//                 }
+
+//                 if (container) {
+//                     container.style.display = 'block'; // Make the container visible
+//                 }
+//             }
+//         }
+//     });
+
+//     const aircraftSelectedChecklistId = localStorage.getItem('aircraftSelectedChecklist');
+//     if (aircraftSelectedChecklistId) {
+//         // Call the specific function here
+//         updateCheckGuideTitle(); 
+//     }
+
+//     const specificCheckboxKeys = ['no-flight-plan', 'color1', 'font2','background'];
+//     specificCheckboxKeys.forEach(key => {
+//         const isTrue = localStorage.getItem(key) === 'true';
+//         const checkboxElement = document.getElementById(key);
+//         if (checkboxElement && checkboxElement.type === 'checkbox') {
+//             checkboxElement.checked = isTrue;
+//         }
+//     });
+// }
+
 function restoreUserDataLocalStorage() {
     // Array of localStorage keys for input elements
     const inputKeys = ['simBriefIdLocal', 'wxApiKeyLocal', 'airportIoApiLocal'];
@@ -13,38 +69,24 @@ function restoreUserDataLocalStorage() {
         }
     });
 
-    // Array of localStorage keys for checkbox elements
-    const checkboxKeys = ['aircraftSelected','aircraftSelectedChecklist'];
-
-    // Restore checked state for checkboxes
-    checkboxKeys.forEach(key => {
-        const checkboxId = localStorage.getItem(key);
-        if (checkboxId) {
-            const checkboxElement = document.getElementById(checkboxId);
-            if (checkboxElement && checkboxElement.type === 'checkbox') {
-                checkboxElement.checked = true;
-
-                // Make the container of the checkbox visible
-                // Navigate two levels up to reach the 'aircraft-checklist-container'
-                let container = checkboxElement.parentElement;
-                while (container && !container.classList.contains('aircraft-checklist-container')) {
-                    container = container.parentElement;
-                }
-
-                if (container) {
-                    container.style.display = 'block'; // Make the container visible
-                }
-            }
+    // Restore checklist selection
+    const flightOverviewContent = localStorage.getItem('flightOverviewContent');
+    const checkboxId = localStorage.getItem('aircraftSelectedChecklistFileName');
+    if (flightOverviewContent && checkboxId) {
+        const checkboxElement = document.querySelector(`[data-file-name="${checkboxId}"]`);
+        if (checkboxElement && checkboxElement.type === 'checkbox') {
+            checkboxElement.checked = true;
         }
-    });
-
-    const aircraftSelectedChecklistId = localStorage.getItem('aircraftSelectedChecklist');
-    if (aircraftSelectedChecklistId) {
-        // Call the specific function here
-        updateCheckGuideTitle(); 
     }
 
-    const specificCheckboxKeys = ['no-flight-plan', 'color1', 'font2','background'];
+    // Update title if checklist was selected
+    // const selectedChecklist = localStorage.getItem('aircraftSelectedChecklist');
+    // if (flightOverviewContent && selectedChecklist) {
+    //     updateCheckGuideTitle();
+    // }
+
+    // Restore settings checkboxes
+    const specificCheckboxKeys = ['no-flight-plan', 'color1', 'font2', 'background'];
     specificCheckboxKeys.forEach(key => {
         const isTrue = localStorage.getItem(key) === 'true';
         const checkboxElement = document.getElementById(key);

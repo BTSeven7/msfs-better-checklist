@@ -86,6 +86,29 @@ function createAircraftList(jsonData) {
     });
 }
 
+function createSimplifiedAircraftList(jsonData) {
+    const listContainer = document.getElementById('aircraft-list-container');
+    
+    jsonData.checklists.forEach((checklist, index) => {
+        const checklistDiv = createDOMElement(
+            'div', 
+            `checklist-${index}-container`, 
+            listContainer, 
+            '', 
+            'aircraft-container'
+        );
+        
+        const checkboxId = `checklist-${index}-checkbox`;
+        createSliderCheckbox(checklistDiv, checkboxId, checklist.displayName, 'aircraft-checkbox');
+
+        const checkbox = document.getElementById(checkboxId);
+        checkbox.setAttribute('data-aircraft', checklist.aircraft);
+        checkbox.setAttribute('data-display-name', checklist.displayName);
+        checkbox.setAttribute('data-file-name', checklist.fileName.replace('.json', ''));
+        checkbox.setAttribute('data-author', checklist.author);
+    });
+}
+
 function createAircraftChecklistsList(jsonData) {
     const listContainer = document.getElementById('aircraft-checklist-container');
     const aircraftData = jsonData.aircraft;
@@ -106,7 +129,7 @@ function createAircraftChecklistsList(jsonData) {
                 // ID for the checkbox, replacing spaces with dashes to ensure valid IDs
                 const checkboxId = `${aircraftKey}-checklist-${index}-checkbox`.replace(/\s/g, '-');
                 
-                // Label text for the checkbox, using the author's name and last updated time
+                // Label text for the checkbox, using the author's name
                 const labelText = `${checklist.author}`;
                 createSliderCheckbox(checklistDiv, checkboxId, labelText, 'aircraft-checklist');
 

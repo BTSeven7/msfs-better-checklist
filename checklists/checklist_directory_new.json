@@ -1,0 +1,20 @@
+{
+    "checklists": [
+        {
+            "aircraft": "CJ4",
+            "author": "BLT",
+            "fileName": "CJ4_BLT_checkguide.json",
+            "lastUpdated": "2025-02-07T20:56:13Z",
+            "fileSize": "17209",
+            "displayName": "CJ4 by BLT"
+        },
+        {
+            "aircraft": "Fenix A320",
+            "author": "BLT",
+            "fileName": "Fenix_A320_BLT_checkguide.json",
+            "lastUpdated": "2025-02-04T21:19:00Z",
+            "fileSize": "24448",
+            "displayName": "Fenix A320 by BLT"
+        }
+    ]
+}

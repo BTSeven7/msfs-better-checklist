@@ -31,8 +31,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     //User Input Container
     const userInputSettingsContainer = createDOMElement('div', 'settings-user-input-container', containerSettings,undefined,'settings-container');
     createUserInput(userInputSettingsContainer,'simBriefIdLocal','Enter SimBrief ID:','settings-text-input');
-    // createUserInput(userInputSettingsContainer,'airportIoApiLocal', 'Enter AirportDB.io API Key:', 'settings-text-input');
-    // createUserInput(userInputSettingsContainer,'wxApiKeyLocal', 'Enter AVWX API Key:', 'setting-text-input');
     setupUserInputListeners();
 
     const noFlightPlanContainer = createDOMElement('div', 'no-flight-plan-option-container', containerSettings,undefined,'settings-container');
@@ -52,16 +50,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         <li>If you haven't filed a flight plan on SimBrief, select the 'No Flight Plan' option.</li>
         
         <li>When using this as an in-game panel, the weather data is pulled directly from the simulator!</li>
+
+        <li>VR Scale should happen automatically use slider if it does not </li>
     </ul>`;
 
     //Aicraft Tab
     //Build List of Aircraft
     createDOMElement('div', 'aircraft-list-container',containerAircraft,undefined,'aircraft-container');
-    createDOMElement('div', 'aircraft-checklist-container',containerAircraft,undefined,'checklist-contaier');
+    // createDOMElement('div', 'aircraft-checklist-container',containerAircraft,undefined,'checklist-contaier');
 
     //Create Check Guide Header
     const cgHeader = createDOMElement('div', 'checkguide-title-container',containerCheckguide,undefined,'main-title-header');
-    createDOMElement('span','default-checkguide-header',cgHeader,'Welcome to Checkguide');
+    const flightOverviewContent = localStorage.getItem('flightOverviewContent');
+    const initialTitle = flightOverviewContent ? localStorage.getItem('aircraftSelected') : 'Welcome to Checkguide';
+    createDOMElement('span', 'default-checkguide-header', cgHeader, initialTitle);
     
     //Create DIV for Errors
     const errorDiv = createDOMElement('div','error-checkguide-header',containerCheckguide,'');
@@ -69,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     //Create Main Buttons Container
     const mainButtonContainer  = createDOMElement('div', 'main-button-container',containerCheckguide,undefined,'cg-container');
-    const wxUpdateButton = createDOMElement('button', 'wx-update-button',mainButtonContainer,'WX Update','main-container-button');
+    createDOMElement('button', 'wx-update-button',mainButtonContainer,'WX Update','main-container-button');
     const flightPlanButton = createDOMElement('button', 'flight-plan-button',mainButtonContainer,'Fetch Flight Plan','main-container-button');
     const resetAllButton = createDOMElement('button','reset-all-button',mainButtonContainer,'Reset All','main-container-button');
 
@@ -81,17 +83,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const checklistContainer = createDOMElement('div', 'checklist-sections-container', body, '','container');
     checklistContainer.style.display = 'none';
 
-    //Update Aircraft Checklist Builder
-    const checklistDirectory = './checklists';
-
     //Fetch aircraft file
-    fetchLocalJson('checklists/checklist_directory.json')
+    fetchLocalJson('checklists/checklist_directory_new.json')
         .then(data => {
-            console.log('Aircraft List:', data);
-            createAircraftList(data);
-            createAircraftChecklistsList(data);
-            setupAircraftCheckboxListeners();
-            setupAircraftChecklistCheckboxListeners();
+            console.log(data);
+            // createAircraftList(data);
+            // createAircraftChecklistsList(data);
+            createSimplifiedAircraftList(data);
+            setupChecklistSelectionListeners();
+            // setupAircraftCheckboxListeners();
+            // setupAircraftChecklistCheckboxListeners();
 
             //Restore Data after aircraft list is built
             restoreUserDataLocalStorage();
