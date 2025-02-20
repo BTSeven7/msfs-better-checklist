@@ -137,7 +137,7 @@
         },
         {
           "item": "",
-          "expect": "Repat for Left Engine",
+          "expect": "Repeat for Left Engine",
           "apiData": null,
           "apiVar": null,
           "wxUpdates": false
@@ -396,7 +396,7 @@
         },
         {
           "item": "Watch TQ %",
-          "expect": "Undder 100%",
+          "expect": "Under 100%",
           "apiData": null,
           "apiVar": null,
           "wxUpdates": false
@@ -570,8 +570,8 @@
           "wxUpdates": false
         },
         {
-          "item": "At ~5 NM - Flaps Full/Gear",
-          "expect": "Slowing to 110 kts",
+          "item": "~5 NM - Flaps Full/Gear",
+          "expect": "110kts",
           "apiData": null,
           "apiVar": null,
           "wxUpdates": false
