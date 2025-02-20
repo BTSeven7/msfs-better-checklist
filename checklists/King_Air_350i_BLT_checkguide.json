@@ -1,0 +1,792 @@
+{
+  "Header": {
+    "aircraft": "King Air 350i",
+    "author": "BLT"
+  },
+  "Sections": [
+    {
+      "id": "section-01",
+      "title": "Preflight",
+      "subtext": "${flightPlan}",
+      "checkItems": [
+        {
+          "item": "Fuel Set in Panel",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${sbFuelKingAir}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Payload Set in Panel",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${sbPayload}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Parking Break",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Prop Lever",
+          "expect": "Full FWD",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Passenger Signs",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "NAV Lights",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Battery",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Avionics",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Flight Plan",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Avionics",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Oxygen Handles",
+          "expect": "ON (Pull)",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-02",
+      "title": "Engine Start",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Beacon Lights",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Right Ignition",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Right Cond. Lever (12-20%N1)",
+          "expect": "Low Idle",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Right Ignition (50% N1)",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Right Gen",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Right Cond. Lever",
+          "expect": "High Idle",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "",
+          "expect": "Repat for Left Engine",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Right Cond. Lever",
+          "expect": "Low Idle",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-03",
+      "title": "After Engine Start",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Inverters",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Bleed Air Valves",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Avionics",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Cabin Temperature",
+          "expect": "Check",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Altimeter",
+          "expect": "Set Local",
+          "apiData": null,
+          "apiVar": "${wxOriginBaro}",
+          "wxUpdates": true
+        },
+        {
+          "item": "Set Altitude",
+          "expect": "Set Cleared",
+          "apiData": null,
+          "apiVar": "${sbMcpAlt}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Set RWY HDG",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${airportIoMcpHdg}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Autopilot Control Panel",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Set NAV to GPS",
+          "expect": "As Needed",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Trims",
+          "expect": "Set TO",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-04",
+      "title": "Before Taxi",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Rudder  Boost",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Electric Trim",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Taxi Lights",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-05",
+      "title": "On Runway",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Auto Ignition",
+          "expect": "ARM",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Auto-feather",
+          "expect": "ARM",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Pitot L&R",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Windshield Anti-Ice",
+          "expect": "NORMAL",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "RECOG Lights",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "LNDG & Strobe Lights",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-06",
+      "title": "Take Off",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Prop Levers",
+          "expect": "Full FWD",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Cond Levers",
+          "expect": "High IDLE",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Max ITT",
+          "expect": 820,
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Max TQ",
+          "expect": "95-100%",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Rotate",
+          "expect": "~105-110 KIAS",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Climb",
+          "expect": "~140 KIAS",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-07",
+      "title": "Climb",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Landing Gear",
+          "expect": "Up",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Flaps",
+          "expect": "Check Up",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Yaw Damper",
+          "expect": "Engaged",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Prop Sync",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Taxi Lights",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Watch TQ %",
+          "expect": "Undder 100%",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-08",
+      "title": "Stable Climb",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Landing Lights OFF",
+          "expect": "10k FT AGL",
+          "apiData": null,
+          "apiVar": "${sbOrigin10kAgl}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Set BARO STD",
+          "expect": "At Trans ALT",
+          "apiData": null,
+          "apiVar": "${sbTransAlt}",
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-09",
+      "title": "Cruise",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Autofeather",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Auto Ignition",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "COND Levers",
+          "expect": "Low Idle",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "PROP",
+          "expect": "1500 RPM",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "TQ",
+          "expect": "45%-100%",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-10",
+      "title": "Before Descent",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Approach",
+          "expect": "Reviewed",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "ILS Frequency",
+          "expect": "SET",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-11",
+      "title": "Descent",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Cabin Pressure +1000",
+          "expect": "Dest ALT + 1000",
+          "apiData": null,
+          "apiVar": "${sbDestElev}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Autofeather",
+          "expect": "ARM",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Altimeter Set @",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${sbDestTransLevel}",
+          "wxUpdates": false
+        },
+        {
+          "item": "Altimeter Set Local",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": "${wxDestBaro}",
+          "wxUpdates": true
+        },
+        {
+          "item": "Landing Lights On",
+          "expect": "at 10k Ft",
+          "apiData": null,
+          "apiVar": "${sbDest10kAgl}",
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-12",
+      "title": "Approach",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "At ~20 NM",
+          "expect": "200 - 220 kts",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "NAV1/CDI",
+          "expect": "Set VLOC (for ILS)",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "AP APR Mode",
+          "expect": "SET",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "At ~ 10 NM",
+          "expect": "170 - 180 Kts",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "At ~5-7 NM - Flaps APP",
+          "expect": "140 - 160 kts",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "At ~5 NM - Flaps Full/Gear",
+          "expect": "Slowing to 110 kts",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Prop Sync",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Prop Lever",
+          "expect": "Full FWD",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-13",
+      "title": "Final Approach",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Flaps",
+          "expect": "Full",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Landing Gear",
+          "expect": "Down",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-14",
+      "title": "Runway Exit",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Flaps",
+          "expect": "UP",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Taxi Lights",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Landing Lights",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Strobe Lights",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Recognition Lights",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Pitot L&R",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Weather Radar",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-15",
+      "title": "At Dest Gate",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Parking Brake",
+          "expect": "Set",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Taxi Lights",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Autofeather",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Avionics Master",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Bleed Air",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Rudder Boost",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Electric Trim",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Oxygen Controls",
+          "expect": "PUSH DOWN",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    },
+    {
+      "id": "section-16",
+      "title": "Shutdown",
+      "subtext": null,
+      "checkItems": [
+        {
+          "item": "Condition Levers",
+          "expect": "CUT OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Prop Levers",
+          "expect": "FEATHER",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Beacon Lights",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Passenger Signs",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Inverters",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "NAV Lights",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Battery and Generators",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        }
+      ]
+    }
+  ]
+}

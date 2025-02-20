@@ -15,6 +15,14 @@
             "lastUpdated": "2025-02-04T21:19:00Z",
             "fileSize": "24448",
             "displayName": "Fenix A320 by BLT"
+        },
+        {
+            "aircraft": "King Air 350i",
+            "author": "BLT",
+            "fileName": "King_Air_350i_BLT_checkguide.json",
+            "lastUpdated": "2025-02-20T22:09:43Z",
+            "fileSize": "18961",
+            "displayName": "King Air 350i by BLT"
         }
     ]
 }
