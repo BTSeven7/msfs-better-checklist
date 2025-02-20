@@ -79,7 +79,11 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         
         //AirportDB.io Variables
         airportIoMcpHdg: (function() {
-            if (!simBrief.origin.plan_rwy || !simBrief.tlr.takeoff.runway) return null;
+            if (!simBrief || !simBrief.origin || !simBrief.origin.plan_rwy || 
+                !simBrief.tlr || !simBrief.tlr.takeoff || !simBrief.tlr.takeoff.runway) {
+                return null;
+            }
+            
             var runway = null;
             for (var i = 0; i < simBrief.tlr.takeoff.runway.length; i++) {
                 if (simBrief.tlr.takeoff.runway[i].identifier === simBrief.origin.plan_rwy) {
