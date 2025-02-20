@@ -14,15 +14,19 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         sbFuelInGame: Math.floor(simBrief.fuel.plan_ramp / 2),
         //Fuel for King Air In Game Entry
         sbFuelKingAir: (function() {
-            const totalFuel = simBrief.fuel.plan_ramp;
-            const maxTankFuel = 2546;
+            var totalFuel = simBrief ? Number(simBrief.fuel.plan_ramp) : 0;
+            var maxTankFuel = 2546;
+            
+            if (!totalFuel) {
+                return '0/0';
+            }
             
             if (totalFuel <= maxTankFuel) {
-                return `${Math.floor(totalFuel / 2)}/0`;
-            } else {
-                const difference = totalFuel - maxTankFuel;
-                return `${Math.floor(maxTankFuel / 2)}/${Math.floor(difference / 2)}`;
+                return Math.floor(totalFuel / 2) + '/0';
             }
+            
+            var difference = totalFuel - maxTankFuel;
+            return Math.floor(maxTankFuel / 2) + '/' + Math.floor(difference / 2);
         })(),
         //Fuel Round
         sbFuelRound: Math.round((simBrief.fuel.plan_ramp / 1000) * 10) / 10,
