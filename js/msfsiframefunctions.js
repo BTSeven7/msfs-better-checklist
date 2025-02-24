@@ -96,18 +96,28 @@ function processParentMessage(message){
     };
 }
 
-function getWeatherFromSim(icao){
+function getWeatherFromSim(icao) {
     return new Promise((resolve, reject) => {
-
         sendParentMessage(`weather,${icao}`);
 
         document.addEventListener('weatherDataReceived', function(event) {
             console.log(`iFrame Received: ${event}`);
             const weatherArray = event.detail;
-            const weatherData = metarParser(weatherArray[0]);
-            resolve(weatherData);
-        }, {once: true});
 
+            // Check if we received valid weather data
+            if (!weatherArray[0] || weatherArray[0] === "") {
+                resolve(null);
+                return;
+            }
+
+            try {
+                const weatherData = metarParser(weatherArray[0]);
+                resolve(weatherData);
+            } catch (error) {
+                console.log(`Weather parsing failed for ${icao}:`, error);
+                resolve(null);
+            }
+        }, {once: true});
     });
 }
 

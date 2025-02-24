@@ -55,8 +55,19 @@ async function buildChecklist(){
     //Get Weather Data
     // const wxApiKey = document.getElementById('wxApiKeyLocal').value;
     if (isInIframe()){
-        originWeather = await getWeatherFromSim(sbData.origin.icao_code);
-        destWeather = await getWeatherFromSim(sbData.destination.icao_code);
+        try {
+            originWeather = await getWeatherFromSim(sbData.origin.icao_code) || null;
+            destWeather = await getWeatherFromSim(sbData.destination.icao_code) || null;
+            
+            // Log weather fetch results
+            console.log('Origin weather fetch result:', originWeather);
+            console.log('Destination weather fetch result:', destWeather);
+            
+        } catch (error) {
+            console.warn('Weather fetch error:', error);
+            originWeather = null;
+            destWeather = null;
+        }
     }
 
     //Add ICAOs to Local Storage
@@ -83,7 +94,7 @@ async function buildChecklist(){
     if (!noFlightPlanCheckbox.checked) {
         createOverviewHeader(sbData); //Create Overview Header
         console.log('About to call createDynamicVariables with:', {sbData, originWeather, destWeather});
-        apiVariables = createDynamicVariables(sbData, originWeather, destWeather) //Create Dynamic Variables
+        apiVariables = createDynamicVariables(sbData, originWeather || null, destWeather || null) //Create Dynamic Variables
         console.log('Calculated apiVariables:', apiVariables);
     }
     
@@ -103,7 +114,7 @@ async function buildChecklist(){
 
     //If 'No Flight Plan' Option is NOT selected, update weather containers
     if (!noFlightPlanCheckbox.checked){
-        updateWeatherContainers(originWeather, destWeather);
+        updateWeatherContainers(originWeather || null, destWeather || null);
     }
     
     //Set Checklist Container Visible, Add Checklist Items, Update SubText
