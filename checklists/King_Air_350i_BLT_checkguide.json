@@ -248,6 +248,13 @@
           "wxUpdates": false
         },
         {
+          "item": "Windshield Anti-Ice",
+          "expect": "NORMAL",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
           "item": "Taxi Lights",
           "expect": "ON",
           "apiData": null,
@@ -283,13 +290,6 @@
           "wxUpdates": false
         },
         {
-          "item": "Windshield Anti-Ice",
-          "expect": "NORMAL",
-          "apiData": null,
-          "apiVar": null,
-          "wxUpdates": false
-        },
-        {
           "item": "RECOG Lights",
           "expect": "ON",
           "apiData": null,
@@ -298,6 +298,13 @@
         },
         {
           "item": "LNDG & Strobe Lights",
+          "expect": "ON",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
+          "item": "Weather Radar",
           "expect": "ON",
           "apiData": null,
           "apiVar": null,
@@ -689,6 +696,13 @@
           "wxUpdates": false
         },
         {
+          "item": "Passenger Signs",
+          "expect": "OFF",
+          "apiData": null,
+          "apiVar": null,
+          "wxUpdates": false
+        },
+        {
           "item": "Autofeather",
           "expect": "OFF",
           "apiData": null,
@@ -753,13 +767,6 @@
         },
         {
           "item": "Beacon Lights",
-          "expect": "OFF",
-          "apiData": null,
-          "apiVar": null,
-          "wxUpdates": false
-        },
-        {
-          "item": "Passenger Signs",
           "expect": "OFF",
           "apiData": null,
           "apiVar": null,
