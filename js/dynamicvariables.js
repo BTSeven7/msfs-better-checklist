@@ -109,11 +109,14 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         //QNH mb Orign Airport
         wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
         //Destination Airport Temperature
-        wxDestTemp: simDestWeather ? `${simDestWeather.temperature.celsius}°`: null,
+        wxDestTemp: simDestWeather && simDestWeather.temperature && simDestWeather.temperature.celsius ? 
+                    `${simDestWeather.temperature.celsius}°` : null,
         //Destination Wind
-        wxDestWind: simDestWeather ? 
-            (simDestWeather.wind && simDestWeather.wind.degrees || 'Error') + '°/' + 
-            (simDestWeather.wind && simDestWeather.wind.speed_kts || 'Error') : null,
+        wxDestWind: simDestWeather && simDestWeather.wind && 
+                    simDestWeather.wind.degrees !== undefined && 
+                    simDestWeather.wind.speed_kts !== undefined ? 
+                    `${simDestWeather.wind.degrees}°/${simDestWeather.wind.speed_kts}` : 
+                    null,
 
         /****Special Variables Per Plane ******/
         maddogEfbPerfOrigin: simOriginWeather ? 
