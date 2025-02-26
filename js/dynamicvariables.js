@@ -96,18 +96,20 @@ function createDynamicVariables(simBrief, simOriginWeather, simDestWeather){
         
         // //***Weather Variables -- Only if Weather Data Exists will these populate***
         //Wind at Origin Airport as 000/00
-        wxOriginWind: simOriginWeather ? `${simOriginWeather.wind.degrees}°/${simOriginWeather.wind.speed_kts}` : null,
+        wxOriginWind: simOriginWeather && simOriginWeather.wind ? 
+            `${simOriginWeather.wind.degrees || 0}°/${simOriginWeather.wind.speed_kts || 0}` : null,
         //Baro Presure at Origin airport 00.00/0000 (HG/QNH)
-        wxOriginBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.hg).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
+        wxOriginBaro: simOriginWeather && simOriginWeather.barometer ? 
+            `${parseFloat(simOriginWeather.barometer.hg || 0).toFixed(2)}/${parseFloat(simOriginWeather.barometer.mb || 0).toFixed(0)}`: null,
         //Origin Airport Temperature
-        wxOriginTemp: simOriginWeather ? `${simOriginWeather.temperature.celsius}°`: null,
+        wxOriginTemp: simOriginWeather && simOriginWeather.temperature ? 
+            `${simOriginWeather.temperature.celsius || 0}°`: null,
         //Baro Pressure at Dest Airport 00.00/0000 (HG/QNG)
         wxDestBaro: simDestWeather && simDestWeather.barometer ? 
-            parseFloat(simDestWeather.barometer.hg).toFixed(2) + '/' + 
-            parseFloat(simDestWeather.barometer.mb).toFixed(0) : 
-            null,
+            `${parseFloat(simDestWeather.barometer.hg || 0).toFixed(2)}/${parseFloat(simDestWeather.barometer.mb || 0).toFixed(0)}` : null,
         //QNH mb Orign Airport
-        wxOriginMbBaro: simOriginWeather ? `${parseFloat(simOriginWeather.barometer.mb).toFixed(0)}`: null,
+        wxOriginMbBaro: simOriginWeather && simOriginWeather.barometer ? 
+            `${parseFloat(simOriginWeather.barometer.mb || 0).toFixed(0)}`: null,
         //Destination Airport Temperature
         wxDestTemp: simDestWeather && simDestWeather.temperature && simDestWeather.temperature.celsius ? 
                     `${simDestWeather.temperature.celsius}°` : null,
