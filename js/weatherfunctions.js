@@ -115,16 +115,24 @@ function appendWeatherData(section, weatherData, index) {
 
     //Append Remaining Weather Data
     let visibilityText;
-    if (parseInt(weatherData.visibility.miles, 10) === 0) {
-        visibilityText = `${safeText(parseFloat(weatherData.visibility.meters_float).toFixed(0))}m`;
+    if (weatherData.visibility) {
+        if (parseInt(weatherData.visibility.miles, 10) === 0) {
+            visibilityText = weatherData.visibility.meters_float ? 
+            `${safeText(parseFloat(weatherData.visibility.meters_float).toFixed(0))}m` : 
+            'N/A';
+        } else {
+            visibilityText = `${safeText(weatherData.visibility.miles, 'SM')}`;
+        }
     } else {
-        visibilityText = `${safeText(weatherData.visibility.miles, 'SM')}`;
+        visibilityText = 'N/A';
     }
-    section.appendChild(createWeatherDiv(`Temp: ${safeText(weatherData.temperature.celsius)}°C Vis: ${visibilityText}`, `temp-data${index}`));
+    section.appendChild(createWeatherDiv(`Temp: ${weatherData.temperature && weatherData.temperature.celsius ? safeText(weatherData.temperature.celsius) + '°C' : 'N/A'} Vis: ${visibilityText}`, `temp-data${index}`));
     
     //Append Altimeter Data
-    section.appendChild(createWeatherDiv(`Baro: ${safeText(parseFloat(weatherData.barometer.hg).toFixed(2))} / 
-                                                    ${Math.round(safeText(parseFloat(weatherData.barometer.mb)))}`, `altimeter-data${index}`));
+    section.appendChild(createWeatherDiv(`Baro: ${weatherData.barometer ? 
+        safeText(parseFloat(weatherData.barometer.hg).toFixed(2)) + ' / ' + 
+        Math.round(safeText(parseFloat(weatherData.barometer.mb))) : 
+        'N/A'}`, `altimeter-data${index}`));
     
     const conditionsData = processConditionsData(weatherData);
     const conditionsDiv = document.createElement('div');
